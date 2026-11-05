@@ -24,9 +24,12 @@ use yii\helpers\Url;
                     <span></span><span></span><span></span><span class="sr-only">Открыть меню</span>
                 </button>
                 <nav class="primary-nav" id="primary-nav" aria-label="Основная навигация">
-                    <a class="active" href="index">Главная</a>
+                    <a class="<?= Yii::$app->controller->route == 'site/index' ? 'active' : '' ?>" href="<?= Url::to(['/site/index']) ?>">Главная</a>
+                    <a class="<?= Yii::$app->controller->route == 'site/catalog' ? 'active' : '' ?>" href="<?= Url::to(['/site/catalog']) ?>">Каталог</a>
+                    <a class="<?= Yii::$app->controller->route == 'site/votes' ? 'active' : '' ?>" href="<?= Url::to(['/site/votes']) ?>">Мои голоса</a>
+                    <!-- <a class="active" href="index">Главная</a>
                     <a href="catalog">Каталог</a>
-                    <a href="votes">Мои голоса</a>
+                    <a href="votes">Мои голоса</a> -->
                 </nav>
                 <div class="header-actions"><a class="header-icon-btn" href="catalog" aria-label="Поиск"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></a><a class="header-icon-btn" href="favorites" aria-label="Избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></a><a class="header-icon-btn" href="login" aria-label="Профиль"><i class="fa-regular fa-user" aria-hidden="true"></i></a></div>
             </div>
