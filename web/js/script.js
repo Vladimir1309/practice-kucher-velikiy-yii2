@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // --- 1. МОБИЛЬНОЕ МЕНЮ ---
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.primary-nav');
   menuToggle?.addEventListener('click', () => {
@@ -7,24 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     nav.classList.toggle('is-open', !expanded);
   });
 
-  const cards = [...document.querySelectorAll('.movie-card')];
-  document.querySelectorAll('.movie-card').forEach((card) => {
-    card.addEventListener('click', (event) => {
-      if (event.target.closest('button')) return;
-      window.location.href = 'movie';
-    });
-  });
-  document.querySelectorAll('.save-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      const active = button.classList.toggle('active');
-      const icon = button.querySelector('i');
-      icon?.classList.toggle('fa-regular', !active);
-      icon?.classList.toggle('fa-solid', active);
-      button.setAttribute('aria-label', active ? 'Удалить из избранного' : 'Добавить в избранное');
-    });
-  });
-  const openModal = (modal) => modal.classList.add('is-open');
-  const closeModal = (modal) => modal.classList.remove('is-open');
+  // --- 2. МОДАЛЬНЫЕ ОКНА (ОТКРЫТИЕ/ЗАКРЫТИЕ) ---
+  const openModal = (modal) => modal?.classList.add('is-open');
+  const closeModal = (modal) => modal?.classList.remove('is-open');
+  
   document.querySelectorAll('.modal').forEach((modal) => {
     modal.addEventListener('click', (event) => {
       if (event.target === modal || event.target.closest('.modal-close')) closeModal(modal);
@@ -34,38 +21,49 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => closeModal(button.closest('.modal')));
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') document.querySelectorAll('.modal.is-open').forEach(closeModal);
-    if (event.key === 'Escape') setFiltersOpen?.(false);
+    if (event.key === 'Escape') {
+        document.querySelectorAll('.modal.is-open').forEach(closeModal);
+        setFiltersOpen?.(false); // Закрываем фильтры по Esc
+    }
+  });
+
+  // --- 3. КАРТОЧКИ ФИЛЬМОВ И ССЫЛКИ (АДАПТАЦИЯ ПОД YII2) ---
+  document.querySelectorAll('.movie-card').forEach((card) => {
+    card.addEventListener('click', (event) => {
+      if (event.target.closest('button')) return;
+      // В Yii2 ссылка будет формироваться через PHP. 
+      // Пока оставляем заглушку, но если карточка обернута в <a>, этот JS не нужен.
+      // window.location.href = '/site/movie'; 
+    });
   });
 
   document.querySelectorAll('.review-button').forEach((button) => {
     button.addEventListener('click', () => {
-      window.location.href = 'votes';
-    });
-  });
-  document.querySelectorAll('.reviewed-card').forEach((card) => {
-    const openReview = () => {
-      const movie = document.querySelector('#review-movie');
-      if (movie) movie.textContent = card.dataset.movie;
-      openModal(document.querySelector('#review-modal'));
-    };
-    card.addEventListener('click', openReview);
-    card.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        openReview();
-      }
+      window.location.href = '/site/votes';
     });
   });
   document.querySelector('.vote-button')?.addEventListener('click', () => {
-    window.location.href = 'votes';
+    window.location.href = '/site/votes';
   });
+
+  // --- 4. ИНТЕРАКТИВ (ИЗБРАННОЕ И ПРОСМОТРЕННОЕ) ---
+  // Позже сюда добавим AJAX-запросы к Yii2, чтобы сохранять в БД.
+  document.querySelectorAll('.save-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      const active = button.classList.toggle('active');
+      const icon = button.querySelector('i');
+      icon?.classList.toggle('fa-regular', !active);
+      icon?.classList.toggle('fa-solid', active);
+    });
+  });
+
   document.querySelector('.watched-button')?.addEventListener('click', (event) => {
     const button = event.currentTarget;
     const watched = button.classList.toggle('watched-active');
     button.textContent = watched ? 'Просмотрено ✓' : 'Отметить как просмотренное';
   });
 
+  // --- 5. ТАБЫ И ЗВЕЗДОЧКИ ---
   document.querySelectorAll('.tab').forEach((tab) => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach((item) => {
@@ -78,56 +76,28 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
   document.querySelectorAll('.stars button').forEach((star, index, stars) => {
     star.addEventListener('click', () => stars.forEach((item, itemIndex) => {
       item.style.opacity = itemIndex <= index ? '1' : '.35';
     }));
   });
-  document.querySelector('.modal-submit')?.addEventListener('click', () => closeModal(document.querySelector('#review-modal')));
 
   document.querySelectorAll('.vote-stars button').forEach((star, index, stars) => {
     star.addEventListener('click', () => stars.forEach((item, itemIndex) => item.classList.toggle('is-selected', itemIndex <= index)));
   });
-  document.querySelector('.vote-form')?.addEventListener('submit', (event) => event.preventDefault());
 
+  // --- 6. ПОКАЗ ПАРОЛЯ ---
   document.querySelectorAll('.password-toggle').forEach((toggle) => {
     toggle.addEventListener('click', () => {
       const input = toggle.parentElement.querySelector('input');
       const visible = input.type === 'text';
       input.type = visible ? 'password' : 'text';
       toggle.textContent = visible ? '◉' : '◎';
-      toggle.setAttribute('aria-label', visible ? 'Показать пароль' : 'Скрыть пароль');
-    });
-  });
-  document.querySelectorAll('[data-auth-form]').forEach((form) => {
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const error = form.querySelector('.form-error');
-      const fields = [...form.querySelectorAll('input[required]')];
-      const empty = fields.find((field) => !field.value.trim());
-      const password = form.querySelector('input[name="password"]');
-      const confirmation = form.querySelector('input[name="password-confirm"]');
-      if (empty) {
-        error.textContent = 'Заполните все обязательные поля.';
-        empty.focus();
-        return;
-      }
-      if (confirmation && password.value !== confirmation.value) {
-        error.textContent = 'Пароли должны совпадать.';
-        confirmation.focus();
-        return;
-      }
-      if (password.value.length < 6) {
-        error.textContent = 'Пароль должен содержать минимум 6 символов.';
-        password.focus();
-        return;
-      }
-      error.textContent = '';
-      form.classList.remove('has-error');
-      window.location.href = 'profile';
     });
   });
 
+  // --- 7. ФИЛЬТРЫ КАТАЛОГА ---
   const filterToggle = document.querySelector('.filter-toggle');
   const filterPanel = document.querySelector('.catalog-filters');
   const filterClose = document.querySelector('.filter-close');
@@ -139,17 +109,22 @@ document.addEventListener('DOMContentLoaded', () => {
   filterToggle?.addEventListener('click', () => setFiltersOpen(!filterPanel.classList.contains('is-open')));
   filterClose?.addEventListener('click', () => setFiltersOpen(false));
 
+  // --- 8. МОДАЛКА ВЫХОДА И "МНЕ ПОВЕЗЕТ" ---
   const logoutModal = document.querySelector('#logout-modal');
   document.querySelector('.logout-button')?.addEventListener('click', () => openModal(logoutModal));
-  document.querySelector('.modal-close-action')?.addEventListener('click', () => closeModal(logoutModal));
-  document.querySelector('.profile-form')?.addEventListener('submit', (event) => event.preventDefault());
 
+  const cards = [...document.querySelectorAll('.movie-card')];
   const pickRandomMovie = () => {
     const movie = cards[Math.floor(Math.random() * cards.length)];
     if (!movie) return;
-    document.querySelector('.lucky-result').textContent = movie.querySelector('h3').textContent;
+    const title = movie.querySelector('h3')?.textContent || movie.dataset.title;
+    const resultElement = document.querySelector('.lucky-result');
+    if (resultElement) resultElement.textContent = title;
     openModal(document.querySelector('#lucky-modal'));
   };
   document.querySelector('#lucky-button')?.addEventListener('click', pickRandomMovie);
   document.querySelector('#hero-lucky-button')?.addEventListener('click', pickRandomMovie);
+
+  // ВАЖНО: Блоки с event.preventDefault() для форм (логин, регистрация, профиль) УДАЛЕНЫ.
+  // Теперь Yii2 берет управление отправкой форм на себя!
 });

@@ -64,32 +64,55 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionCatalog(){
+    public function actionCatalog()
+    {
         return $this->render('catalog');
     }
 
-    public function actionFavorites(){
+    public function actionFavorites()
+    {
         return $this->render('favorites');
     }
 
-    public function actionMovie(){
+    public function actionMovie()
+    {
         return $this->render('movie');
     }
 
-    public function actionProfile(){
+    public function actionProfile()
+    {
         return $this->render('profile');
     }
 
-    public function actionSettings(){
+    public function actionSettings()
+    {
         return $this->render('settings');
     }
 
-    public function actionVotes(){
+    public function actionVotes()
+    {
         return $this->render('votes');
     }
 
-    public function actionWatched(){
+    public function actionWatched()
+    {
         return $this->render('watched');
+    }
+
+    public function actionRegister()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new \app\models\SignupForm();
+        
+        if ($model->load(Yii::$app->request->post()) && ($user = $model->signup())) {
+            Yii::$app->user->login($user); // Автоматически логиним после регистрации
+            return $this->redirect(['site/profile']);
+        }
+
+        return $this->render('register', ['model' => $model]);
     }
 
     /**
@@ -103,15 +126,13 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
+        $model = new \app\models\LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['site/profile']); // При успехе идем в профиль
         }
 
         $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->render('login', ['model' => $model]);
     }
 
     /**
