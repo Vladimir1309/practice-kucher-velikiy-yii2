@@ -20,10 +20,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['profile', 'logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['profile', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -81,7 +81,11 @@ class SiteController extends Controller
 
     public function actionProfile()
     {
-        return $this->render('profile');
+        $user = Yii::$app->user->identity;
+
+        return $this->render('profile', [
+            'user' => $user,
+        ]);
     }
 
     public function actionSettings()
