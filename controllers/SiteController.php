@@ -234,10 +234,18 @@ class SiteController extends Controller
             throw new NotFoundHttpException('Отзыв не найден.');
         }
 
-        if ($review->delete() === false) {
+        $review->rating = null;
+        $review->comment = null;
+        if (!$review->is_favorite && !$review->is_watched) {
+            $deleted = $review->delete();
+        } else {
+            $deleted = $review->save(false);
+        }
+
+        if ($deleted === false) {
             Yii::$app->session->setFlash('error', 'Не удалось удалить отзыв.');
         } else {
-            Yii::$app->session->setFlash('success', 'Отзыв удален');
+            Yii::$app->session->setFlash('success', 'Отзыв удален.');
         }
 
         return $this->redirect(['site/votes']);
