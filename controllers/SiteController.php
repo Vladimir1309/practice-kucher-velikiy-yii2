@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Movie;
+use app\models\Genre;
 
 class SiteController extends Controller
 {
@@ -63,23 +64,27 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $movies = Movie::find()->limit(4)->all();
+        $movies = Movie::find()->with('genre')->limit(4)->all();
 
         return $this->render('index', [
             'movies' => $movies,
         ]);
     }
 
-    public function actionCatalog()
+    public function actionCatalog($genre_id = null)
     {
-        $genre = Yii::$app->request->get('genre');
+        $query = Movie::find()->with('genre');
+        if ($genre_id !== null) {
+            $query->andWhere(['genre_id' => $genre_id]);
+        }
 
-        // Movie currently has no genre column or relation, so genre filtering
-        // will be added when genre data is connected to the model.
-        $movies = Movie::find()->all();
+        $movies = $query->all();
+        $activeGenre = $genre_id !== null ? Genre::findOne($genre_id) : null;
 
         return $this->render('catalog', [
             'movies' => $movies,
+            'genreId' => $genre_id,
+            'activeGenre' => $activeGenre,
         ]);
     }
 

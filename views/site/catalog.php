@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $movies app\models\Movie[] */
+/* @var $genreId int|null */
+/* @var $activeGenre app\models\Genre|null */
 ?>
 
 <main class="catalog-page container">
@@ -12,7 +14,9 @@ use yii\helpers\Url;
         <div><span class="eyebrow">ВЫБЕРИТЕ НАСТРОЕНИЕ</span>
             <h1>Каталог фильмов</h1>
             <p>Найдите историю под своё настроение — и голосуйте за любимую.</p>
-        </div><span class="catalog-note">256 фильмов для ваших вечеров</span>
+        </div><span class="catalog-note"><?= $activeGenre
+            ? 'Жанр: ' . Html::encode($activeGenre->name)
+            : 'Все фильмы для ваших вечеров' ?></span>
     </div>
     <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="catalog-filters">Фильтры <span>☷</span></button>
     <div class="catalog-layout">
@@ -50,7 +54,7 @@ use yii\helpers\Url;
                             <?= Html::a('<img src="' . $poster . '" alt="' . $title . '"><span class="hit-label">ХИТ</span>', ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
                             <button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button>
                         </div>
-                        <div class="movie-info"><span class="movie-genre">ФИЛЬМ</span>
+                        <div class="movie-info"><span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>
                             <h3><?= Html::a($title, ['site/movie', 'id' => $movie->id]) ?></h3>
                             <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>—</span> <small><?= Html::encode($movie->year ?: 'Год не указан') ?></small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="<?= $title ?>">Оценить</button>
                         </div>

@@ -13,6 +13,7 @@ use yii\db\ActiveRecord;
  * @property string|null $description
  * @property int|null $year
  * @property int|null $duration
+ * @property int|null $genre_id
  * @property string|null $poster_url
  */
 class Movie extends ActiveRecord

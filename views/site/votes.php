@@ -7,8 +7,7 @@ use yii\helpers\Url;
     <div class="breadcrumbs">Главная <span>/</span> Личный кабинет</div>
     <div class="profile-layout">
         <aside class="account-sidebar" aria-label="Навигация профиля">
-            <div class="account-user"><span class="avatar small-avatar">АС</span><span><b>Анна Смирнова</b><small>Ваш
-                        личный кинопрофиль</small></span></div>
+            <?= $this->render('_account_user') ?>
             <nav class="account-nav">
                 <a href="profile"><i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span></a>
                 <a class="active" href="votes"><i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои

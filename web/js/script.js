@@ -118,8 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const movie = cards[Math.floor(Math.random() * cards.length)];
     if (!movie) return;
     const title = movie.querySelector('h3')?.textContent || movie.dataset.title;
+    const movieId = movie.dataset.id;
     const resultElement = document.querySelector('.lucky-result');
     if (resultElement) resultElement.textContent = title;
+    const movieLink = document.querySelector('#lucky-modal .button-primary');
+    if (movieLink && movieId) {
+      const url = new URL(movieLink.href, window.location.origin);
+      url.searchParams.set('id', movieId);
+      movieLink.href = url.toString();
+    }
     openModal(document.querySelector('#lucky-modal'));
   };
   document.querySelector('#lucky-button')?.addEventListener('click', pickRandomMovie);

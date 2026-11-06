@@ -37,10 +37,10 @@ use yii\helpers\Url;
             <a href="catalog" class="text-link">Все категории <span>→</span></a>
         </div>
         <div class="genre-grid">
-            <?= Html::a('<span class="genre-icon comedy">✦</span><span><b>Комедии</b><small>48 фильмов</small></span><span>›</span>', ['site/catalog', 'genre' => 'comedy'], ['class' => 'genre-chip', 'encode' => false]) ?>
-            <?= Html::a('<span class="genre-icon drama">✦</span><span><b>Драмы</b><small>32 фильма</small></span><span>›</span>', ['site/catalog', 'genre' => 'drama'], ['class' => 'genre-chip', 'encode' => false]) ?>
-            <?= Html::a('<span class="genre-icon horror">☾</span><span><b>Ужасы</b><small>27 фильмов</small></span><span>›</span>', ['site/catalog', 'genre' => 'horror'], ['class' => 'genre-chip', 'encode' => false]) ?>
-            <?= Html::a('<span class="genre-icon fantasy">✺</span><span><b>Фантастика</b><small>54 фильма</small></span><span>›</span>', ['site/catalog', 'genre' => 'fantasy'], ['class' => 'genre-chip', 'encode' => false]) ?>
+            <?= Html::a('<span class="genre-icon comedy">✦</span><span><b>Комедии</b><small>48 фильмов</small></span><span>›</span>', ['site/catalog', 'genre_id' => 1], ['class' => 'genre-chip', 'encode' => false]) ?>
+            <?= Html::a('<span class="genre-icon drama">✦</span><span><b>Драмы</b><small>32 фильма</small></span><span>›</span>', ['site/catalog', 'genre_id' => 2], ['class' => 'genre-chip', 'encode' => false]) ?>
+            <?= Html::a('<span class="genre-icon horror">☾</span><span><b>Ужасы</b><small>27 фильмов</small></span><span>›</span>', ['site/catalog', 'genre_id' => 3], ['class' => 'genre-chip', 'encode' => false]) ?>
+            <?= Html::a('<span class="genre-icon fantasy">✺</span><span><b>Фантастика</b><small>54 фильма</small></span><span>›</span>', ['site/catalog', 'genre_id' => 4], ['class' => 'genre-chip', 'encode' => false]) ?>
         </div>
     </section>
 
@@ -60,12 +60,12 @@ use yii\helpers\Url;
                     ? Html::encode($movie->poster_url)
                     : Url::to('@web/images/movie-5.jpeg');
                 ?>
-                <article class="movie-card">
+                <article class="movie-card" data-id="<?= Html::encode($movie->id) ?>">
                     <div class="movie-image">
                         <?= Html::a('<img src="' . $poster . '" alt="' . $title . '"><span class="hit-label">ХИТ</span>', ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
                         <button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button>
                     </div>
-                    <div class="movie-info"><span class="movie-genre">ФИЛЬМ</span>
+                    <div class="movie-info"><span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>
                         <h3><?= Html::a($title, ['site/movie', 'id' => $movie->id]) ?></h3>
                         <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>—</span> <small><?= Html::encode($movie->year ?: 'Год не указан') ?></small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="<?= $title ?>">Оценить</button>
                     </div>
