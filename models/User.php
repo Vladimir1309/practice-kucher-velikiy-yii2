@@ -19,6 +19,7 @@ use yii\web\IdentityInterface;
  * @property string|null $phone
  * @property bool $notify_news
  * @property bool $notify_reminders
+ * @property string $role
  * @property string $created_at
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -45,6 +46,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'nickname', 'email', 'password_hash'], 'string', 'max' => 255],
             [['last_name'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 20],
+            [['role'], 'string', 'max' => 20],
+            [['role'], 'safe'],
             [['email'], 'email'],
             [['email'], 'unique', 'filter' => function ($query) {
                 $query->andWhere(['!=', 'id', $this->id]);
@@ -78,6 +81,7 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => 'Email',
             'password_hash' => 'Хеш пароля',
             'phone' => 'Телефон',
+            'role' => 'Роль',
             'created_at' => 'Дата регистрации',
             'notify_news' => 'Новости CineNight',
             'notify_reminders' => 'Напоминания',

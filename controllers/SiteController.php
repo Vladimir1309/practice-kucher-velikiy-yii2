@@ -7,11 +7,13 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Movie;
 use app\models\Genre;
 use app\models\UserMovie;
+use app\models\User;
 use app\models\MovieSearch;
 use yii\helpers\ArrayHelper;
 
@@ -25,12 +27,21 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'profile', 'votes', 'favorites', 'watched', 'settings', 'delete-review'],
+                'only' => ['logout', 'profile', 'votes', 'favorites', 'watched', 'settings', 'delete-review', 'admin'],
                 'rules' => [
                     [
                         'actions' => ['logout', 'profile', 'votes', 'favorites', 'watched', 'settings', 'delete-review'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['admin'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function () {
+                            return Yii::$app->user->identity !== null
+                                && Yii::$app->user->identity->role === 'admin';
+                        },
                     ],
                 ],
             ],
@@ -145,6 +156,17 @@ class SiteController extends Controller
 
         return $this->render('profile', [
             'user' => $user,
+        ]);
+    }
+
+    public function actionAdmin()
+    {
+        if (Yii::$app->user->identity->role !== 'admin') {
+            throw new ForbiddenHttpException('Доступ запрещен');
+        }
+
+        return $this->render('admin', [
+            'users' => User::find()->orderBy(['id' => SORT_ASC])->all(),
         ]);
     }
 
