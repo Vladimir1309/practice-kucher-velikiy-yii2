@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeReviewCard = null;
   document.querySelectorAll('.reviewed-card').forEach((card) => {
     const showReview = () => {
+      if (card.closest('#all-reviews-modal')) return;
       const modal = document.querySelector('#review-modal');
       if (!modal) return;
       const title = modal.querySelector('#review-title');
@@ -193,6 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (index < rating) {
           star.classList.add('is-selected');
         }
+      });
+
+      document.querySelector('#show-all-reviews')?.addEventListener('click', () => {
+        openModal(document.querySelector('#all-reviews-modal'));
       });
       if (deleteButton) {
         const url = new URL(deleteButton.dataset.baseUrl || deleteButton.href, window.location.origin);

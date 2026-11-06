@@ -2,8 +2,13 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\models\UserMovie;
 
 /* @var $user app\models\User */
+$reviewCount = UserMovie::find()
+    ->where(['user_id' => $user->id])
+    ->andWhere(['is not', 'rating', null])
+    ->count();
 ?>
 
 <main class="user-page container">
@@ -11,7 +16,7 @@ use yii\helpers\Url;
     <div class="profile-layout">
         <aside class="account-sidebar">
             <?= $this->render('_account_user') ?>
-            <nav class="account-nav"><?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>2</small>', ['site/votes'], ['encode' => false]) ?><?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], ['class' => 'active', 'encode' => false]) ?><button type="button"
+            <nav class="account-nav"><?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>' . $reviewCount . '</small>', ['site/votes'], ['encode' => false]) ?><?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], ['class' => 'active', 'encode' => false]) ?><button type="button"
                     class="logout-button"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
                     <span>Выйти</span></button></nav>
         </aside>

@@ -1,8 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\UserMovie;
 
 /* @var $user app\models\User */
+$reviewCount = UserMovie::find()
+    ->where(['user_id' => $user->id])
+    ->andWhere(['is not', 'rating', null])
+    ->count();
 $username = Html::encode($user->username);
 $email = Html::encode($user->email);
 $phone = Html::encode($user->phone ?: 'Не указан');
@@ -20,7 +25,7 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
                     'class' => 'active',
                     'encode' => false,
                 ]) ?>
-                <?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>2</small>', ['site/votes'], [
+                <?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>' . $reviewCount . '</small>', ['site/votes'], [
                     'encode' => false,
                 ]) ?>
                 <?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], [

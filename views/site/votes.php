@@ -18,6 +18,8 @@ foreach ($moviesList as $movie) {
         $movieOptions[$movie->id] = ['disabled' => true];
     }
 }
+$reviewCount = count($myReviews);
+$visibleReviews = array_slice($myReviews, 0, 4);
 ?>
 
 <main class="votes-page container">
@@ -27,7 +29,7 @@ foreach ($moviesList as $movie) {
             <?= $this->render('_account_user') ?>
             <nav class="account-nav">
                 <?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], ['encode' => false]) ?>
-                <?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>2</small>', ['site/votes'], ['class' => 'active', 'encode' => false]) ?>
+                <?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>' . $reviewCount . '</small>', ['site/votes'], ['class' => 'active', 'encode' => false]) ?>
                 <?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], ['encode' => false]) ?>
                 <?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], ['encode' => false]) ?>
                 <?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], ['encode' => false]) ?>
@@ -37,13 +39,13 @@ foreach ($moviesList as $movie) {
         </aside>
         <section class="votes-content" aria-labelledby="votes-title">
             <span class="eyebrow">ВАШ ВЕЧЕР НАЧИНАЕТСЯ ЗДЕСЬ</span>
-            <h1 id="votes-title">Мои голоса <sup><?= count($myReviews) ?></sup></h1>
+            <h1 id="votes-title">Мои голоса <sup><?= $reviewCount ?></sup></h1>
             <p class="profile-intro">Ваши любимые истории — и планы на следующий киновечер.</p>
             <div class="reviewed-movies">
                 <?php if (!$myReviews): ?>
                     <p class="empty-state">Вы пока не оставили ни одного голоса.</p>
                 <?php else: ?>
-                    <?php foreach ($myReviews as $review): ?>
+                    <?php foreach ($visibleReviews as $review): ?>
                         <?php
                         $reviewTitle = $review->movie ? $review->movie->title : 'Фильм удален';
                         $reviewPoster = $review->movie && $review->movie->poster_url
@@ -77,6 +79,9 @@ foreach ($moviesList as $movie) {
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
+            <?php if ($reviewCount > 4): ?>
+                <button id="show-all-reviews" class="button button-secondary" type="button">Показать все отзывы (<?= $reviewCount ?>)</button>
+            <?php endif; ?>
             <?php if (Yii::$app->session->hasFlash('success')): ?>
                 <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
             <?php endif; ?>
@@ -143,6 +148,43 @@ foreach ($moviesList as $movie) {
         </div>
     </div>
 </div>
+<?php if ($reviewCount > 4): ?>
+    <div class="modal all-reviews-modal" id="all-reviews-modal" role="dialog" aria-modal="true" aria-labelledby="all-reviews-title">
+        <div class="modal-card all-reviews-modal-card">
+            <button class="modal-close" type="button" aria-label="Закрыть">×</button>
+            <span class="eyebrow">ВАШИ ОТЗЫВЫ</span>
+            <h2 id="all-reviews-title">Все отзывы (<?= $reviewCount ?>)</h2>
+            <div class="all-reviews-list">
+                <?php foreach ($myReviews as $review): ?>
+                    <?php
+                    $reviewTitle = $review->movie ? $review->movie->title : 'Фильм удален';
+                    $reviewPoster = $review->movie && $review->movie->poster_url
+                        ? $review->movie->poster_url
+                        : Url::to('@web/images/movie-5.jpeg');
+                    ?>
+                    <article class="reviewed-card all-review-card"
+                        data-review-id="<?= (int) $review->id ?>"
+                        data-movie-id="<?= (int) $review->movie_id ?>"
+                        data-movie="<?= Html::encode($reviewTitle) ?>"
+                        data-rating="<?= (int) $review->rating ?>"
+                        data-comment="<?= Html::encode($review->comment ?: '') ?>"
+                        data-poster="<?= Html::encode($reviewPoster) ?>">
+                        <img src="<?= Html::encode($reviewPoster) ?>" alt="<?= Html::encode($reviewTitle) ?>">
+                        <div>
+                            <h3><?= Html::encode($reviewTitle) ?></h3>
+                            <div class="rating">
+                                <?php for ($star = 1; $star <= 5; $star++): ?>
+                                    <i class="<?= $star <= (int) $review->rating ? 'fa-solid' : 'fa-regular' ?> fa-star" aria-hidden="true"></i>
+                                <?php endfor; ?>
+                                <span><?= (int) $review->rating ?></span>
+                            </div>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 <div class="modal" id="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-title">
     <div class="modal-card"><button class="modal-close" type="button" aria-label="Закрыть">×</button><span
             class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</span>
