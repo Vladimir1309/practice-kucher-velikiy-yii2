@@ -171,9 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const movie = modal.querySelector('#review-movie');
       const poster = modal.querySelector('#review-poster');
       const comment = modal.querySelector('#review-comment');
-      const stars = modal.querySelectorAll('.stars button');
+      const modalStars = modal.querySelectorAll('.stars button');
       const deleteButton = modal.querySelector('#delete-review-button');
-      const rating = Number(card.dataset.rating) || 0;
+      const rating = parseInt(card.dataset.rating, 10) || 0;
       activeReviewCard = card;
       if (title) title.textContent = card.dataset.movie || '';
       if (movie) movie.textContent = 'Ваша оценка';
@@ -182,7 +182,13 @@ document.addEventListener('DOMContentLoaded', () => {
         poster.alt = card.dataset.movie || '';
       }
       if (comment) comment.textContent = card.dataset.comment || 'Комментарий не оставлен.';
-      stars.forEach((star, index) => star.classList.toggle('is-selected', index < rating));
+      modalStars.forEach((star, index) => {
+        star.classList.remove('is-selected');
+        star.style.opacity = index < rating ? '1' : '.35';
+        if (index < rating) {
+          star.classList.add('is-selected');
+        }
+      });
       if (deleteButton) {
         const url = new URL(deleteButton.dataset.baseUrl || deleteButton.href, window.location.origin);
         url.searchParams.set('id', card.dataset.reviewId);
