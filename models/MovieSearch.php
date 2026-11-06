@@ -41,6 +41,7 @@ class MovieSearch extends Movie
 
         $query = Movie::find()
             ->alias('movie')
+            ->select(['movie.*', 'average_rating' => 'AVG(um.rating)'])
             ->with('genre')
             ->leftJoin(['um' => 'user_movie'], 'um.movie_id = movie.id')
             ->groupBy('movie.id');
@@ -72,7 +73,6 @@ class MovieSearch extends Movie
                 break;
             case 'popular':
             default:
-                $query->addSelect(['movie.*', 'average_rating' => 'AVG(um.rating)']);
                 $query->orderBy(['average_rating' => SORT_DESC, 'movie.id' => SORT_DESC]);
                 break;
         }
@@ -86,12 +86,21 @@ class MovieSearch extends Movie
                 'attributes' => [
                     'id',
                     'title',
+                    'average_rating' => [
+                        'asc' => ['average_rating' => SORT_ASC],
+                        'desc' => ['average_rating' => SORT_DESC],
+                        'default' => SORT_DESC,
+                    ],
+                    'year' => [
+                        'asc' => ['movie.year' => SORT_ASC],
+                        'desc' => ['movie.year' => SORT_DESC],
+                    ],
                     'rating' => [
                         'asc' => ['average_rating' => SORT_ASC],
                         'desc' => ['average_rating' => SORT_DESC],
                     ],
                 ],
-                'defaultOrder' => ['rating' => SORT_DESC],
+                'defaultOrder' => ['average_rating' => SORT_DESC],
             ]),
         ]);
     }
