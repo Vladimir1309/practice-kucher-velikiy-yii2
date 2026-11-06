@@ -148,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  let activeReviewCard = null;
   document.querySelectorAll('.reviewed-card').forEach((card) => {
     const showReview = () => {
       const modal = document.querySelector('#review-modal');
@@ -157,7 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const poster = modal.querySelector('#review-poster');
       const comment = modal.querySelector('#review-comment');
       const stars = modal.querySelectorAll('.stars button');
+      const deleteButton = modal.querySelector('#delete-review-button');
       const rating = Number(card.dataset.rating) || 0;
+      activeReviewCard = card;
       if (title) title.textContent = card.dataset.movie || '';
       if (movie) movie.textContent = 'Ваша оценка';
       if (poster) {
@@ -166,6 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (comment) comment.textContent = card.dataset.comment || 'Комментарий не оставлен.';
       stars.forEach((star, index) => star.classList.toggle('is-selected', index < rating));
+      if (deleteButton) {
+        const url = new URL(deleteButton.dataset.baseUrl || deleteButton.href, window.location.origin);
+        url.searchParams.set('id', card.dataset.reviewId);
+        deleteButton.href = url.toString();
+      }
       openModal(modal);
     };
     card.addEventListener('click', showReview);
@@ -175,6 +183,26 @@ document.addEventListener('DOMContentLoaded', () => {
         showReview();
       }
     });
+  });
+
+  document.querySelector('.review-edit-button')?.addEventListener('click', () => {
+    if (!activeReviewCard) return;
+    const form = document.querySelector('.vote-form');
+    const modal = document.querySelector('#review-modal');
+    if (!form || !modal) return;
+
+    const movieSelect = form.querySelector('[name="movie_id"]');
+    const ratingInput = form.querySelector('#rating-value');
+    const commentInput = form.querySelector('[name="comment"]');
+    const rating = Number(activeReviewCard.dataset.rating) || 5;
+    if (movieSelect) movieSelect.value = activeReviewCard.dataset.movieId || '';
+    if (ratingInput) ratingInput.value = String(rating);
+    if (commentInput) commentInput.value = activeReviewCard.dataset.comment || '';
+    form.querySelectorAll('.vote-stars button').forEach((star, index) => {
+      star.classList.toggle('is-selected', index < rating);
+    });
+    closeModal(modal);
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   // --- 6. ПОКАЗ ПАРОЛЯ ---

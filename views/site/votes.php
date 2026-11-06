@@ -43,6 +43,8 @@ use yii\helpers\Url;
                             : 'Без жанра';
                         ?>
                         <article class="reviewed-card"
+                            data-review-id="<?= (int) $review->id ?>"
+                            data-movie-id="<?= (int) $review->movie_id ?>"
                             data-movie="<?= Html::encode($reviewTitle) ?>"
                             data-rating="<?= (int) $review->rating ?>"
                             data-comment="<?= Html::encode($review->comment ?: '') ?>"
@@ -114,7 +116,14 @@ use yii\helpers\Url;
                     aria-hidden="true"></i></button><button><i class="fa-solid fa-star"
                     aria-hidden="true"></i></button><button><i class="fa-solid fa-star" aria-hidden="true"></i></button></div>
         <p id="review-comment"></p>
-        <button class="button button-primary modal-submit">Сохранить оценку</button>
+        <div class="review-modal-actions">
+            <button type="button" class="button button-secondary review-edit-button">Редактировать</button>
+            <?= Html::a('Удалить отзыв', ['site/delete-review'], [
+                'id' => 'delete-review-button',
+                'class' => 'button button-danger',
+                'onclick' => "return confirm('Вы уверены, что хотите удалить отзыв?');",
+            ]) ?>
+        </div>
     </div>
 </div>
 <div class="modal" id="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-title">

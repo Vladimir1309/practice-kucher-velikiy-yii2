@@ -24,10 +24,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'profile', 'votes', 'favorites', 'watched', 'settings'],
+                'only' => ['logout', 'profile', 'votes', 'favorites', 'watched', 'settings', 'delete-review'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'profile', 'votes', 'favorites', 'watched', 'settings'],
+                        'actions' => ['logout', 'profile', 'votes', 'favorites', 'watched', 'settings', 'delete-review'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -187,6 +187,29 @@ class SiteController extends Controller
             'moviesList' => $moviesList,
             'myReviews' => $myReviews,
         ]);
+    }
+
+    public function actionDeleteReview($id)
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $review = UserMovie::findOne([
+            'id' => $id,
+            'user_id' => Yii::$app->user->id,
+        ]);
+        if ($review === null || $review->rating === null) {
+            throw new NotFoundHttpException('Отзыв не найден.');
+        }
+
+        if ($review->delete() === false) {
+            Yii::$app->session->setFlash('error', 'Не удалось удалить отзыв.');
+        } else {
+            Yii::$app->session->setFlash('success', 'Отзыв удален');
+        }
+
+        return $this->redirect(['site/votes']);
     }
 
     public function actionWatched()
