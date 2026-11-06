@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /* @var $movieId int|null */
@@ -8,13 +9,14 @@ use yii\helpers\Url;
 /* @var $myReviews app\models\UserMovie[] */
 /* @var $reviewedMovieIds int[] */
 
+$movieItems = ArrayHelper::map($moviesList, 'id', 'title');
 $movieOptions = [];
 foreach ($moviesList as $movie) {
     $isReviewed = in_array((int) $movie->id, array_map('intval', $reviewedMovieIds), true);
-    $movieOptions[$movie->id] = [
-        'label' => $movie->title . ($isReviewed ? ' (Уже оценен)' : ''),
-        'disabled' => $isReviewed,
-    ];
+    if ($isReviewed) {
+        $movieItems[$movie->id] .= ' (Уже оценен)';
+        $movieOptions[$movie->id] = ['disabled' => true];
+    }
 }
 ?>
 
@@ -92,7 +94,11 @@ foreach ($moviesList as $movie) {
                     </div>
                 </div>
                 <div class="vote-fields">
-                    <label>Фильм <em>*</em><?= Html::dropDownList('movie_id', $movieId, $movieOptions, ['prompt' => 'Выберите фильм', 'required' => true]) ?></label>
+                    <label>Фильм <em>*</em><?= Html::dropDownList('movie_id', $movieId, $movieItems, [
+                        'prompt' => 'Выберите фильм',
+                        'required' => true,
+                        'options' => $movieOptions,
+                    ]) ?></label>
                     <fieldset>
                         <legend>Ваша оценка <em>*</em></legend>
                         <div class="vote-stars" role="group" aria-label="Выберите рейтинг"><button type="button"

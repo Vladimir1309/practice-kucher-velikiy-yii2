@@ -145,12 +145,26 @@ class SiteController extends Controller
 
         if (Yii::$app->request->isPost) {
             $movieId = Yii::$app->request->post('movie_id');
+            $reviewId = Yii::$app->request->post('review_id');
+            if (!$reviewId) {
+                $exists = UserMovie::find()
+                    ->where([
+                        'user_id' => Yii::$app->user->id,
+                        'movie_id' => $movieId,
+                    ])
+                    ->andWhere(['is not', 'rating', null])
+                    ->exists();
+                if ($exists) {
+                    Yii::$app->session->setFlash('error', 'Вы уже оставили отзыв на этот фильм. Отредактируйте его в списке ниже.');
+                    return $this->redirect(['site/votes']);
+                }
+            }
+
             $movie = Movie::findOne($movieId);
             if ($movie === null) {
                 throw new NotFoundHttpException('Фильм не найден.');
             }
 
-            $reviewId = Yii::$app->request->post('review_id');
             $review = $reviewId
                 ? UserMovie::findOne([
                     'id' => $reviewId,
@@ -160,18 +174,6 @@ class SiteController extends Controller
                 : null;
             if ($reviewId && ($review === null || $review->rating === null)) {
                 throw new NotFoundHttpException('Отзыв не найден.');
-            }
-
-            $exists = UserMovie::find()
-                ->where([
-                    'user_id' => Yii::$app->user->id,
-                    'movie_id' => $movieId,
-                ])
-                ->andWhere(['is not', 'rating', null])
-                ->exists();
-            if (!$reviewId && $exists) {
-                Yii::$app->session->setFlash('error', 'Вы уже оставили отзыв на этот фильм. Отредактируйте его в списке ниже.');
-                return $this->redirect(['site/votes']);
             }
 
             if ($review === null) {
