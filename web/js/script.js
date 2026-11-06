@@ -140,7 +140,41 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelectorAll('.vote-stars button').forEach((star, index, stars) => {
-    star.addEventListener('click', () => stars.forEach((item, itemIndex) => item.classList.toggle('is-selected', itemIndex <= index)));
+    star.addEventListener('click', () => {
+      const rating = Number(star.dataset.rating) || index + 1;
+      const ratingInput = document.querySelector('#rating-value');
+      if (ratingInput) ratingInput.value = String(rating);
+      stars.forEach((item, itemIndex) => item.classList.toggle('is-selected', itemIndex < rating));
+    });
+  });
+
+  document.querySelectorAll('.reviewed-card').forEach((card) => {
+    const showReview = () => {
+      const modal = document.querySelector('#review-modal');
+      if (!modal) return;
+      const title = modal.querySelector('#review-title');
+      const movie = modal.querySelector('#review-movie');
+      const poster = modal.querySelector('#review-poster');
+      const comment = modal.querySelector('#review-comment');
+      const stars = modal.querySelectorAll('.stars button');
+      const rating = Number(card.dataset.rating) || 0;
+      if (title) title.textContent = card.dataset.movie || '';
+      if (movie) movie.textContent = 'Ваша оценка';
+      if (poster) {
+        poster.src = card.dataset.poster || '';
+        poster.alt = card.dataset.movie || '';
+      }
+      if (comment) comment.textContent = card.dataset.comment || 'Комментарий не оставлен.';
+      stars.forEach((star, index) => star.classList.toggle('is-selected', index < rating));
+      openModal(modal);
+    };
+    card.addEventListener('click', showReview);
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        showReview();
+      }
+    });
   });
 
   // --- 6. ПОКАЗ ПАРОЛЯ ---

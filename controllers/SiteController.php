@@ -138,9 +138,54 @@ class SiteController extends Controller
 
     public function actionVotes($movie_id = null)
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        if (Yii::$app->request->isPost) {
+            $movieId = Yii::$app->request->post('movie_id');
+            $movie = Movie::findOne($movieId);
+            if ($movie === null) {
+                throw new NotFoundHttpException('Фильм не найден.');
+            }
+
+            $review = UserMovie::findOne([
+                'user_id' => Yii::$app->user->id,
+                'movie_id' => $movieId,
+            ]);
+            if ($review === null) {
+                $review = new UserMovie([
+                    'user_id' => Yii::$app->user->id,
+                    'movie_id' => $movieId,
+                    'is_favorite' => false,
+                    'is_watched' => false,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ]);
+            }
+
+            $review->rating = Yii::$app->request->post('rating');
+            $review->comment = Yii::$app->request->post('comment');
+            if (!$review->save()) {
+                Yii::$app->session->setFlash('error', 'Не удалось сохранить голос.');
+                return $this->redirect(['site/votes']);
+            }
+
+            Yii::$app->session->setFlash('success', 'Голос сохранен!');
+            return $this->redirect(['site/votes']);
+        }
+
+        $moviesList = Movie::find()->all();
+        $myReviews = UserMovie::find()
+            ->where(['user_id' => Yii::$app->user->id])
+            ->andWhere(['is not', 'rating', null])
+            ->with(['movie.genre'])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->all();
+
         return $this->render('votes', [
             'movieId' => $movie_id,
-            'movies' => Movie::find()->all(),
+            'moviesList' => $moviesList,
+            'myReviews' => $myReviews,
         ]);
     }
 
