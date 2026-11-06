@@ -37,15 +37,14 @@ $this->title = 'Фильмы';
                 'buttons' => [
                     'update' => function ($url, $model) {
                         return Html::a('<i class="fas fa-pen"></i>', $url, [
-                            'class' => 'btn btn-primary btn-sm',
+                            'class' => 'btn btn-primary btn-sm action-btn',
                             'title' => 'Редактировать',
                         ]);
                     },
                     'delete' => function ($url, $model) {
                         return Html::a('<i class="fas fa-trash"></i>', $url, [
-                            'class' => 'btn btn-danger btn-sm',
+                            'class' => 'btn btn-danger btn-sm action-btn',
                             'title' => 'Удалить',
-                            'aria-label' => 'Удалить',
                             'data' => [
                                 'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
                                 'method' => 'post',

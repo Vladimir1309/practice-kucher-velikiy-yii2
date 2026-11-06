@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = 'Редактирование';
 ?>
 <div class="admin-container movie-update">
 
+    <?= Html::a('<i class="fas fa-arrow-left"></i> Назад', ['index'], ['class' => 'button button-secondary admin-page-back']) ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [

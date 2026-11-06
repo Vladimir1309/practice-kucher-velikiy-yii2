@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="movie-form">
+<div class="admin-card-form movie-form">
 
     <?php $form = ActiveForm::begin(); ?>
 

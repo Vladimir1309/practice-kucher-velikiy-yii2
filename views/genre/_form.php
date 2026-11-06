@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="genre-form">
+<div class="admin-card-form genre-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
