@@ -47,7 +47,9 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
                 <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
             <?php endif; ?>
             <?php if ($user->hasErrors()): ?>
-                <p class="alert alert-danger">Проверьте данные формы.</p>
+                <div class="alert alert-danger" style="background-color: #ff4d94; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    Пожалуйста, исправьте ошибки в форме ниже. Обязательные поля не могут быть пустыми.
+                </div>
             <?php endif; ?>
             <?php $form = ActiveForm::begin([
                 'id' => 'profile-form',
