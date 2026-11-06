@@ -24,6 +24,17 @@ class MovieSearch extends Movie
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'search' => 'Поиск',
+            'genre_id' => 'Жанры',
+            'min_rating' => 'Рейтинг',
+            'is_watched' => 'Просмотренные',
+            'sort' => 'Сортировка',
+        ];
+    }
+
     public function search($params)
     {
         $this->load($params);

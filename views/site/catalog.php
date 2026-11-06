@@ -1,8 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /* @var $movies app\models\Movie[] */
 /* @var $movieStates array */
@@ -23,37 +23,34 @@ use yii\widgets\ActiveForm;
             : 'Все фильмы для ваших вечеров' ?></span>
     </div>
     <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="catalog-filters">Фильтры <span>☷</span></button>
-    <?php $form = ActiveForm::begin([
-        'method' => 'get',
-        'action' => ['site/catalog'],
-        'options' => ['class' => 'catalog-filter-form'],
-    ]); ?>
     <div class="catalog-layout">
+        <?= Html::beginForm(['site/catalog'], 'get', ['class' => 'filters-form']) ?>
         <aside class="catalog-filters" id="catalog-filters" aria-label="Фильтры каталога">
             <div class="filters-title"><b>Фильтры</b><button class="filter-close" type="button" aria-label="Закрыть фильтры">×</button><span>☷</span></div>
             <fieldset>
                 <legend>Жанры</legend>
-                <label><?= Html::activeRadio($searchModel, 'genre_id', ['value' => '', 'unlabeled' => true]) ?> Все жанры</label>
-                <?php foreach ($genres as $genre): ?>
-                    <label><?= Html::activeRadio($searchModel, 'genre_id', ['value' => $genre->id, 'unlabeled' => true]) ?> <?= Html::encode($genre->name) ?></label>
-                <?php endforeach; ?>
+                <?= Html::radioList(
+                    'MovieSearch[genre_id]',
+                    $searchModel->genre_id,
+                    ArrayHelper::map($genres, 'id', 'name'),
+                    ['unselect' => null, 'class' => 'custom-radio-list']
+                ) ?>
             </fieldset>
-            <label class="select-label">Сортировка<?= Html::activeDropDownList($searchModel, 'sort', [
-                'popular' => 'По популярности',
-                'newest' => 'Сначала новые',
-                'title' => 'По названию',
-            ], ['prompt' => 'Выберите сортировку']) ?></label>
+            <label class="select-label">Сортировка<?= Html::dropDownList('MovieSearch[sort]', $searchModel->sort, [
+                'newest' => 'По новинкам',
+                'title' => 'По алфавиту',
+            ], ['class' => 'custom-select', 'prompt' => 'По популярности']) ?></label>
             <fieldset>
-                <legend>Рейтинг</legend><?= Html::activeInput('number', $searchModel, 'min_rating', ['min' => 0, 'max' => 5, 'step' => '0.1', 'placeholder' => 'Например, 4.0']) ?>
+                <legend>Просмотренные</legend><?= Html::checkbox('MovieSearch[is_watched]', (bool) $searchModel->is_watched, ['value' => 1, 'label' => 'Только просмотренные']) ?>
             </fieldset>
-            <fieldset>
-                <legend>Просмотренные</legend><?= Html::activeCheckbox($searchModel, 'is_watched', ['label' => 'Только просмотренные', 'value' => 1]) ?>
-            </fieldset>
-            <button class="button button-primary apply-filters" type="submit">Применить</button>
-            <?= Html::a('Сбросить', ['site/catalog'], ['class' => 'btn']) ?>
+            <?= Html::submitButton('Применить', ['class' => 'button button-primary apply-filters']) ?>
+            <?= Html::a('Сбросить', ['site/catalog'], ['class' => 'button button-secondary reset-filters']) ?>
         </aside>
+        <?= Html::endForm() ?>
         <section class="catalog-results" aria-labelledby="catalog-results-title">
-            <label class="search-bar" role="search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><?= Html::activeTextInput($searchModel, 'search', ['placeholder' => 'Название фильма, режиссёр или актёр', 'aria-label' => 'Поиск фильма']) ?></label>
+            <?= Html::beginForm(['site/catalog'], 'get', ['class' => 'search-form']) ?>
+            <label class="search-bar" role="search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><?= Html::textInput('MovieSearch[search]', $searchModel->search, ['class' => 'form-control', 'placeholder' => 'Название фильма...', 'aria-label' => 'Поиск фильма']) ?></label>
+            <?= Html::endForm() ?>
             <div class="results-toolbar"><b id="catalog-results-title"><?= $dataProvider->getTotalCount() ?> фильмов</b></div>
             <?php if ($searchModel->min_rating): ?><div class="active-filter">Рейтинг от <?= Html::encode($searchModel->min_rating) ?></div><?php endif; ?>
             <div class="catalog-movie-grid">
