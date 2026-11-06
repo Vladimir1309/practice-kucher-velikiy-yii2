@@ -12,20 +12,20 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'year')->textInput() ?>
-
-    <?= $form->field($model, 'duration')->textInput() ?>
-
-    <?= $form->field($model, 'poster_url')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'genre_id')->textInput() ?>
+    <div class="admin-form-grid">
+        <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
+        <?= $form->field($model, 'year')->textInput() ?>
+        <?= $form->field($model, 'duration')->textInput() ?>
+        <?= $form->field($model, 'poster_url')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'genre_id')->textInput() ?>
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Назад', Yii::$app->request->referrer ?: ['index'], [
+            'class' => 'btn btn-secondary admin-back-button',
+        ]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

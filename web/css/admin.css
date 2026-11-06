@@ -1,6 +1,19 @@
 body {
     background: #131722;
     color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-shell {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+}
+
+.site-footer {
+    margin-top: auto;
 }
 
 .admin-container,
@@ -10,6 +23,59 @@ body {
     max-width: 1180px;
     margin: 0 auto;
     padding: 40px 20px;
+    flex-grow: 1;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+}
+
+.admin-form-grid .field-description,
+.admin-form-grid .field-poster_url {
+    grid-column: 1 / -1;
+}
+
+.admin-back-button {
+    margin-left: 10px;
+    background: transparent !important;
+    border: 1px solid #ff4d94 !important;
+    color: #ff4d94 !important;
+}
+
+textarea.form-control,
+.admin-container textarea.form-control {
+    background-color: #0d111a !important;
+    color: #ffffff !important;
+    border: 1px solid #2a3248 !important;
+}
+
+.grid-view .table td.action-column {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-view .table thead tr.filters td input {
+    background-color: #131722;
+    color: #ffffff;
+    border: 1px solid #2a3248;
+    border-radius: 6px;
+    padding: 6px;
+    width: 100%;
+}
+
+@media (max-width: 700px) {
+    .admin-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-form-grid .field-description,
+    .admin-form-grid .field-poster_url {
+        grid-column: auto;
+    }
 }
 
 .admin-container .breadcrumb,

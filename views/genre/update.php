@@ -5,12 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Genre */
 
-$this->title = 'Update Genre: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Genres', 'url' => ['index']];
+$this->title = 'Редактировать жанр: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Жанры', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Редактирование';
 ?>
-<div class="genre-update">
+<div class="admin-container genre-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

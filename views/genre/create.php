@@ -5,11 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Genre */
 
-$this->title = 'Create Genre';
-$this->params['breadcrumbs'][] = ['label' => 'Genres', 'url' => ['index']];
+$this->title = 'Создать жанр';
+$this->params['breadcrumbs'][] = ['label' => 'Жанры', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="genre-create">
+<div class="admin-container genre-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

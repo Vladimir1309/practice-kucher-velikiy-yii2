@@ -12,10 +12,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <div class="admin-form-grid">
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Назад', Yii::$app->request->referrer ?: ['index'], [
+            'class' => 'btn btn-secondary admin-back-button',
+        ]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
