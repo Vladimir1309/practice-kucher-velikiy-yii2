@@ -127,7 +127,8 @@ class SiteController extends Controller
 
         $user = Yii::$app->user->identity;
         if (Yii::$app->request->isPost) {
-            if ($user->load(Yii::$app->request->post()) && $user->save()) {
+            $user->load(Yii::$app->request->post());
+            if ($user->save()) {
                 Yii::$app->session->setFlash('success', 'Профиль успешно обновлен.');
                 return $this->refresh();
             }

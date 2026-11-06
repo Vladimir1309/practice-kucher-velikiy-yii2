@@ -47,8 +47,8 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
                 <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
             <?php endif; ?>
             <?php if ($user->hasErrors()): ?>
-                <div class="alert alert-danger" style="background-color: #ff4d94; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                    Пожалуйста, исправьте ошибки в форме ниже. Обязательные поля не могут быть пустыми.
+                <div class="alert alert-error" style="border: 1px solid #ff4d94; color: #ff4d94; background: rgba(255, 77, 148, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <b>Внимание!</b> Изменения не были сохранены в базу данных. Пожалуйста, проверьте правильность заполнения обязательных полей (отмечены звездочкой <span style="color: #ff4d94;">*</span>).
                 </div>
             <?php endif; ?>
             <?php $form = ActiveForm::begin([
@@ -60,11 +60,11 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
                             PNG, до 5 МБ</small></div>
                 </div>
                 <div class="form-fields">
-                    <?= $form->field($user, 'username')->textInput(['class' => 'form-control'])->label('Имя') ?>
+                    <?= $form->field($user, 'username')->textInput(['class' => 'form-control'])->label('Имя <span style="color: #ff4d94;">*</span>', ['encode' => false]) ?>
                     <?= $form->field($user, 'last_name')->textInput(['class' => 'form-control'])->label('Фамилия') ?>
                     <?= $form->field($user, 'nickname')->textInput(['class' => 'form-control'])->label('Никнейм') ?>
                     <?= $form->field($user, 'birthdate')->input('date', ['class' => 'form-control'])->label('Дата рождения') ?>
-                    <?= $form->field($user, 'email')->input('email', ['class' => 'form-control'])->label('Email') ?>
+                    <?= $form->field($user, 'email')->input('email', ['class' => 'form-control'])->label('Email <span style="color: #ff4d94;">*</span>', ['encode' => false]) ?>
                     <?= $form->field($user, 'phone')->input('tel', ['class' => 'form-control'])->label('Телефон') ?>
                 </div>
                 <div class="form-actions"><button class="button button-primary" type="submit">Сохранить изменения
