@@ -7,15 +7,14 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Пользователи';
 ?>
-<div class="user-index">
+<div class="admin-container user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать пользователя', ['create'], ['class' => 'button button-primary']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -39,7 +38,23 @@ $this->params['breadcrumbs'][] = $this->title;
             //'notify_reminders',
             //'role_id',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'delete' => function ($url, $model) {
+                        return Html::a('<i class="fas fa-trash"></i>', $url, [
+                            'class' => 'btn btn-danger btn-sm',
+                            'title' => 'Удалить',
+                            'aria-label' => 'Удалить',
+                            'data' => [
+                                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 
