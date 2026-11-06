@@ -40,7 +40,8 @@ class SiteController extends Controller
                         'roles' => ['@'],
                         'matchCallback' => function () {
                             return Yii::$app->user->identity !== null
-                                && Yii::$app->user->identity->role === 'admin';
+                            && Yii::$app->user->identity->role !== null
+                            && Yii::$app->user->identity->role->name === 'admin';
                         },
                     ],
                 ],
@@ -161,7 +162,10 @@ class SiteController extends Controller
 
     public function actionAdmin()
     {
-        if (Yii::$app->user->identity->role !== 'admin') {
+        if (
+            Yii::$app->user->identity->role === null
+            || Yii::$app->user->identity->role->name !== 'admin'
+        ) {
             throw new ForbiddenHttpException('Доступ запрещен');
         }
 

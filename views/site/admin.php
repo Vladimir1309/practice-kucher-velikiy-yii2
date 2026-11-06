@@ -23,7 +23,7 @@ use yii\helpers\Html;
                     <td><?= (int) $user->id ?></td>
                     <td><?= Html::encode($user->username) ?></td>
                     <td><?= Html::encode($user->email) ?></td>
-                    <td><?= Html::encode($user->role) ?></td>
+                    <td><?= Html::encode($user->role ? $user->role->name : '') ?></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

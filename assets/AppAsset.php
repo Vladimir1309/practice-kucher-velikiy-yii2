@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/styles.css',
+        'css/admin.css',
     ];
     public $js = [
         'js/script.js',

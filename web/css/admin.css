@@ -1,0 +1,174 @@
+body {
+    background: #131722;
+    color: #ffffff;
+}
+
+.admin-container,
+.genre-index,
+.genre-create,
+.genre-update {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.admin-container .breadcrumb,
+.genre-index .breadcrumb,
+.genre-create .breadcrumb,
+.genre-update .breadcrumb {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 0;
+}
+
+.admin-container .table,
+.genre-index .table,
+.genre-create .table,
+.genre-update .table {
+    width: 100%;
+    color: #ffffff;
+    background: #1a1f2e;
+    border-color: #343b50;
+}
+
+.admin-container .table th,
+.admin-container .table td,
+.genre-index .table th,
+.genre-index .table td,
+.genre-create .table th,
+.genre-create .table td,
+.genre-update .table th,
+.genre-update .table td {
+    border-color: #343b50;
+    padding: 12px 16px;
+    vertical-align: middle;
+}
+
+.admin-container .table thead th,
+.genre-index .table thead th,
+.genre-create .table thead th,
+.genre-update .table thead th {
+    background: #242b3d;
+    color: #ffffff;
+}
+
+.admin-container .table tbody tr:nth-child(even),
+.genre-index .table tbody tr:nth-child(even),
+.genre-create .table tbody tr:nth-child(even),
+.genre-update .table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-container .form-control,
+.admin-container select,
+.admin-container textarea,
+.genre-index .form-control,
+.genre-index select,
+.genre-index textarea,
+.genre-create .form-control,
+.genre-create select,
+.genre-create textarea,
+.genre-update .form-control,
+.genre-update select,
+.genre-update textarea {
+    background: #1a1f2e;
+    border: 1px solid #343b50;
+    color: #ffffff;
+}
+
+.admin-container .form-control:focus,
+.admin-container select:focus,
+.admin-container textarea:focus,
+.genre-index .form-control:focus,
+.genre-index select:focus,
+.genre-index textarea:focus,
+.genre-create .form-control:focus,
+.genre-create select:focus,
+.genre-create textarea:focus,
+.genre-update .form-control:focus,
+.genre-update select:focus,
+.genre-update textarea:focus {
+    background: #1a1f2e;
+    border-color: #ff4d94;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 77, 148, 0.2);
+}
+
+.admin-container label,
+.admin-container .control-label,
+.genre-index label,
+.genre-index .control-label,
+.genre-create label,
+.genre-create .control-label,
+.genre-update label,
+.genre-update .control-label {
+    color: #ffffff;
+}
+
+.admin-container .btn,
+.admin-container .button,
+.genre-index .btn,
+.genre-index .button,
+.genre-create .btn,
+.genre-create .button,
+.genre-update .btn,
+.genre-update .button {
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+    background: #ff4d94;
+    padding: 10px 18px;
+    text-decoration: none;
+}
+
+.admin-container .btn:hover,
+.admin-container .button:hover,
+.genre-index .btn:hover,
+.genre-index .button:hover,
+.genre-create .btn:hover,
+.genre-create .button:hover,
+.genre-update .btn:hover,
+.genre-update .button:hover {
+    background: #ff2d84;
+    color: #ffffff;
+}
+
+.admin-container .btn-danger,
+.genre-index .btn-danger,
+.genre-create .btn-danger,
+.genre-update .btn-danger {
+    background: #b83264;
+}
+
+.admin-container .summary,
+.admin-container .pagination,
+.genre-index .summary,
+.genre-index .pagination,
+.genre-create .summary,
+.genre-create .pagination,
+.genre-update .summary,
+.genre-update .pagination {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.admin-container .pagination .page-link,
+.genre-index .pagination .page-link,
+.genre-create .pagination .page-link,
+.genre-update .pagination .page-link {
+    background: #1a1f2e;
+    border-color: #343b50;
+    color: #ffffff;
+}
+
+.admin-container .pagination .active .page-link,
+.admin-container .pagination .page-link:hover,
+.genre-index .pagination .active .page-link,
+.genre-index .pagination .page-link:hover,
+.genre-create .pagination .active .page-link,
+.genre-create .pagination .page-link:hover,
+.genre-update .pagination .active .page-link,
+.genre-update .pagination .page-link:hover {
+    background: #ff4d94;
+    border-color: #ff4d94;
+    color: #ffffff;
+}

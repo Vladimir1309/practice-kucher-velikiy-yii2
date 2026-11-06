@@ -19,7 +19,7 @@ use yii\web\IdentityInterface;
  * @property string|null $phone
  * @property bool $notify_news
  * @property bool $notify_reminders
- * @property string $role
+ * @property int $role_id
  * @property string $created_at
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -46,8 +46,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'nickname', 'email', 'password_hash'], 'string', 'max' => 255],
             [['last_name'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 20],
-            [['role'], 'string', 'max' => 20],
-            [['role'], 'safe'],
+            [['role_id'], 'integer'],
+            [['role_id'], 'safe'],
             [['email'], 'email'],
             [['email'], 'unique', 'filter' => function ($query) {
                 $query->andWhere(['!=', 'id', $this->id]);
@@ -81,7 +81,7 @@ class User extends ActiveRecord implements IdentityInterface
             'email' => 'Email',
             'password_hash' => 'Хеш пароля',
             'phone' => 'Телефон',
-            'role' => 'Роль',
+            'role_id' => 'Роль',
             'created_at' => 'Дата регистрации',
             'notify_news' => 'Новости CineNight',
             'notify_reminders' => 'Напоминания',
@@ -94,6 +94,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function getUserMovies()
     {
         return $this->hasMany(UserMovie::class, ['user_id' => 'id']);
+    }
+
+    public function getRole()
+    {
+        return $this->hasOne(Role::class, ['id' => 'role_id']);
     }
 
     // ==========================================

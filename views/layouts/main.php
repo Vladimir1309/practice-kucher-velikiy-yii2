@@ -16,6 +16,7 @@ $accountRoute = $isGuest ? ['site/login'] : ['site/profile'];
     <title>CineNight — кино, которое хочется смотреть вместе</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="<?= Url::to("@web/css/styles.css") ?>">
+    <link rel="stylesheet" href="<?= Url::to("@web/css/admin.css") ?>">
 </head>
 
 <body data-user-movie-toggle-url="<?= Url::to(['/user-movie/toggle']) ?>" data-votes-url="<?= Url::to(['/site/votes']) ?>" data-login-url="<?= Url::to(['/site/login']) ?>">
@@ -40,9 +41,9 @@ $accountRoute = $isGuest ? ['site/login'] : ['site/profile'];
                     <?= Html::a('Мои голоса', ['site/votes'], [
                         'class' => Yii::$app->controller->route == 'site/votes' ? 'active' : '',
                     ]) ?>
-                    <?php if (!$isGuest && Yii::$app->user->identity->role === 'admin'): ?>
-                        <?= Html::a('Админ-панель', ['admin/index'], [
-                            'class' => Yii::$app->controller->route == 'admin/index' ? 'active' : '',
+                    <?php if (!$isGuest && Yii::$app->user->identity->role !== null && Yii::$app->user->identity->role->name === 'admin'): ?>
+                        <?= Html::a('Админ-панель', ['genre/index'], [
+                            'class' => Yii::$app->controller->route == 'genre/index' ? 'active' : '',
                         ]) ?>
                     <?php endif; ?>
                 </nav>

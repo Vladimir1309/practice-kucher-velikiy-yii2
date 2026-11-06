@@ -21,7 +21,8 @@ class AdminController extends Controller
                         'roles' => ['@'],
                         'matchCallback' => function () {
                             return Yii::$app->user->identity !== null
-                                && Yii::$app->user->identity->role === 'admin';
+                            && Yii::$app->user->identity->role !== null
+                            && Yii::$app->user->identity->role->name === 'admin';
                         },
                     ],
                 ],
@@ -31,7 +32,11 @@ class AdminController extends Controller
 
     public function actionIndex()
     {
-        if (Yii::$app->user->isGuest || Yii::$app->user->identity->role !== 'admin') {
+        if (
+            Yii::$app->user->isGuest
+            || Yii::$app->user->identity->role === null
+            || Yii::$app->user->identity->role->name !== 'admin'
+        ) {
             throw new ForbiddenHttpException('Доступ запрещен');
         }
 
