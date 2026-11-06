@@ -2,106 +2,72 @@
 
 namespace app\models;
 
-use Yii;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yii\data\Sort;
-use yii\db\Expression;
+use app\models\Movie;
 
+/**
+ * MovieSearch represents the model behind the search form of `app\models\Movie`.
+ */
 class MovieSearch extends Movie
 {
-    public $search;
-    public $genre_id;
-    public $min_rating;
-    public $is_watched;
-    public $sort;
-
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            [['search', 'sort'], 'string'],
-            [['genre_id', 'is_watched'], 'integer'],
-            [['min_rating'], 'number'],
+            [['id', 'year', 'duration', 'genre_id'], 'integer'],
+            [['title', 'description', 'poster_url'], 'safe'],
         ];
     }
 
-    public function attributeLabels()
+    /**
+     * {@inheritdoc}
+     */
+    public function scenarios()
     {
-        return [
-            'search' => 'Поиск',
-            'genre_id' => 'Жанры',
-            'min_rating' => 'Рейтинг',
-            'is_watched' => 'Просмотренные',
-            'sort' => 'Сортировка',
-        ];
+        // bypass scenarios() implementation in the parent class
+        return Model::scenarios();
     }
 
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
+        $query = Movie::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
         $this->load($params);
 
-        $query = Movie::find()
-            ->alias('movie')
-            ->select(['movie.*', 'average_rating' => 'AVG(um.rating)'])
-            ->with('genre')
-            ->leftJoin(['um' => 'user_movie'], 'um.movie_id = movie.id')
-            ->groupBy('movie.id');
-
-        $query->andFilterWhere(['like', 'movie.title', $this->search]);
-        $query->andFilterWhere(['movie.genre_id' => $this->genre_id]);
-
-        if ($this->min_rating !== null && $this->min_rating !== '') {
-            $query->having(['>=', new Expression('AVG(um.rating)'), $this->min_rating]);
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
         }
 
-        if ((int) $this->is_watched === 1) {
-            if (Yii::$app->user->isGuest) {
-                $query->andWhere('1 = 0');
-            } else {
-                $query->andWhere([
-                    'um.user_id' => Yii::$app->user->id,
-                    'um.is_watched' => 1,
-                ]);
-            }
-        }
-
-        switch ($this->sort) {
-            case 'newest':
-                $query->orderBy(['movie.year' => SORT_DESC, 'movie.id' => SORT_DESC]);
-                break;
-            case 'title':
-                $query->orderBy(['movie.title' => SORT_ASC]);
-                break;
-            case 'popular':
-            default:
-                $query->orderBy(['average_rating' => SORT_DESC, 'movie.id' => SORT_DESC]);
-                break;
-        }
-
-        return new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 12,
-            ],
-            'sort' => new Sort([
-                'attributes' => [
-                    'id',
-                    'title',
-                    'average_rating' => [
-                        'asc' => ['average_rating' => SORT_ASC],
-                        'desc' => ['average_rating' => SORT_DESC],
-                        'default' => SORT_DESC,
-                    ],
-                    'year' => [
-                        'asc' => ['movie.year' => SORT_ASC],
-                        'desc' => ['movie.year' => SORT_DESC],
-                    ],
-                    'rating' => [
-                        'asc' => ['average_rating' => SORT_ASC],
-                        'desc' => ['average_rating' => SORT_DESC],
-                    ],
-                ],
-                'defaultOrder' => ['average_rating' => SORT_DESC],
-            ]),
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'year' => $this->year,
+            'duration' => $this->duration,
+            'genre_id' => $this->genre_id,
         ]);
+
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'poster_url', $this->poster_url]);
+
+        return $dataProvider;
     }
 }
