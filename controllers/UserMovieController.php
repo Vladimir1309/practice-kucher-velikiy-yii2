@@ -8,6 +8,7 @@ use app\models\UserMovie;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -22,6 +23,10 @@ class UserMovieController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['@'],
+                        'denyCallback' => static function ($rule, $action) {
+                            Yii::$app->response->format = Response::FORMAT_JSON;
+                            throw new ForbiddenHttpException('Требуется авторизация.');
+                        },
                     ],
                 ],
             ],

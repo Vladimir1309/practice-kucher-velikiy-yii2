@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.review-button').forEach((button) => {
     button.addEventListener('click', () => {
+      if (button.dataset.authRequired === 'true') return;
       const movieId = button.dataset.id || button.closest('[data-id]')?.dataset.id;
       const url = new URL(document.body.dataset.votesUrl, window.location.origin);
       if (movieId) url.searchParams.set('movie_id', movieId);
@@ -73,6 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
         _csrf: csrfToken,
       }),
     });
+    if (response.status === 401 || response.status === 403) {
+      window.location.href = document.body.dataset.loginUrl || '/site/login';
+      return null;
+    }
+
     const result = await response.json();
     if (!response.ok || !result.success) {
       throw new Error(result.error || 'Не удалось сохранить состояние фильма.');
@@ -87,7 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
       event.stopPropagation();
       button.disabled = true;
       try {
-        const { type, state } = await toggleUserMovie(button);
+        const result = await toggleUserMovie(button);
+        if (!result) return;
+        const { type, state } = result;
         const icon = button.querySelector('i');
         if (type === 'favorite') {
           button.classList.toggle('active', state);
