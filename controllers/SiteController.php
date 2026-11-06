@@ -6,9 +6,11 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Movie;
 
 class SiteController extends Controller
 {
@@ -61,12 +63,24 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $movies = Movie::find()->limit(4)->all();
+
+        return $this->render('index', [
+            'movies' => $movies,
+        ]);
     }
 
     public function actionCatalog()
     {
-        return $this->render('catalog');
+        $genre = Yii::$app->request->get('genre');
+
+        // Movie currently has no genre column or relation, so genre filtering
+        // will be added when genre data is connected to the model.
+        $movies = Movie::find()->all();
+
+        return $this->render('catalog', [
+            'movies' => $movies,
+        ]);
     }
 
     public function actionFavorites()
@@ -74,13 +88,24 @@ class SiteController extends Controller
         return $this->render('favorites');
     }
 
-    public function actionMovie()
+    public function actionMovie($id)
     {
-        return $this->render('movie');
+        $movie = Movie::findOne($id);
+        if ($movie === null) {
+            throw new NotFoundHttpException('Фильм не найден.');
+        }
+
+        return $this->render('movie', [
+            'movie' => $movie,
+        ]);
     }
 
     public function actionProfile()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
         $user = Yii::$app->user->identity;
 
         return $this->render('profile', [
