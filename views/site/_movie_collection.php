@@ -28,6 +28,12 @@ $isFavorite = $type === 'favorite';
                         aria-label="<?= $isMovieFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>">
                     <i class="<?= $isMovieFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i>
                 </button>
+                <?php $isMovieWatched = $movieStates[$movie->id]['is_watched'] ?? false; ?>
+                <button class="watched-button watched-icon<?= $isMovieWatched ? ' watched-active' : '' ?>"
+                        data-id="<?= Html::encode($movie->id) ?>"
+                        aria-label="<?= $isMovieWatched ? 'Отметить как непросмотренное' : 'Отметить как просмотренное' ?>">
+                    <i class="<?= $isMovieWatched ? 'fa-solid' : 'fa-regular' ?> fa-eye" aria-hidden="true"></i>
+                </button>
             </div>
             <div class="movie-info">
                 <span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>

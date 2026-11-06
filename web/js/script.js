@@ -107,9 +107,14 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } else {
           button.classList.toggle('watched-active', state);
-          button.innerHTML = state
-            ? 'Просмотрено ✓'
-            : 'Отметить как просмотренное';
+          const watchedIcon = button.querySelector('i');
+          if (watchedIcon) {
+            watchedIcon.classList.toggle('fa-regular', !state);
+            watchedIcon.classList.toggle('fa-solid', state);
+            button.setAttribute('aria-label', state ? 'Отметить как непросмотренное' : 'Отметить как просмотренное');
+          } else {
+            button.innerHTML = state ? 'Просмотрено ✓' : 'Отметить как просмотренное';
+          }
         }
       } catch (error) {
         console.error(error);

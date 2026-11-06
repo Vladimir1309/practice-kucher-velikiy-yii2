@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
+/* @var $user app\models\User */
 ?>
 
 <main class="user-page container">
@@ -16,18 +18,29 @@ use yii\helpers\Url;
         <section class="settings-content"><span class="eyebrow">ВАШ ВЕЧЕР НАЧИНАЕТСЯ ЗДЕСЬ</span>
             <h1>Настройки</h1>
             <p class="profile-intro">Управляйте уведомлениями и безопасностью аккаунта.</p>
-            <section class="settings-card">
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
+            <?php endif; ?>
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <p class="alert alert-danger"><?= Html::encode(Yii::$app->session->getFlash('error')) ?></p>
+            <?php endif; ?>
+            <form class="settings-card" method="post" action="<?= Url::to(['site/settings']) ?>">
+                <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()) ?>
+                <?= Html::hiddenInput('settings_form', 'notifications') ?>
                 <h2>Уведомления</h2><label class="setting-row"><span><b>Новости CineNight</b><small>Рассказывать о новых
-                            фильмах и подборках</small></span><input type="checkbox" checked><i
+                            фильмах и подборках</small></span><input type="hidden" name="notify_news" value="0"><input type="checkbox" name="notify_news" value="1" <?= (int) $user->notify_news === 1 ? 'checked' : '' ?>><i
                         class="setting-switch"></i></label><label class="setting-row"><span><b>Напоминания</b><small>Напоминать
-                            о фильмах, которые вы выбрали</small></span><input type="checkbox" checked><i
+                            о фильмах, которые вы выбрали</small></span><input type="hidden" name="notify_reminders" value="0"><input type="checkbox" name="notify_reminders" value="1" <?= (int) $user->notify_reminders === 1 ? 'checked' : '' ?>><i
                         class="setting-switch"></i></label>
-            </section>
-            <form class="settings-card password-form">
+                <div class="form-actions"><button class="button button-primary" type="submit">Сохранить уведомления</button></div>
+            </form>
+            <form class="settings-card password-form" method="post" action="<?= Url::to(['site/settings']) ?>">
+                <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()) ?>
+                <?= Html::hiddenInput('settings_form', 'password') ?>
                 <h2>Изменить пароль</h2><label>Текущий пароль<input type="password"
-                        placeholder="Введите текущий пароль"></label><label>Новый пароль<input type="password"
-                        placeholder="Придумайте новый пароль"></label><label>Повторите пароль<input type="password"
-                        placeholder="Повторите новый пароль"></label>
+                        name="current_password" placeholder="Введите текущий пароль" required></label><label>Новый пароль<input type="password"
+                        name="new_password" placeholder="Придумайте новый пароль" minlength="6" required></label><label>Повторите пароль<input type="password"
+                        name="confirm_password" placeholder="Повторите новый пароль" minlength="6" required></label>
                 <div class="form-actions"><button class="button button-primary" type="submit">Сохранить изменения
                         <span>→</span></button></div>
             </form>

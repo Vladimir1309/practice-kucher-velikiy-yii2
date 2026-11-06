@@ -134,7 +134,46 @@ class SiteController extends Controller
 
     public function actionSettings()
     {
-        return $this->render('settings');
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $user = Yii::$app->user->identity;
+        if (Yii::$app->request->isPost) {
+            $form = Yii::$app->request->post('settings_form');
+            if ($form === 'notifications') {
+                $user->notify_news = (int) Yii::$app->request->post('notify_news', 0) === 1;
+                $user->notify_reminders = (int) Yii::$app->request->post('notify_reminders', 0) === 1;
+                if ($user->save(false, ['notify_news', 'notify_reminders'])) {
+                    Yii::$app->session->setFlash('success', 'Настройки уведомлений сохранены.');
+                } else {
+                    Yii::$app->session->setFlash('error', 'Не удалось сохранить настройки уведомлений.');
+                }
+            } elseif ($form === 'password') {
+                $currentPassword = (string) Yii::$app->request->post('current_password', '');
+                $newPassword = (string) Yii::$app->request->post('new_password', '');
+                $confirmPassword = (string) Yii::$app->request->post('confirm_password', '');
+
+                if (!$user->validatePassword($currentPassword)) {
+                    Yii::$app->session->setFlash('error', 'Текущий пароль указан неверно.');
+                } elseif (strlen($newPassword) < 6) {
+                    Yii::$app->session->setFlash('error', 'Новый пароль должен содержать минимум 6 символов.');
+                } elseif ($newPassword !== $confirmPassword) {
+                    Yii::$app->session->setFlash('error', 'Пароли не совпадают.');
+                } else {
+                    $user->setPassword($newPassword);
+                    if ($user->save(false, ['password_hash'])) {
+                        Yii::$app->session->setFlash('success', 'Пароль успешно изменен.');
+                    } else {
+                        Yii::$app->session->setFlash('error', 'Не удалось изменить пароль.');
+                    }
+                }
+            }
+
+            return $this->redirect(['site/settings']);
+        }
+
+        return $this->render('settings', ['user' => $user]);
     }
 
     public function actionVotes($movie_id = null)

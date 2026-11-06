@@ -66,6 +66,8 @@ use yii\helpers\Url;
                         <?= Html::a('<img src="' . $poster . '" alt="' . $title . '"><span class="hit-label">ХИТ</span>', ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
                         <?php $isFavorite = $movieStates[$movie->id]['is_favorite'] ?? false; ?>
                         <button class="save-button<?= $isFavorite ? ' active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>"><i class="<?= $isFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i></button>
+                        <?php $isWatched = $movieStates[$movie->id]['is_watched'] ?? false; ?>
+                        <button class="watched-button watched-icon<?= $isWatched ? ' watched-active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isWatched ? 'Отметить как непросмотренное' : 'Отметить как просмотренное' ?>"><i class="<?= $isWatched ? 'fa-solid' : 'fa-regular' ?> fa-eye" aria-hidden="true"></i></button>
                     </div>
                     <div class="movie-info"><span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>
                         <h3><?= Html::a($title, ['site/movie', 'id' => $movie->id]) ?></h3>

@@ -15,6 +15,8 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $password_hash
  * @property string|null $phone
+ * @property bool $notify_news
+ * @property bool $notify_reminders
  * @property string $created_at
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -35,6 +37,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['username', 'email', 'password_hash', 'created_at'], 'required'],
             [['created_at'], 'safe'],
+            [['notify_news', 'notify_reminders'], 'boolean'],
+            [['notify_news', 'notify_reminders'], 'safe'],
             [['username', 'nickname', 'email', 'password_hash'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 20],
             [['email'], 'unique'],
@@ -54,6 +58,8 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => 'Хеш пароля',
             'phone' => 'Телефон',
             'created_at' => 'Дата регистрации',
+            'notify_news' => 'Новости CineNight',
+            'notify_reminders' => 'Напоминания',
         ];
     }
 

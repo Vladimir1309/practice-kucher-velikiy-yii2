@@ -445,9 +445,16 @@ button {
 }
 
 .movie-image .watched-button {
+    top: 50px;
     display: grid;
     place-items: center;
     border-radius: 50%;
+}
+
+.watched-icon.watched-active {
+    color: #ff4d94;
+    background: rgba(255, 77, 148, .14);
+    border-color: #ff4d94
 }
 
 .save-button.active {
