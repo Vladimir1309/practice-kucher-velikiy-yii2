@@ -433,6 +433,23 @@ button {
     color: var(--pink)
 }
 
+.movie-image .save-button,
+.movie-image .watched-button {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 32px;
+    min-height: 32px;
+    padding: 0;
+    z-index: 2;
+}
+
+.movie-image .watched-button {
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+}
+
 .save-button.active {
     color: #ff4d94;
     background: rgba(255, 77, 148, .14);

@@ -24,7 +24,7 @@ use yii\helpers\Html;
             <h1>Просмотренные</h1>
             <p class="profile-intro">Истории, которые уже стали частью ваших киновечеров.</p>
             <div class="collection-toolbar"><b><?= count($movies) ?> фильмов</b><?= Html::a('В каталог →', ['site/catalog']) ?></div>
-            <div class="collection-grid"><?= $this->render('_movie_collection', ['movies' => $movies, 'type' => 'watched']) ?></div>
+            <div class="collection-grid"><?= $this->render('_movie_collection', ['movies' => $movies, 'type' => 'watched', 'movieStates' => $movieStates]) ?></div>
         </section>
     </div>
 </main>

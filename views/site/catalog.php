@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $movies app\models\Movie[] */
+/* @var $movieStates array */
 /* @var $genreId int|null */
 /* @var $activeGenre app\models\Genre|null */
 ?>
@@ -52,7 +53,8 @@ use yii\helpers\Url;
                     <article class="movie-card" data-id="<?= Html::encode($movie->id) ?>">
                         <div class="movie-image">
                             <?= Html::a('<img src="' . $poster . '" alt="' . $title . '"><span class="hit-label">ХИТ</span>', ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
-                            <button class="save-button" data-id="<?= Html::encode($movie->id) ?>" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button>
+                            <?php $isFavorite = $movieStates[$movie->id]['is_favorite'] ?? false; ?>
+                            <button class="save-button<?= $isFavorite ? ' active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>"><i class="<?= $isFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i></button>
                         </div>
                         <div class="movie-info"><span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>
                             <h3><?= Html::a($title, ['site/movie', 'id' => $movie->id]) ?></h3>

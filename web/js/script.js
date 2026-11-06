@@ -90,9 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
           button.setAttribute('aria-label', state ? 'Удалить из избранного' : 'Добавить в избранное');
           icon?.classList.toggle('fa-regular', !state);
           icon?.classList.toggle('fa-solid', state);
+          if (!state && window.location.pathname.endsWith('/favorites')) {
+            button.closest('.movie-card')?.remove();
+          }
         } else {
           button.classList.toggle('watched-active', state);
-          button.textContent = state ? 'Просмотрено ✓' : 'Отметить как просмотренное';
+          button.innerHTML = state
+            ? 'Просмотрено ✓'
+            : 'Отметить как просмотренное';
         }
       } catch (error) {
         console.error(error);

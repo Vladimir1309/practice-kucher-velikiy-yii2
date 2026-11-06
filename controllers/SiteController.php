@@ -7,11 +7,11 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Movie;
 use app\models\Genre;
+use app\models\UserMovie;
 
 class SiteController extends Controller
 {
@@ -30,12 +30,6 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
                 ],
             ],
         ];
@@ -68,6 +62,7 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'movies' => $movies,
+            'movieStates' => $this->getMovieStates($movies),
         ]);
     }
 
@@ -85,6 +80,7 @@ class SiteController extends Controller
             'movies' => $movies,
             'genreId' => $genre_id,
             'activeGenre' => $activeGenre,
+            'movieStates' => $this->getMovieStates($movies),
         ]);
     }
 
@@ -103,7 +99,10 @@ class SiteController extends Controller
             ])
             ->all();
 
-        return $this->render('favorites', ['movies' => $movies]);
+        return $this->render('favorites', [
+            'movies' => $movies,
+            'movieStates' => $this->getMovieStates($movies),
+        ]);
     }
 
     public function actionMovie($id)
@@ -115,6 +114,7 @@ class SiteController extends Controller
 
         return $this->render('movie', [
             'movie' => $movie,
+            'movieStates' => $this->getMovieStates([$movie]),
         ]);
     }
 
@@ -156,7 +156,33 @@ class SiteController extends Controller
             ])
             ->all();
 
-        return $this->render('watched', ['movies' => $movies]);
+        return $this->render('watched', [
+            'movies' => $movies,
+            'movieStates' => $this->getMovieStates($movies),
+        ]);
+    }
+
+    private function getMovieStates(array $movies)
+    {
+        if (Yii::$app->user->isGuest || !$movies) {
+            return [];
+        }
+
+        $movieIds = array_map(static function (Movie $movie) {
+            return $movie->id;
+        }, $movies);
+        $states = [];
+        foreach (UserMovie::find()->where([
+            'user_id' => Yii::$app->user->id,
+            'movie_id' => $movieIds,
+        ])->all() as $userMovie) {
+            $states[$userMovie->movie_id] = [
+                'is_favorite' => (bool) $userMovie->is_favorite,
+                'is_watched' => (bool) $userMovie->is_watched,
+            ];
+        }
+
+        return $states;
     }
 
     public function actionRegister()

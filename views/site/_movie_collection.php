@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $movies app\models\Movie[] */
+/* @var $movieStates array */
 /* @var $type string */
 $isFavorite = $type === 'favorite';
 ?>
@@ -21,10 +22,11 @@ $isFavorite = $type === 'favorite';
         <article class="movie-card" data-id="<?= Html::encode($movie->id) ?>">
             <div class="movie-image">
                 <?= Html::a('<img src="' . $poster . '" alt="' . $title . '">', ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
-                <button class="<?= $isFavorite ? 'save-button active' : 'watched-button watched-active' ?>"
+                <?php $isMovieFavorite = $movieStates[$movie->id]['is_favorite'] ?? false; ?>
+                <button class="save-button<?= $isMovieFavorite ? ' active' : '' ?>"
                         data-id="<?= Html::encode($movie->id) ?>"
-                        aria-label="<?= $isFavorite ? 'Удалить из избранного' : 'Убрать из просмотренных' ?>">
-                    <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                        aria-label="<?= $isMovieFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>">
+                    <i class="<?= $isMovieFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="movie-info">
