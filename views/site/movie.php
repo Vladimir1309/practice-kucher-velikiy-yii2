@@ -15,7 +15,7 @@ $description = Html::encode($movie->description ?: 'Описание фильм�
     <div class="breadcrumbs">Главная <span>/</span> Каталог <span>/</span> <?= $title ?></div>
     <div class="movie-detail-grid">
         <div class="detail-left">
-            <div class="detail-poster"><img src="<?= $poster ?>" alt="<?= $title ?>"><span class="hit-label">ХИТ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
+            <div class="detail-poster"><img src="<?= $poster ?>" alt="<?= $title ?>"><span class="hit-label">ХИТ</span><button class="save-button" data-id="<?= Html::encode($movie->id) ?>" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
             <section class="detail-tabs">
                 <div class="tab-list" role="tablist"><button class="tab is-active" role="tab" aria-selected="true" aria-controls="description-panel" data-tab="description-panel">Описание</button><button class="tab" role="tab" aria-selected="false" aria-controls="reviews-panel" data-tab="reviews-panel">Отзывы</button></div>
                 <div class="tab-panel is-active" id="description-panel" role="tabpanel">
@@ -55,7 +55,7 @@ $description = Html::encode($movie->description ?: 'Описание фильм�
             <div class="detail-rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <strong>4.9</strong> <small>В· 125 оценок</small></div>
             <p class="summary-copy"><?= $description ?></p>
             <button class="button button-primary vote-button" onclick="window.location.href='votes'" data-movie="<?= $title ?>">Оценить</button>
-            <button class="button button-secondary watched-button">Отметить как просмотренное</button>
+            <button class="button button-secondary watched-button" data-id="<?= Html::encode($movie->id) ?>">Отметить как просмотренное</button>
             <div class="community-votes"><b>Голосов сообщества: 45</b><span class="vote-bar"><i></i></span><small>Выбираем вместе, что смотреть сегодня.</small></div>
         </aside>
     </div>

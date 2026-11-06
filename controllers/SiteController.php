@@ -23,10 +23,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['profile', 'logout'],
+                'only' => ['profile', 'favorites', 'watched', 'logout'],
                 'rules' => [
                     [
-                        'actions' => ['profile', 'logout'],
+                        'actions' => ['profile', 'favorites', 'watched', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -90,7 +90,20 @@ class SiteController extends Controller
 
     public function actionFavorites()
     {
-        return $this->render('favorites');
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $movies = Movie::find()
+            ->with('genre')
+            ->innerJoin('user_movie', 'movie.id = user_movie.movie_id')
+            ->where([
+                'user_movie.user_id' => Yii::$app->user->id,
+                'user_movie.is_favorite' => 1,
+            ])
+            ->all();
+
+        return $this->render('favorites', ['movies' => $movies]);
     }
 
     public function actionMovie($id)
@@ -130,7 +143,20 @@ class SiteController extends Controller
 
     public function actionWatched()
     {
-        return $this->render('watched');
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $movies = Movie::find()
+            ->with('genre')
+            ->innerJoin('user_movie', 'movie.id = user_movie.movie_id')
+            ->where([
+                'user_movie.user_id' => Yii::$app->user->id,
+                'user_movie.is_watched' => 1,
+            ])
+            ->all();
+
+        return $this->render('watched', ['movies' => $movies]);
     }
 
     public function actionRegister()

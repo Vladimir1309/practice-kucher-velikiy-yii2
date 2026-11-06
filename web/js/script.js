@@ -47,20 +47,59 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- 4. ИНТЕРАКТИВ (ИЗБРАННОЕ И ПРОСМОТРЕННОЕ) ---
-  // Позже сюда добавим AJAX-запросы к Yii2, чтобы сохранять в БД.
-  document.querySelectorAll('.save-button').forEach((button) => {
-    button.addEventListener('click', () => {
-      const active = button.classList.toggle('active');
-      const icon = button.querySelector('i');
-      icon?.classList.toggle('fa-regular', !active);
-      icon?.classList.toggle('fa-solid', active);
-    });
-  });
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+  const toggleUrl = document.body.dataset.userMovieToggleUrl;
+  const toggleUserMovie = async (button) => {
+    const movieId = button.dataset.id;
+    const type = button.classList.contains('watched-button') ? 'watched' : 'favorite';
+    if (!movieId || !csrfToken || !toggleUrl) {
+      throw new Error('Не удалось подготовить запрос состояния фильма.');
+    }
 
-  document.querySelector('.watched-button')?.addEventListener('click', (event) => {
-    const button = event.currentTarget;
-    const watched = button.classList.toggle('watched-active');
-    button.textContent = watched ? 'Просмотрено ✓' : 'Отметить как просмотренное';
+    const response = await fetch(toggleUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-Token': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      body: new URLSearchParams({
+        movie_id: movieId,
+        type,
+        _csrf: csrfToken,
+      }),
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || 'Не удалось сохранить состояние фильма.');
+    }
+
+    return { type, state: Boolean(result.state) };
+  };
+
+  document.querySelectorAll('.save-button, .watched-button').forEach((button) => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      button.disabled = true;
+      try {
+        const { type, state } = await toggleUserMovie(button);
+        const icon = button.querySelector('i');
+        if (type === 'favorite') {
+          button.classList.toggle('active', state);
+          button.setAttribute('aria-label', state ? 'Удалить из избранного' : 'Добавить в избранное');
+          icon?.classList.toggle('fa-regular', !state);
+          icon?.classList.toggle('fa-solid', state);
+        } else {
+          button.classList.toggle('watched-active', state);
+          button.textContent = state ? 'Просмотрено ✓' : 'Отметить как просмотренное';
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        button.disabled = false;
+      }
+    });
   });
 
   // --- 5. ТАБЫ И ЗВЕЗДОЧКИ ---
