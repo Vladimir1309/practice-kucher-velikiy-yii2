@@ -79,6 +79,7 @@ class SiteController extends Controller
             'dataProvider' => $dataProvider,
             'genres' => Genre::find()->all(),
             'activeGenre' => $activeGenre,
+            'movies' => $movies, // <--- ВОТ ЭТА СТРОКА РЕШАЕТ ВСЁ
             'movieStates' => $this->getMovieStates($movies),
         ]);
     }
@@ -174,10 +175,12 @@ class SiteController extends Controller
             return $movie->id;
         }, $movies);
         $states = [];
-        foreach (UserMovie::find()->where([
-            'user_id' => Yii::$app->user->id,
-            'movie_id' => $movieIds,
-        ])->all() as $userMovie) {
+        foreach (
+            UserMovie::find()->where([
+                'user_id' => Yii::$app->user->id,
+                'movie_id' => $movieIds,
+            ])->all() as $userMovie
+        ) {
             $states[$userMovie->movie_id] = [
                 'is_favorite' => (bool) $userMovie->is_favorite,
                 'is_watched' => (bool) $userMovie->is_watched,
@@ -194,7 +197,7 @@ class SiteController extends Controller
         }
 
         $model = new \app\models\SignupForm();
-        
+
         if ($model->load(Yii::$app->request->post()) && ($user = $model->signup())) {
             Yii::$app->user->login($user); // Автоматически логиним после регистрации
             return $this->redirect(['site/profile']);
