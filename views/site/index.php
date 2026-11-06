@@ -69,7 +69,7 @@ use yii\helpers\Url;
                     </div>
                     <div class="movie-info"><span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>
                         <h3><?= Html::a($title, ['site/movie', 'id' => $movie->id]) ?></h3>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>—</span> <small><?= Html::encode($movie->year ?: 'Год не указан') ?></small></div><button class="button button-primary review-button" data-id="<?= Html::encode($movie->id) ?>" data-movie="<?= $title ?>">Оценить</button>
+                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>—</span> <small><?= Html::encode($movie->year ?: 'Год не указан') ?></small></div><?= Html::a('Оценить', ['site/votes', 'movie_id' => $movie->id], ['class' => 'button button-primary review-button', 'data-id' => $movie->id, 'data-movie' => $title]) ?>
                     </div>
                 </article>
             <?php endforeach; ?>

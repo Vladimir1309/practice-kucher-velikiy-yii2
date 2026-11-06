@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\Sort;
 use yii\db\Expression;
 
 class MovieSearch extends Movie
@@ -70,7 +71,17 @@ class MovieSearch extends Movie
             'pagination' => [
                 'pageSize' => 12,
             ],
-            'sort' => false,
+            'sort' => new Sort([
+                'attributes' => [
+                    'id',
+                    'title',
+                    'rating' => [
+                        'asc' => ['average_rating' => SORT_ASC],
+                        'desc' => ['average_rating' => SORT_DESC],
+                    ],
+                ],
+                'defaultOrder' => ['rating' => SORT_DESC],
+            ]),
         ]);
     }
 }
