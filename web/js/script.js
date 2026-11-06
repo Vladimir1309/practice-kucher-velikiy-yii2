@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeReviewCard = null;
   document.querySelectorAll('.reviewed-card').forEach((card) => {
     const showReview = () => {
+      if (card.id === 'trigger-all-reviews') return;
       if (card.closest('#all-reviews-modal')) return;
       const modal = document.querySelector('#review-modal');
       if (!modal) return;
@@ -196,9 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      document.querySelector('#show-all-reviews')?.addEventListener('click', () => {
-        openModal(document.querySelector('#all-reviews-modal'));
-      });
       if (deleteButton) {
         const url = new URL(deleteButton.dataset.baseUrl || deleteButton.href, window.location.origin);
         url.searchParams.set('id', card.dataset.reviewId);
@@ -213,6 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
         showReview();
       }
     });
+  });
+
+  const openAllReviews = () => openModal(document.querySelector('#all-reviews-modal'));
+  document.querySelector('#trigger-all-reviews')?.addEventListener('click', openAllReviews);
+  document.querySelector('#trigger-all-reviews')?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openAllReviews();
+    }
   });
 
   document.querySelector('.review-edit-button')?.addEventListener('click', () => {

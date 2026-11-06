@@ -451,10 +451,16 @@ button {
     border-radius: 50%;
 }
 
+.movie-image .watched-icon {
+    background: transparent;
+    border: 0;
+    color: rgba(255, 255, 255, .3);
+}
+
 .watched-icon.watched-active {
     color: #ff4d94;
-    background: rgba(255, 77, 148, .14);
-    border-color: #ff4d94
+    background: transparent;
+    border-color: transparent
 }
 
 .save-button.active {
@@ -1891,10 +1897,6 @@ input[type=checkbox]:checked {
     margin: 20px 0
 }
 
-#show-all-reviews {
-    margin-bottom: 20px
-}
-
 .all-reviews-modal-card {
     width: 90%;
     max-width: 760px
@@ -1920,6 +1922,45 @@ input[type=checkbox]:checked {
 .all-reviews-list .reviewed-card h3 {
     margin: 0 0 8px;
     font-size: 15px
+}
+
+.review-stack-trigger {
+    position: relative;
+    min-height: 100px;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+    background: linear-gradient(to bottom, transparent, #1a1f2e);
+    color: var(--text);
+    text-align: center;
+}
+
+.review-stack-trigger::before,
+.review-stack-trigger::after {
+    content: "";
+    position: absolute;
+    inset: 8px 8px auto;
+    height: 100%;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    pointer-events: none;
+}
+
+.review-stack-trigger::before {
+    transform: translateY(-8px) scale(.96);
+    opacity: .45;
+}
+
+.review-stack-trigger::after {
+    transform: translateY(-15px) scale(.92);
+    opacity: .25;
+}
+
+.review-stack-trigger span {
+    position: relative;
+    z-index: 1;
+    font-weight: 700;
 }
 
 .reviewed-card {

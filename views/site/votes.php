@@ -19,7 +19,7 @@ foreach ($moviesList as $movie) {
     }
 }
 $reviewCount = count($myReviews);
-$visibleReviews = array_slice($myReviews, 0, 4);
+$visibleReviews = array_slice($myReviews, 0, 3);
 ?>
 
 <main class="votes-page container">
@@ -77,11 +77,13 @@ $visibleReviews = array_slice($myReviews, 0, 4);
                             </div>
                         </article>
                     <?php endforeach; ?>
+                    <?php if ($reviewCount > 3): ?>
+                        <div id="trigger-all-reviews" class="reviewed-card review-stack-trigger" role="button" tabindex="0" style="cursor: pointer;">
+                            <span>Показать все отзывы (<?= $reviewCount ?>) <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
-            <?php if ($reviewCount > 4): ?>
-                <button id="show-all-reviews" class="button button-secondary" type="button">Показать все отзывы (<?= $reviewCount ?>)</button>
-            <?php endif; ?>
             <?php if (Yii::$app->session->hasFlash('success')): ?>
                 <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
             <?php endif; ?>
@@ -148,7 +150,7 @@ $visibleReviews = array_slice($myReviews, 0, 4);
         </div>
     </div>
 </div>
-<?php if ($reviewCount > 4): ?>
+<?php if ($reviewCount > 3): ?>
     <div class="modal all-reviews-modal" id="all-reviews-modal" role="dialog" aria-modal="true" aria-labelledby="all-reviews-title">
         <div class="modal-card all-reviews-modal-card">
             <button class="modal-close" type="button" aria-label="Закрыть">×</button>
