@@ -25,6 +25,10 @@ body {
     border: 1px solid #2a3248;
 }
 
+.admin-card-form .form-group {
+    margin-bottom: 20px;
+}
+
 .admin-page-back {
     display: inline-block;
     margin-bottom: 20px;

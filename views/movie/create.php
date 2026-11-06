@@ -11,7 +11,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="admin-container movie-create">
 
-    <?= Html::a('<i class="fas fa-arrow-left"></i> Назад', ['index'], ['class' => 'button button-secondary admin-page-back']) ?>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <?= Html::a('<i class="fas fa-arrow-left"></i> Назад', ['index'], ['class' => 'button button-secondary']) ?>
+    </div>
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
