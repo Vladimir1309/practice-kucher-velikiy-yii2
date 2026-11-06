@@ -5,10 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Movie;
 use app\models\UserMovie;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -17,19 +15,6 @@ class UserMovieController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'denyCallback' => static function ($rule, $action) {
-                            Yii::$app->response->format = Response::FORMAT_JSON;
-                            throw new ForbiddenHttpException('Требуется авторизация.');
-                        },
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -42,6 +27,14 @@ class UserMovieController extends Controller
     public function actionToggle()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if (Yii::$app->user->isGuest) {
+            Yii::$app->response->statusCode = 401;
+            return [
+                'status' => 'guest',
+                'message' => 'Unauthorized',
+            ];
+        }
 
         $type = Yii::$app->request->post('type');
         if (!in_array($type, ['favorite', 'watched'], true)) {
