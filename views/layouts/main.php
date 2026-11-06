@@ -40,6 +40,11 @@ $accountRoute = $isGuest ? ['site/login'] : ['site/profile'];
                     <?= Html::a('Мои голоса', ['site/votes'], [
                         'class' => Yii::$app->controller->route == 'site/votes' ? 'active' : '',
                     ]) ?>
+                    <?php if (!$isGuest && Yii::$app->user->identity->role === 'admin'): ?>
+                        <?= Html::a('Админ-панель', ['admin/index'], [
+                            'class' => Yii::$app->controller->route == 'admin/index' ? 'active' : '',
+                        ]) ?>
+                    <?php endif; ?>
                 </nav>
                 <div class="header-actions">
                     <?= Html::a('<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>', ['site/catalog'], [
