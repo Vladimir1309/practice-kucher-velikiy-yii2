@@ -168,41 +168,41 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   let activeReviewCard = null;
+  const openReviewCard = (card) => {
+    const modal = document.querySelector('#review-modal');
+    if (!modal) return;
+    const title = modal.querySelector('#review-title');
+    const movie = modal.querySelector('#review-movie');
+    const poster = modal.querySelector('#review-poster');
+    const comment = modal.querySelector('#review-comment');
+    const modalStars = modal.querySelectorAll('.stars button');
+    const deleteButton = modal.querySelector('#delete-review-button');
+    const rating = parseInt(card.dataset.rating, 10) || 0;
+    activeReviewCard = card;
+    if (title) title.textContent = card.dataset.movie || '';
+    if (movie) movie.textContent = 'Ваша оценка';
+    if (poster) {
+      poster.src = card.dataset.poster || '';
+      poster.alt = card.dataset.movie || '';
+    }
+    if (comment) comment.textContent = card.dataset.comment || 'Комментарий не оставлен.';
+    modalStars.forEach((star, index) => {
+      star.classList.toggle('is-selected', index < rating);
+      star.style.opacity = index < rating ? '1' : '.35';
+    });
+    if (deleteButton) {
+      const url = new URL(deleteButton.dataset.baseUrl || deleteButton.href, window.location.origin);
+      url.searchParams.set('id', card.dataset.reviewId);
+      deleteButton.href = url.toString();
+    }
+    openModal(modal);
+  };
+
   document.querySelectorAll('.reviewed-card').forEach((card) => {
     const showReview = () => {
       if (card.id === 'trigger-all-reviews') return;
       if (card.closest('#all-reviews-modal')) return;
-      const modal = document.querySelector('#review-modal');
-      if (!modal) return;
-      const title = modal.querySelector('#review-title');
-      const movie = modal.querySelector('#review-movie');
-      const poster = modal.querySelector('#review-poster');
-      const comment = modal.querySelector('#review-comment');
-      const modalStars = modal.querySelectorAll('.stars button');
-      const deleteButton = modal.querySelector('#delete-review-button');
-      const rating = parseInt(card.dataset.rating, 10) || 0;
-      activeReviewCard = card;
-      if (title) title.textContent = card.dataset.movie || '';
-      if (movie) movie.textContent = 'Ваша оценка';
-      if (poster) {
-        poster.src = card.dataset.poster || '';
-        poster.alt = card.dataset.movie || '';
-      }
-      if (comment) comment.textContent = card.dataset.comment || 'Комментарий не оставлен.';
-      modalStars.forEach((star, index) => {
-        star.classList.remove('is-selected');
-        star.style.opacity = index < rating ? '1' : '.35';
-        if (index < rating) {
-          star.classList.add('is-selected');
-        }
-      });
-
-      if (deleteButton) {
-        const url = new URL(deleteButton.dataset.baseUrl || deleteButton.href, window.location.origin);
-        url.searchParams.set('id', card.dataset.reviewId);
-        deleteButton.href = url.toString();
-      }
-      openModal(modal);
+      openReviewCard(card);
     };
     card.addEventListener('click', showReview);
     card.addEventListener('keydown', (event) => {
@@ -220,6 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       openAllReviews();
     }
+  });
+  document.querySelectorAll('#all-reviews-modal .reviewed-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      closeModal(document.querySelector('#all-reviews-modal'));
+      openReviewCard(card);
+    });
   });
 
   document.querySelector('.review-edit-button')?.addEventListener('click', () => {

@@ -452,15 +452,17 @@ button {
 }
 
 .movie-image .watched-icon {
-    background: transparent;
-    border: 0;
+    background: rgba(0, 0, 0, .5);
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 50%;
+    padding: 5px;
     color: rgba(255, 255, 255, .3);
 }
 
 .watched-icon.watched-active {
     color: #ff4d94;
-    background: transparent;
-    border-color: transparent
+    background: rgba(0, 0, 0, .5);
+    border-color: #ff4d94
 }
 
 .save-button.active {
@@ -1900,6 +1902,14 @@ input[type=checkbox]:checked {
 .all-reviews-modal-card {
     width: 90%;
     max-width: 760px
+}
+
+#all-reviews-modal {
+    z-index: 999
+}
+
+#review-modal {
+    z-index: 1001
 }
 
 .all-reviews-list {

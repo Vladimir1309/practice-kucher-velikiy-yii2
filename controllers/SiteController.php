@@ -126,6 +126,12 @@ class SiteController extends Controller
         }
 
         $user = Yii::$app->user->identity;
+        if (Yii::$app->request->isPost) {
+            if ($user->load(Yii::$app->request->post()) && $user->save()) {
+                Yii::$app->session->setFlash('success', 'Профиль сохранен.');
+                return $this->redirect(['site/profile']);
+            }
+        }
 
         return $this->render('profile', [
             'user' => $user,

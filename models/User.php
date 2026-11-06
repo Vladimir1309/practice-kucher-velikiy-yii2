@@ -12,6 +12,8 @@ use yii\web\IdentityInterface;
  * @property int $id
  * @property string $username
  * @property string|null $nickname
+ * @property string|null $last_name
+ * @property string|null $birthdate
  * @property string $email
  * @property string $password_hash
  * @property string|null $phone
@@ -36,10 +38,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['username', 'email', 'password_hash', 'created_at'], 'required'],
-            [['created_at'], 'safe'],
+            [['created_at', 'birthdate'], 'safe'],
+            [['birthdate'], 'date', 'format' => 'php:Y-m-d'],
             [['notify_news', 'notify_reminders'], 'boolean'],
             [['notify_news', 'notify_reminders'], 'safe'],
             [['username', 'nickname', 'email', 'password_hash'], 'string', 'max' => 255],
+            [['last_name'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 20],
             [['email'], 'unique'],
         ];
@@ -54,6 +58,8 @@ class User extends ActiveRecord implements IdentityInterface
             'id' => 'ID',
             'username' => 'Имя',
             'nickname' => 'Никнейм',
+            'last_name' => 'Фамилия',
+            'birthdate' => 'Дата рождения',
             'email' => 'Email',
             'password_hash' => 'Хеш пароля',
             'phone' => 'Телефон',
