@@ -27,4 +27,10 @@ class Genre extends ActiveRecord
             'name' => 'Название жанра',
         ];
     }
+
+    // СВЯЗЬ: У жанра много фильмов
+    public function getMovies()
+    {
+        return $this->hasMany(Movie::class, ['genre_id' => 'id']);
+    }
 }

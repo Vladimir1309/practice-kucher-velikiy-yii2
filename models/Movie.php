@@ -27,7 +27,7 @@ class Movie extends ActiveRecord
         return [
             [['title'], 'required'],
             [['description'], 'string'],
-            [['year', 'duration'], 'integer'],
+            [['year', 'duration', 'genre_id'], 'integer'], // добавили genre_id
             [['title', 'poster_url'], 'string', 'max' => 255],
         ];
     }
@@ -50,5 +50,11 @@ class Movie extends ActiveRecord
     public function getUserMovies()
     {
         return $this->hasMany(UserMovie::class, ['movie_id' => 'id']);
+    }
+
+    // СВЯЗЬ: У фильма один жанр
+    public function getGenre()
+    {
+        return $this->hasOne(Genre::class, ['id' => 'genre_id']);
     }
 }
