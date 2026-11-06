@@ -46,7 +46,13 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
             <?php if (Yii::$app->session->hasFlash('success')): ?>
                 <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
             <?php endif; ?>
-            <?php $form = ActiveForm::begin(['options' => ['class' => 'profile-form']]); ?>
+            <?php if ($user->hasErrors()): ?>
+                <p class="alert alert-danger">Проверьте данные формы.</p>
+            <?php endif; ?>
+            <?php $form = ActiveForm::begin([
+                'id' => 'profile-form',
+                'options' => ['class' => 'profile-form'],
+            ]); ?>
                 <div class="profile-identity"><span class="avatar"><?= $initial ?></span>
                     <div><b><?= Html::encode($user->username) ?></b><button type="button" class="change-avatar">Изменить фото</button><small>JPG или
                             PNG, до 5 МБ</small></div>

@@ -45,7 +45,9 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'nickname', 'email', 'password_hash'], 'string', 'max' => 255],
             [['last_name'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 20],
-            [['email'], 'unique'],
+            [['email'], 'unique', 'filter' => function ($query) {
+                $query->andWhere(['!=', 'id', $this->id]);
+            }],
         ];
     }
 
