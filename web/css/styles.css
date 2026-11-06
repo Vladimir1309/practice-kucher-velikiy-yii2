@@ -643,6 +643,21 @@ button {
     font-size: 26px
 }
 
+#review-modal .stars button {
+    pointer-events: none;
+    cursor: default
+}
+
+.rating-error {
+    display: block;
+    margin-top: 8px;
+    color: #ff9a9a
+}
+
+.rating-error[hidden] {
+    display: none
+}
+
 .modal-submit {
     width: 100%
 }

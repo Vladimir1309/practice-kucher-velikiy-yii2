@@ -91,7 +91,8 @@ use yii\helpers\Url;
                                 data-rating="3"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"
                                 data-rating="4"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"
                                 data-rating="5"><i class="fa-solid fa-star" aria-hidden="true"></i></button></div>
-                        <?= Html::hiddenInput('rating', 5, ['id' => 'rating-value']) ?>
+                        <?= Html::hiddenInput('rating', '', ['id' => 'rating-value']) ?>
+                        <small id="rating-error" class="rating-error" hidden>Выберите оценку от 1 до 5.</small>
                     </fieldset>
                     <label class="comment-label">Комментарий <span>Необязательно</span><textarea rows="4"
                             name="comment" placeholder="Хочется атмосферного кино для пятничного вечера. Соберёмся вместе?"></textarea></label>

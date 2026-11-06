@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelectorAll('.stars button').forEach((star, index, stars) => {
+    if (star.closest('#review-modal')) return;
     star.addEventListener('click', () => stars.forEach((item, itemIndex) => {
       item.style.opacity = itemIndex <= index ? '1' : '.35';
     }));
@@ -144,8 +145,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const rating = Number(star.dataset.rating) || index + 1;
       const ratingInput = document.querySelector('#rating-value');
       if (ratingInput) ratingInput.value = String(rating);
+      document.querySelector('#rating-error')?.setAttribute('hidden', '');
       stars.forEach((item, itemIndex) => item.classList.toggle('is-selected', itemIndex < rating));
     });
+  });
+
+  document.querySelector('.vote-form')?.addEventListener('submit', (event) => {
+    const ratingInput = document.querySelector('#rating-value');
+    const ratingError = document.querySelector('#rating-error');
+    if (!ratingInput || !ratingInput.value || ratingInput.value === '0') {
+      event.preventDefault();
+      ratingError?.removeAttribute('hidden');
+      ratingError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      ratingError?.setAttribute('hidden', '');
+    }
   });
 
   let activeReviewCard = null;
