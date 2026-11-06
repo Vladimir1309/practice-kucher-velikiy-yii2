@@ -127,10 +127,19 @@ class SiteController extends Controller
 
         $user = Yii::$app->user->identity;
         if (Yii::$app->request->isPost) {
-            $user->load(Yii::$app->request->post());
-            if ($user->save()) {
-                Yii::$app->session->setFlash('success', 'Профиль успешно обновлен.');
-                return $this->refresh();
+            if ($user->load(Yii::$app->request->post())) {
+                if ($user->save()) {
+                    Yii::$app->session->setFlash('success', 'Профиль успешно обновлен.');
+                    return $this->refresh();
+                }
+
+                $errors = $user->getErrors();
+                $user->refresh();
+                foreach ($errors as $attribute => $messages) {
+                    foreach ($messages as $message) {
+                        $user->addError($attribute, $message);
+                    }
+                }
             }
         }
 
