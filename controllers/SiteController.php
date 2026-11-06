@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\Movie;
 use app\models\Genre;
 use app\models\UserMovie;
+use app\models\MovieSearch;
 
 class SiteController extends Controller
 {
@@ -66,19 +67,17 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionCatalog($genre_id = null)
+    public function actionCatalog()
     {
-        $query = Movie::find()->with('genre');
-        if ($genre_id !== null) {
-            $query->andWhere(['genre_id' => $genre_id]);
-        }
-
-        $movies = $query->all();
-        $activeGenre = $genre_id !== null ? Genre::findOne($genre_id) : null;
+        $searchModel = new MovieSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
+        $movies = $dataProvider->getModels();
+        $activeGenre = $searchModel->genre_id ? Genre::findOne($searchModel->genre_id) : null;
 
         return $this->render('catalog', [
-            'movies' => $movies,
-            'genreId' => $genre_id,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'genres' => Genre::find()->all(),
             'activeGenre' => $activeGenre,
             'movieStates' => $this->getMovieStates($movies),
         ]);
@@ -136,9 +135,12 @@ class SiteController extends Controller
         return $this->render('settings');
     }
 
-    public function actionVotes()
+    public function actionVotes($movie_id = null)
     {
-        return $this->render('votes');
+        return $this->render('votes', [
+            'movieId' => $movie_id,
+            'movies' => Movie::find()->all(),
+        ]);
     }
 
     public function actionWatched()

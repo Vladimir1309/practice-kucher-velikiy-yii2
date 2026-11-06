@@ -57,7 +57,7 @@ $description = Html::encode($movie->description ?: 'Описание фильм�
             <div class="movie-tags"><span>Комедия</span><span>Драма</span></div>
             <div class="detail-rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <strong>4.9</strong> <small>В· 125 оценок</small></div>
             <p class="summary-copy"><?= $description ?></p>
-            <button class="button button-primary vote-button" onclick="window.location.href='votes'" data-movie="<?= $title ?>">Оценить</button>
+            <button class="button button-primary vote-button" data-id="<?= Html::encode($movie->id) ?>" data-movie="<?= $title ?>">Оценить</button>
             <button class="button button-secondary watched-button<?= $isWatched ? ' watched-active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>"><?= $isWatched ? 'Просмотрено ✓' : 'Отметить как просмотренное' ?></button>
             <div class="community-votes"><b>Голосов сообщества: 45</b><span class="vote-bar"><i></i></span><small>Выбираем вместе, что смотреть сегодня.</small></div>
         </aside>

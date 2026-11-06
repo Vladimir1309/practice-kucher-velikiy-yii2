@@ -1,6 +1,10 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
+
+/* @var $movieId int|null */
+/* @var $movies app\models\Movie[] */
 ?>
 
 <main class="votes-page container">
@@ -9,12 +13,11 @@ use yii\helpers\Url;
         <aside class="account-sidebar" aria-label="Навигация профиля">
             <?= $this->render('_account_user') ?>
             <nav class="account-nav">
-                <a href="profile"><i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span></a>
-                <a class="active" href="votes"><i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои
-                        голоса</span><small>2</small></a>
-                <a href="favorites"><i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span></a>
-                <a href="watched"><i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span></a>
-                <a href="settings"><i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span></a>
+                <?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], ['encode' => false]) ?>
+                <?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>2</small>', ['site/votes'], ['class' => 'active', 'encode' => false]) ?>
+                <?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], ['encode' => false]) ?>
+                <?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], ['encode' => false]) ?>
+                <?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], ['encode' => false]) ?>
                 <button type="button" class="logout-button"><i class="fa-solid fa-arrow-right-from-bracket"
                         aria-hidden="true"></i> <span>Выйти</span></button>
             </nav>
@@ -56,11 +59,7 @@ use yii\helpers\Url;
                     </div>
                 </div>
                 <div class="vote-fields">
-                    <label>Фильм <em>*</em><select>
-                            <option>Город после полуночи</option>
-                            <option>Последний сеанс</option>
-                            <option>Между нами ночь</option>
-                        </select></label>
+                    <label>Фильм <em>*</em><?= Html::dropDownList('movie_id', $movieId, \yii\helpers\ArrayHelper::map($movies, 'id', 'title'), ['prompt' => 'Выберите фильм']) ?></label>
                     <fieldset>
                         <legend>Ваша оценка <em>*</em></legend>
                         <div class="vote-stars" role="group" aria-label="Выберите рейтинг"><button type="button"
@@ -100,6 +99,6 @@ use yii\helpers\Url;
         <h2 id="logout-title">Выйти из аккаунта?</h2>
         <p>Вы сможете вернуться в любое время.</p>
         <div class="logout-actions"><button class="button button-secondary modal-close-action"
-                type="button">Остаться</button><a class="button button-primary" href="login">Выйти</a></div>
+                type="button">Остаться</button><a class="button button-primary" href="<?= Url::to(['site/logout']) ?>">Выйти</a></div>
     </div>
 </div>

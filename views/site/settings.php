@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 
@@ -8,12 +9,7 @@ use yii\helpers\Url;
     <div class="profile-layout">
         <aside class="account-sidebar">
             <?= $this->render('_account_user') ?>
-            <nav class="account-nav"><a href="profile"><i class="fa-regular fa-user" aria-hidden="true"></i>
-                    <span>Профиль</span></a><a href="votes"><i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои
-                        голоса</span><small>2</small></a><a href="favorites"><i class="fa-regular fa-heart"
-                        aria-hidden="true"></i> <span>Избранное</span></a><a href="watched"><i class="fa-solid fa-check"
-                        aria-hidden="true"></i> <span>Просмотренные</span></a><a class="active" href="settings"><i
-                        class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span></a><button type="button"
+            <nav class="account-nav"><?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>2</small>', ['site/votes'], ['encode' => false]) ?><?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], ['class' => 'active', 'encode' => false]) ?><button type="button"
                     class="logout-button"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
                     <span>Выйти</span></button></nav>
         </aside>
@@ -44,6 +40,6 @@ use yii\helpers\Url;
         <h2 id="logout-title">Выйти из аккаунта?</h2>
         <p>Вы сможете вернуться в любое время.</p>
         <div class="logout-actions"><button class="button button-secondary modal-close-action">Остаться</button><a
-                class="button button-primary" href="login">Выйти</a></div>
+                class="button button-primary" href="<?= Url::to(['site/logout']) ?>">Выйти</a></div>
     </div>
 </div>

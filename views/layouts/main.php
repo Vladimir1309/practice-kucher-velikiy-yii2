@@ -18,7 +18,7 @@ $accountRoute = $isGuest ? ['site/login'] : ['site/profile'];
     <link rel="stylesheet" href="<?= Url::to("@web/css/styles.css") ?>">
 </head>
 
-<body data-user-movie-toggle-url="<?= Url::to(['/user-movie/toggle']) ?>">
+<body data-user-movie-toggle-url="<?= Url::to(['/user-movie/toggle']) ?>" data-votes-url="<?= Url::to(['/site/votes']) ?>">
     <div class="page-shell">
         <header class="site-header">
             <div class="container header-inner">
