@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 /* @var $movies app\models\Movie[] */
 /* @var $movieStates array */
@@ -77,5 +78,5 @@ use yii\helpers\Url;
             <?= \yii\widgets\LinkPager::widget(['pagination' => $dataProvider->pagination]) ?>
         </section>
     </div>
-    <?php ActiveForm::end(); ?>
+    
 </main>
