@@ -28,7 +28,23 @@ $this->title = 'Жанры';
             'id',
             'name',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'delete' => function ($url, $model) {
+                        return Html::a('<i class="fas fa-trash"></i>', $url, [
+                            'class' => 'btn btn-danger btn-sm',
+                            'title' => 'Удалить',
+                            'aria-label' => 'Удалить',
+                            'data' => [
+                                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 

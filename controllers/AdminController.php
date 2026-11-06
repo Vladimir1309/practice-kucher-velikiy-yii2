@@ -6,6 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use app\models\UserMovie;
 
 class AdminController extends Controller
 {
@@ -16,7 +17,7 @@ class AdminController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'reviews'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function () {
@@ -41,5 +42,24 @@ class AdminController extends Controller
         }
 
         return $this->render('index');
+    }
+
+    public function actionReviews()
+    {
+        if (
+            Yii::$app->user->isGuest
+            || Yii::$app->user->identity->role === null
+            || Yii::$app->user->identity->role->name !== 'admin'
+        ) {
+            throw new ForbiddenHttpException('Доступ запрещен');
+        }
+
+        $reviews = UserMovie::find()
+            ->with(['user', 'movie'])
+            ->where(['is not', 'rating', null])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->all();
+
+        return $this->render('reviews', ['reviews' => $reviews]);
     }
 }
