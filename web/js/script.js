@@ -206,10 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!form || !modal) return;
 
     const movieSelect = form.querySelector('[name="movie_id"]');
+    const reviewIdInput = form.querySelector('#review-id');
     const ratingInput = form.querySelector('#rating-value');
     const commentInput = form.querySelector('[name="comment"]');
     const rating = Number(activeReviewCard.dataset.rating) || 5;
     if (movieSelect) movieSelect.value = activeReviewCard.dataset.movieId || '';
+    if (movieSelect) {
+      const selectedOption = movieSelect.querySelector(`option[value="${activeReviewCard.dataset.movieId}"]`);
+      if (selectedOption) selectedOption.disabled = false;
+    }
+    if (reviewIdInput) reviewIdInput.value = activeReviewCard.dataset.reviewId || '';
     if (ratingInput) ratingInput.value = String(rating);
     if (commentInput) commentInput.value = activeReviewCard.dataset.comment || '';
     form.querySelectorAll('.vote-stars button').forEach((star, index) => {

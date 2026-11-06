@@ -13,6 +13,7 @@ use app\models\Movie;
 use app\models\Genre;
 use app\models\UserMovie;
 use app\models\MovieSearch;
+use yii\helpers\ArrayHelper;
 
 class SiteController extends Controller
 {
@@ -149,10 +150,36 @@ class SiteController extends Controller
                 throw new NotFoundHttpException('Фильм не найден.');
             }
 
-            $review = UserMovie::findOne([
-                'user_id' => Yii::$app->user->id,
-                'movie_id' => $movieId,
-            ]);
+            $reviewId = Yii::$app->request->post('review_id');
+            $review = $reviewId
+                ? UserMovie::findOne([
+                    'id' => $reviewId,
+                    'user_id' => Yii::$app->user->id,
+                    'movie_id' => $movieId,
+                ])
+                : null;
+            if ($reviewId && ($review === null || $review->rating === null)) {
+                throw new NotFoundHttpException('Отзыв не найден.');
+            }
+
+            $exists = UserMovie::find()
+                ->where([
+                    'user_id' => Yii::$app->user->id,
+                    'movie_id' => $movieId,
+                ])
+                ->andWhere(['is not', 'rating', null])
+                ->exists();
+            if (!$reviewId && $exists) {
+                Yii::$app->session->setFlash('error', 'Вы уже оставили отзыв на этот фильм. Отредактируйте его в списке ниже.');
+                return $this->redirect(['site/votes']);
+            }
+
+            if ($review === null) {
+                $review = UserMovie::findOne([
+                    'user_id' => Yii::$app->user->id,
+                    'movie_id' => $movieId,
+                ]);
+            }
             if ($review === null) {
                 $review = new UserMovie([
                     'user_id' => Yii::$app->user->id,
@@ -181,11 +208,13 @@ class SiteController extends Controller
             ->with(['movie.genre'])
             ->orderBy(['created_at' => SORT_DESC])
             ->all();
+        $reviewedMovieIds = ArrayHelper::getColumn($myReviews, 'movie_id');
 
         return $this->render('votes', [
             'movieId' => $movie_id,
             'moviesList' => $moviesList,
             'myReviews' => $myReviews,
+            'reviewedMovieIds' => $reviewedMovieIds,
         ]);
     }
 
