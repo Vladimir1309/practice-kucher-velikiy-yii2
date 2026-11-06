@@ -42,8 +42,8 @@ $accountRoute = $isGuest ? ['site/login'] : ['site/profile'];
                         'class' => Yii::$app->controller->route == 'site/votes' ? 'active' : '',
                     ]) ?>
                     <?php if (!$isGuest && Yii::$app->user->identity->role !== null && Yii::$app->user->identity->role->name === 'admin'): ?>
-                        <?= Html::a('Админ-панель', ['genre/index'], [
-                            'class' => Yii::$app->controller->route == 'genre/index' ? 'active' : '',
+                        <?= Html::a('Админ-панель', ['admin/index'], [
+                            'class' => Yii::$app->controller->route == 'admin/index' ? 'active' : '',
                         ]) ?>
                     <?php endif; ?>
                 </nav>

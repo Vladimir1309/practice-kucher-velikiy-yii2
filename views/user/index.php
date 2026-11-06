@@ -23,8 +23,6 @@ $this->title = 'Пользователи';
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'username',
             'nickname',
@@ -40,8 +38,14 @@ $this->title = 'Пользователи';
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {update} {delete}',
+                'template' => '{update} {delete}',
                 'buttons' => [
+                    'update' => function ($url, $model) {
+                        return Html::a('<i class="fas fa-pen"></i>', $url, [
+                            'class' => 'btn btn-primary btn-sm',
+                            'title' => 'Редактировать',
+                        ]);
+                    },
                     'delete' => function ($url, $model) {
                         return Html::a('<i class="fas fa-trash"></i>', $url, [
                             'class' => 'btn btn-danger btn-sm',

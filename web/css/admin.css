@@ -199,6 +199,23 @@ body {
     border: 1px solid #2a3248;
 }
 
+.admin-container .grid-view-filter .form-control,
+.genre-index .grid-view-filter .form-control,
+.movie-index .grid-view-filter .form-control,
+.user-index .grid-view-filter .form-control {
+    background: #0d111a;
+    color: #ffffff;
+    border: 1px solid #2a3248;
+}
+
+.admin-container .grid-view-filter .form-control:focus,
+.genre-index .grid-view-filter .form-control:focus,
+.movie-index .grid-view-filter .form-control:focus,
+.user-index .grid-view-filter .form-control:focus {
+    border-color: #ff4d94;
+    box-shadow: 0 0 0 0.2rem rgba(255, 77, 148, 0.2);
+}
+
 .admin-container .form-control:focus,
 .genre-index .form-control:focus,
 .movie-index .form-control:focus,
