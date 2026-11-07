@@ -1,4 +1,4 @@
-🎬 CineNight
+# 🎬 CineNight
 Каталог фильмов для идеальных киновечеров
 
 https://img.shields.io/badge/PHP-8.x-blue?style=for-the-badge&logo=php
