@@ -53,7 +53,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['role_id'], 'integer'],
             [['role_id'], 'safe'],
             [['avatar'], 'string', 'max' => 500],
-            [['imageFile'], 'image', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2, 'checkExtensionByMimeType' => false],
+            [['imageFile'], 'file', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2, 'checkExtensionByMimeType' => false],
             [['email'], 'email'],
             [['email'], 'unique', 'filter' => function ($query) {
                 $query->andWhere(['!=', 'id', $this->id]);
