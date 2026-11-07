@@ -78,8 +78,12 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                         </article>
                     <?php endforeach; ?>
                     <?php if ($reviewCount > 3): ?>
-                        <div id="trigger-all-reviews" class="reviewed-card review-stack-trigger" role="button" tabindex="0" style="cursor: pointer;">
-                            <span>Показать все отзывы (<?= $reviewCount ?>) <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                        <div class="review-stack-container">
+                            <div class="review-stack-ghost-1" aria-hidden="true"></div>
+                            <div class="review-stack-ghost-2" aria-hidden="true"></div>
+                            <div id="trigger-all-reviews" class="reviewed-card review-stack-trigger review-stack-main" role="button" tabindex="0">
+                                <span>Показать все отзывы (<?= $reviewCount ?>) <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                            </div>
                         </div>
                     <?php endif; ?>
                 <?php endif; ?>

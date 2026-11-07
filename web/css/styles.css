@@ -252,6 +252,14 @@ button {
     font-size: 9px
 }
 
+.account-nav a,
+.account-nav button,
+.account-nav .logout-button {
+    font-size: 16px !important;
+    line-height: 1.5;
+    padding: 12px 20px;
+}
+
 .hero-poster {
     height: 440px;
     padding: 10px;
@@ -1021,6 +1029,36 @@ button {
     border-radius: 16px;
     padding: 14px 10px;
     height: max-content
+}
+
+.catalog-filters {
+    padding: 24px !important;
+}
+
+.catalog-filters .filters-title,
+.catalog-filters legend,
+.catalog-filters .select-label {
+    font-size: 18px !important;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.catalog-filters label {
+    font-size: 16px !important;
+    line-height: 1.5;
+}
+
+.catalog-filters select,
+.catalog-filters input:not([type="checkbox"]) {
+    font-size: 16px !important;
+    padding: 10px !important;
+}
+
+.catalog-filters .button,
+.catalog-filters .btn,
+.catalog-filters button[type="submit"] {
+    font-size: 16px !important;
+    padding: 12px !important;
 }
 
 .filters-title {
@@ -1990,6 +2028,41 @@ input[type=checkbox]:checked {
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
     color: var(--text);
     text-align: center;
+}
+
+.review-stack-container {
+    position: relative;
+    cursor: pointer;
+    margin-top: 20px;
+    height: 120px;
+}
+
+.review-stack-ghost-1,
+.review-stack-ghost-2 {
+    position: absolute;
+    inset: 0;
+    background: #1a1f2e;
+    border: 1px solid #2a3248;
+    border-radius: 12px;
+}
+
+.review-stack-ghost-1 {
+    transform: scale(0.95) translateY(10px);
+    z-index: 0;
+}
+
+.review-stack-ghost-2 {
+    transform: scale(0.9) translateY(20px);
+    z-index: -1;
+    opacity: 0.5;
+}
+
+.review-stack-main {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    background: linear-gradient(to bottom, #1a1f2e 0%, rgba(26, 31, 46, 0.8) 100%);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
 }
 
 .review-stack-trigger::before,
@@ -2989,10 +3062,20 @@ footer a {
     transform: translateX(-3px);
 }
 
-.footer-sub-btn {
+.footer-subscribe-btn {
+    display: inline-block;
+    background: #101827 !important;
+    border: 1px solid #2a3248 !important;
+    color: var(--text) !important;
     min-height: 32px;
     padding: 8px 18px !important;
     font-size: 14px !important;
+}
+
+.footer-subscribe-btn:hover {
+    background: #1a1f2e !important;
+    border-color: #ff4d94 !important;
+    color: #ff4d94 !important;
 }
 
 .account-nav a,
