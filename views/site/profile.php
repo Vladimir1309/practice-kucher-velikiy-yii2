@@ -60,9 +60,9 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
             ]); ?>
                 <div class="profile-identity">
                     <?php if (!empty($user->avatar)): ?>
-                        <img id="avatar-preview" src="<?= Html::encode($user->avatar) ?>" alt="Avatar" class="avatar profile-avatar-image">
+                        <img id="avatar-preview" src="<?= Yii::getAlias('@web') . Html::encode($user->avatar) ?>" alt="Avatar" class="avatar profile-avatar-image">
                     <?php else: ?>
-                        <span id="avatar-preview" class="avatar"><?= $initial ?></span>
+                        <span id="avatar-preview" class="avatar avatar-initials"><?= $initial ?></span>
                     <?php endif; ?>
                     <div>
                         <b><?= Html::encode($user->username) ?></b>

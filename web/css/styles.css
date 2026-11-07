@@ -2646,6 +2646,14 @@ select[name="MovieSearch[sort]"] {
     border-radius: 50%;
 }
 
+.avatar-initials {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff4d94;
+    color: #fff;
+}
+
 .form-fields {
     display: grid;
     grid-template-columns: 1fr 1fr;
