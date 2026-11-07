@@ -21,10 +21,11 @@ class PosterController extends Controller
             'http' => [
                 'timeout' => 20,
                 'follow_location' => true,
+                'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
             ],
-            'https' => [
-                'timeout' => 20,
-                'follow_location' => true,
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
             ],
         ]);
 
@@ -35,6 +36,26 @@ class PosterController extends Controller
             }
 
             $contents = @file_get_contents($movie->poster_url, false, $context);
+            if ($contents === false && function_exists('curl_init')) {
+                $curl = curl_init($movie->poster_url);
+                curl_setopt_array($curl, [
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_MAXREDIRS => 5,
+                    CURLOPT_CONNECTTIMEOUT => 10,
+                    CURLOPT_TIMEOUT => 20,
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false,
+                    CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                ]);
+                $curlContents = curl_exec($curl);
+                $httpCode = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                curl_close($curl);
+
+                if ($curlContents !== false && $httpCode >= 200 && $httpCode < 300) {
+                    $contents = $curlContents;
+                }
+            }
             if ($contents === false) {
                 $this->stderr("Failed to download: {$movie->title}\n");
                 continue;
