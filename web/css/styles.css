@@ -2624,6 +2624,7 @@ select[name="MovieSearch[sort]"] {
 .change-avatar {
     align-self: start;
     display: inline-block;
+    cursor: pointer;
     background: rgba(255, 45, 132, .13);
     border: 1px solid rgba(255, 45, 132, .3);
     border-radius: 999px;
@@ -2638,6 +2639,11 @@ select[name="MovieSearch[sort]"] {
 
 .profile-identity .custom-file-input {
     display: none;
+}
+
+#avatar-preview {
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .form-fields {

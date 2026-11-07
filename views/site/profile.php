@@ -60,13 +60,16 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
             ]); ?>
                 <div class="profile-identity">
                     <?php if (!empty($user->avatar)): ?>
-                        <img src="<?= Html::encode($user->avatar) ?>" alt="Avatar" class="avatar profile-avatar-image">
+                        <img id="avatar-preview" src="<?= Html::encode($user->avatar) ?>" alt="Avatar" class="avatar profile-avatar-image">
                     <?php else: ?>
-                        <span class="avatar"><?= $initial ?></span>
+                        <span id="avatar-preview" class="avatar"><?= $initial ?></span>
                     <?php endif; ?>
                     <div>
                         <b><?= Html::encode($user->username) ?></b>
-                        <?= $form->field($user, 'imageFile')->fileInput(['class' => 'custom-file-input'])->label('Изменить фото', ['class' => 'change-avatar']) ?>
+                        <?= $form->field($user, 'imageFile')->fileInput([
+                            'id' => 'avatar-input',
+                            'class' => 'custom-file-input',
+                        ])->label('Изменить фото', ['class' => 'change-avatar']) ?>
                         <small>JPG или PNG, до 2 МБ</small>
                     </div>
                 </div>

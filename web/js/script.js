@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const avatarInput = document.getElementById('avatar-input');
+  avatarInput?.addEventListener('change', (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (loadEvent) => {
+      const currentPreview = document.getElementById('avatar-preview');
+      if (!currentPreview) return;
+
+      if (currentPreview.tagName.toLowerCase() === 'img') {
+        currentPreview.src = loadEvent.target.result;
+        return;
+      }
+
+      const image = document.createElement('img');
+      image.id = 'avatar-preview';
+      image.className = currentPreview.className;
+      image.alt = 'Avatar';
+      image.src = loadEvent.target.result;
+      currentPreview.replaceWith(image);
+    };
+    reader.readAsDataURL(file);
+  });
+
   // --- 1. МОБИЛЬНОЕ МЕНЮ ---
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.primary-nav');
