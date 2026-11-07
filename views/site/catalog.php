@@ -45,7 +45,7 @@ use yii\widgets\ActiveForm;
                     ], [
                         'class' => 'custom-select',
                         'prompt' => 'По популярности',
-                        'style' => 'width: 100%; min-width: 180px; padding: 10px;',
+                        'style' => 'width: 100%; max-width: 100%; padding: 6px 26px 6px 8px; box-sizing: border-box;',
                     ]) ?>
                 </div>
             </label>
