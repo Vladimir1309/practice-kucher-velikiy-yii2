@@ -10,7 +10,7 @@ class PosterController extends Controller
 {
     public function actionDownload()
     {
-        $directory = Yii::getAlias('@webroot/uploads/posters/');
+        $directory = Yii::getAlias('@app/web/uploads/posters/');
         if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
             $this->stderr("Unable to create poster directory: {$directory}\n");
             return self::EXIT_CODE_ERROR;
