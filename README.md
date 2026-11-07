@@ -1,64 +1,66 @@
-<div align="center">
-  <h1>🎬 CineNight</h1>
-  <p><b>Каталог фильмов для идеальных киновечеров</b></p>
-  
-  <p>
-    <img src="https://img.shields.io/badge/PHP-8.x-blue?style=for-the-badge&logo=php" alt="PHP" />
-    <img src="https://img.shields.io/badge/Yii2-2.0-purple?style=for-the-badge&logo=yii" alt="Yii2" />
-    <img src="https://img.shields.io/badge/MySQL-8.0-orange?style=for-the-badge&logo=mysql" alt="MySQL" />
-    <img src="https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript" alt="JS" />
-  </p>
-</div>
+🎬 CineNight
+Каталог фильмов для идеальных киновечеров
 
----
+https://img.shields.io/badge/PHP-8.x-blue?style=for-the-badge&logo=php
+https://img.shields.io/badge/Yii2-2.0-purple?style=for-the-badge&logo=yii
+https://img.shields.io/badge/MySQL-8.0-orange?style=for-the-badge&logo=mysql
+https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript
 
-**CineNight** — это полноценное веб-приложение на фреймворке Yii2, созданное для организации киновечеров. Проект выполнен в стильной темной кинематографичной теме. Пользователи могут искать фильмы, вести списки избранного и просмотренного, загружать аватарки, а также делиться своим мнением, оставляя оценки и отзывы.
+CineNight — это полноценное веб-приложение на фреймворке Yii2, созданное для организации киновечеров. Проект выполнен в стильной темной кинематографичной теме. Пользователи могут искать фильмы, вести списки избранного и просмотренного, загружать аватарки, а также делиться своим мнением, оставляя оценки и отзывы.
 
-## 📑 Содержание
-- [Технологический стек](#-технологический-стек)
-- [Развертывание проекта](#-развертывание-проекта)
-- [Структура базы данных](#-структура-базы-данных)
-- [Функционал](#-основной-функционал)
-- [Безопасность](#-безопасность)
-- [Скриншоты](#-скриншоты-проекта)
-- [Автор](#-автор)
+📑 Содержание
+Технологический стек
 
----
+Развертывание проекта
 
-## 🛠 Технологический стек
-* **Backend:** PHP 8.x, Yii2 Framework (Basic Template)
-* **База данных:** MySQL (через миграции Yii2)
-* **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript (Fetch API, модальные окна)
-* **Иконки:** FontAwesome
+Структура базы данных
 
----
+Функционал
 
-## 🚀 Развертывание проекта
+Безопасность
 
+Скриншоты
+
+Автор
+
+🛠 Технологический стек
+Backend: PHP 8.x, Yii2 Framework (Basic Template)
+
+База данных: MySQL (через миграции Yii2)
+
+Frontend: HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript (Fetch API, модальные окна)
+
+Иконки: FontAwesome
+
+🚀 Развертывание проекта
 Для запуска проекта на локальном сервере (например, OpenServer) выполните следующие шаги:
 
-1. Клонируйте репозиторий:
-   `git clone https://github.com/ваш_логин/ваш_репозиторий.git`
-   `cd ваш_репозиторий`
+Шаг 1. Клонирование репозитория
+bash
+git clone https://github.com/ваш_логин/ваш_репозиторий.git
+cd ваш_репозиторий
+Шаг 2. Установка зависимостей
+bash
+composer install
+Шаг 3. Настройка базы данных
+Откройте файл config/db.php и укажите ваши данные:
 
-2. Установите зависимости через Composer:
-   `composer install`
-
-3. Настройте подключение к базе данных. Откройте файл `config/db.php` и укажите ваши данные:
-   ```php
-   return [
-       'class' => 'yii\db\Connection',
-       'dsn' => 'mysql:host=localhost;dbname=имя_вашей_бд',
-       'username' => 'root',
-       'password' => '',
-       'charset' => 'utf8',
-   ];
-Примените миграции для создания структуры таблиц:
+php
+return [
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=localhost;dbname=имя_вашей_бд',
+    'username' => 'root',
+    'password' => '',
+    'charset' => 'utf8',
+];
+Шаг 4. Применение миграций
+bash
 php yii migrate
+Шаг 5. Создание папки для аватарок
+Создайте папку web/uploads/avatars/ и дайте ей права на запись.
 
-Создайте папку для загрузки аватарок (если её нет). Путь: web/uploads/avatars/.
-
-Настройте веб-сервер (Document Root), чтобы корневая директория указывала на папку web.
+Шаг 6. Настройка веб-сервера
+Настройте Document Root так, чтобы корневая директория указывала на папку web.
 
 🗄️ Структура базы данных
 Проект использует 5 связанных таблиц (связи реализованы через внешние ключи FOREIGN KEY и ActiveRecord связи hasOne / hasMany):
@@ -119,4 +121,4 @@ CRUD для Жанров, Фильмов и Пользователей (чере
 
 📸 Скриншоты проекта
 <div align="center"> <h3>1. Главная страница</h3> <img src="screenshots/home.png" alt="Главная страница" width="800"> <h3>2. Каталог фильмов</h3> <img src="screenshots/catalog.png" alt="Каталог фильмов" width="800"> <h3>3. Личный кабинет</h3> <img src="screenshots/profile.png" alt="Личный кабинет" width="800"> <h3>4. Админ-панель</h3> <img src="screenshots/admin.png" alt="Админ-панель" width="800"> </div>
-<div align="center"> <b>Автор:</b> Владимир Великий <br> <b>Группа:</b> 53-03 <br> <b>Учебное заведение:</b> СПб ГБПОУ "Петровский колледж" </div> ```
+<div align="center"> <b>Автор:</b> Владимир Великий <br> <b>Группа:</b> 53-03 <br> <b>Учебное заведение:</b> СПб ГБПОУ "Петровский колледж" </div>
