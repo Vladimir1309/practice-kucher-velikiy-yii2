@@ -12,7 +12,7 @@ $this->title = 'Пользователи';
 <div class="admin-container user-index">
 
     <div style="margin-bottom: 20px;">
-        <?= Html::a('<i class="fas fa-arrow-left"></i> Назад в админ-панель', ['admin/index'], ['class' => 'btn admin-back-button', 'style' => 'width: auto !important; display: inline-block !important; padding: 8px 20px !important;']) ?>
+        <?= Html::a('<i class="fas fa-arrow-left"></i> Назад в админ-панель', ['admin/index'], ['class' => 'btn admin-back-button', 'style' => 'margin-left: 0; padding: 8px 20px !important; width: auto !important; display: inline-block !important;']) ?>
     </div>
     <h1><?= Html::encode($this->title) ?></h1>
 
