@@ -74,9 +74,15 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $movies = Movie::find()->with('genre')->limit(4)->all();
+        $genres = Genre::find()
+            ->select(['genre.*', 'COUNT(movie.id) AS movieCount'])
+            ->leftJoin('movie', 'movie.genre_id = genre.id')
+            ->groupBy('genre.id')
+            ->all();
 
         return $this->render('index', [
             'movies' => $movies,
+            'genres' => $genres,
             'movieStates' => $this->getMovieStates($movies),
         ]);
     }
