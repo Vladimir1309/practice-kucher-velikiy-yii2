@@ -16,7 +16,7 @@ $isFavorite = $type === 'favorite';
         <?php
         $title = Html::encode($movie->title);
         $poster = $movie->poster_url
-            ? Html::encode($movie->poster_url)
+            ? Yii::getAlias('@web') . Html::encode($movie->poster_url)
             : Url::to('@web/images/movie-5.jpeg');
         ?>
         <article class="movie-card" data-id="<?= Html::encode($movie->id) ?>">

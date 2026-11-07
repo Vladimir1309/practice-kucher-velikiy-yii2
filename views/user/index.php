@@ -27,17 +27,7 @@ $this->title = 'Пользователи';
         'filterModel' => null,
         'columns' => [
             'id',
-            'username',
-            'nickname',
-            'last_name',
-            'birthdate',
-            //'email:email',
-            //'password_hash',
-            //'phone',
-            //'created_at',
-            //'notify_news',
-            //'notify_reminders',
-            //'role_id',
+            'name',
 
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -50,14 +40,15 @@ $this->title = 'Пользователи';
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a('<i class="fas fa-trash"></i>', $url, [
-                            'class' => 'btn btn-danger btn-sm action-btn',
-                            'title' => 'Удалить',
-                            'data' => [
-                                'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
-                                'method' => 'post',
-                            ],
-                        ]);
+                        // Используем HTML-форму с методом POST вместо ссылки. 
+                        // Это полностью обходит необходимость в yii.js для удаления.
+                        return Html::beginForm($url, 'post', ['style' => 'display:inline;'])
+                            . Html::submitButton('<i class="fas fa-trash"></i>', [
+                                'class' => 'btn btn-danger btn-sm action-btn',
+                                'title' => 'Удалить',
+                                'onclick' => 'return confirm("Вы уверены, что хотите удалить этот элемент?");',
+                            ])
+                            . Html::endForm();
                     },
                 ],
             ],

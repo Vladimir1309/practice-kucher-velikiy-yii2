@@ -9,7 +9,7 @@ $isFavorite = $movieStates[$movie->id]['is_favorite'] ?? false;
 $isWatched = $movieStates[$movie->id]['is_watched'] ?? false;
 $title = Html::encode($movie->title);
 $poster = $movie->poster_url
-    ? Html::encode($movie->poster_url)
+    ? Yii::getAlias('@web') . Html::encode($movie->poster_url)
     : Url::to('@web/images/movie-5.jpeg');
 $description = Html::encode($movie->description ?: 'Описание фильма пока не добавлено.');
 ?>

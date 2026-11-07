@@ -16,16 +16,21 @@ use yii\widgets\ActiveForm;
 
     <div class="admin-form-row">
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        
         <?= $form->field($model, 'imageFile')->fileInput() ?>
+        
         <?php if (!empty($model->poster_url)): ?>
-            <img src="<?= Yii::getAlias('@web') . Html::encode($model->poster_url) ?>" alt="Постер фильма" width="150" style="border-radius: 8px; object-fit: cover;">
+            <!-- Здесь мы убрали дубль Yii::getAlias('@web') -->
+            <img src="<?= Yii::getAlias('@web') . Html::encode($model->poster_url) ?>" alt="Постер фильма" width="150" style="border-radius: 8px; object-fit: cover; margin-top: 10px;">
         <?php endif; ?>
     </div>
+    
     <div class="admin-form-row">
         <?= $form->field($model, 'year')->textInput() ?>
         <?= $form->field($model, 'duration')->textInput() ?>
         <?= $form->field($model, 'genre_id')->textInput() ?>
     </div>
+    
     <div class="admin-form-row-full">
         <?= $form->field($model, 'description')->textarea(['rows' => 3, 'style' => 'width: 100%;']) ?>
     </div>

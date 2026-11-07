@@ -48,8 +48,8 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                     <?php foreach ($visibleReviews as $review): ?>
                         <?php
                         $reviewTitle = $review->movie ? $review->movie->title : 'Фильм удален';
-                        $reviewPoster = $review->movie && $review->movie->poster_url
-                            ? $review->movie->poster_url
+                        $reviewPoster = $review->movie && Yii::getAlias('@web') . $review->movie->poster_url
+                            ? Yii::getAlias('@web') . $review->movie->poster_url
                             : Url::to('@web/images/movie-5.jpeg');
                         $reviewGenre = $review->movie && $review->movie->genre
                             ? $review->movie->genre->name
@@ -163,8 +163,8 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                 <?php foreach ($myReviews as $review): ?>
                     <?php
                     $reviewTitle = $review->movie ? $review->movie->title : 'Фильм удален';
-                    $reviewPoster = $review->movie && $review->movie->poster_url
-                        ? $review->movie->poster_url
+                    $reviewPoster = $review->movie && Yii::getAlias('@web') . $review->movie->poster_url
+                        ? Yii::getAlias('@web') . $review->movie->poster_url
                         : Url::to('@web/images/movie-5.jpeg');
                     ?>
                     <article class="reviewed-card all-review-card"
