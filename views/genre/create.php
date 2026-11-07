@@ -12,7 +12,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="admin-container genre-create">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <?= Html::a('<i class="fas fa-arrow-left"></i> Назад', ['index'], ['class' => 'button button-secondary']) ?>
+        <?= Html::a('<i class="fas fa-arrow-left"></i> Назад', Yii::$app->request->referrer ?: ['index'], [
+            'class' => 'btn btn-back-outline',
+        ]) ?>
     </div>
     <h1><?= Html::encode($this->title) ?></h1>
 

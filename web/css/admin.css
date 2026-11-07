@@ -18,7 +18,7 @@ body {
 
 .admin-card-form {
     background: #131722;
-    padding: 30px;
+    padding: 30px 30px 30px 30px !important;
     border-radius: 12px;
     max-width: 800px;
     margin: 0 auto;
@@ -27,6 +27,29 @@ body {
 
 .admin-card-form .form-group {
     margin-bottom: 20px;
+}
+
+.admin-card-form .form-group:last-child {
+    margin-bottom: 0 !important;
+    margin-top: 30px;
+}
+
+.btn-back-outline {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid #ff4d94;
+    color: #ff4d94;
+    background: transparent;
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+}
+
+.btn-back-outline:hover {
+    background: rgba(255, 77, 148, 0.1);
+    color: #ff4d94;
 }
 
 .admin-page-back {
