@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "movie".
@@ -20,6 +21,8 @@ use Yii;
  */
 class Movie extends \yii\db\ActiveRecord
 {
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +41,7 @@ class Movie extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['year', 'duration', 'genre_id'], 'integer'],
             [['title', 'poster_url'], 'string', 'max' => 255],
+            [['imageFile'], 'file', 'extensions' => 'png, jpg, jpeg', 'maxSize' => 1024 * 1024 * 2, 'checkExtensionByMimeType' => false],
             [['genre_id'], 'exist', 'skipOnError' => true, 'targetClass' => Genre::className(), 'targetAttribute' => ['genre_id' => 'id']],
         ];
     }
@@ -54,8 +58,29 @@ class Movie extends \yii\db\ActiveRecord
             'year' => 'Год выпуска',
             'duration' => 'Длительность (мин)',
             'poster_url' => 'Ссылка на постер',
+            'imageFile' => 'Постер фильма',
             'genre_id' => 'Жанр',
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->imageFile === null || !$this->imageFile instanceof UploadedFile) {
+            return false;
+        }
+
+        $directory = Yii::getAlias('@webroot/uploads/posters/');
+        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+            return false;
+        }
+
+        $filename = Yii::$app->security->generateRandomString() . '.' . $this->imageFile->extension;
+        if (!$this->imageFile->saveAs($directory . $filename)) {
+            return false;
+        }
+
+        $this->poster_url = '/uploads/posters/' . $filename;
+        return true;
     }
 
     /**

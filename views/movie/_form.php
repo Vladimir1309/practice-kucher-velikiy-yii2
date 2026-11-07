@@ -10,11 +10,16 @@ use yii\widgets\ActiveForm;
 
 <div class="admin-card-form movie-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+    ]); ?>
 
     <div class="admin-form-row">
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-        <?= $form->field($model, 'poster_url')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'imageFile')->fileInput() ?>
+        <?php if (!empty($model->poster_url)): ?>
+            <img src="<?= Yii::getAlias('@web') . Html::encode($model->poster_url) ?>" alt="Постер фильма" width="150" style="border-radius: 8px; object-fit: cover;">
+        <?php endif; ?>
     </div>
     <div class="admin-form-row">
         <?= $form->field($model, 'year')->textInput() ?>

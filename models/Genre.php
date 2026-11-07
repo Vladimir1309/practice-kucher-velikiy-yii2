@@ -7,6 +7,8 @@ use yii\db\ActiveRecord;
 
 class Genre extends ActiveRecord
 {
+    public $movieCount;
+
     public static function tableName()
     {
         return 'genre';
@@ -17,6 +19,7 @@ class Genre extends ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 100],
+            [['movieCount'], 'safe'],
         ];
     }
 

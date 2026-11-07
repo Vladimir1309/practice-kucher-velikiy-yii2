@@ -6,6 +6,7 @@ use app\models\Movie;
 use app\models\MovieSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
 /**
@@ -69,8 +70,19 @@ class MovieController extends Controller
         $model = new Movie();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+                $uploadValid = $model->imageFile === null || $model->validate(['imageFile']);
+                $uploadSaved = $model->imageFile === null;
+                if ($uploadValid && $model->imageFile !== null) {
+                    $uploadSaved = $model->upload();
+                    if (!$uploadSaved && !$model->hasErrors('imageFile')) {
+                        $model->addError('imageFile', 'Не удалось сохранить постер.');
+                    }
+                }
+                if ($uploadValid && $uploadSaved && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -92,8 +104,19 @@ class MovieController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            $uploadValid = $model->imageFile === null || $model->validate(['imageFile']);
+            $uploadSaved = $model->imageFile === null;
+            if ($uploadValid && $model->imageFile !== null) {
+                $uploadSaved = $model->upload();
+                if (!$uploadSaved && !$model->hasErrors('imageFile')) {
+                    $model->addError('imageFile', 'Не удалось сохранить постер.');
+                }
+            }
+            if ($uploadValid && $uploadSaved && $model->save()) {
+                return $this->redirect(['index']);
+            }
         }
 
         return $this->render('update', [
