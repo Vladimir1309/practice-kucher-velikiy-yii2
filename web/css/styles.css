@@ -1901,7 +1901,8 @@ input[type=checkbox]:checked {
 
 .all-reviews-modal-card {
     width: 90%;
-    max-width: 760px
+    max-width: 760px;
+    overflow: visible
 }
 
 #all-reviews-modal {
@@ -1915,13 +1916,38 @@ input[type=checkbox]:checked {
 .all-reviews-list {
     display: grid;
     gap: 12px;
-    max-height: 80vh;
+    max-height: 60vh;
     overflow-y: auto;
     padding-right: 4px
 }
 
 .all-reviews-list .reviewed-card {
-    cursor: default
+    cursor: pointer
+}
+
+.all-reviews-list::-webkit-scrollbar {
+    width: 8px
+}
+
+.all-reviews-list::-webkit-scrollbar-track {
+    background: #0d111a;
+    border-radius: 4px
+}
+
+.all-reviews-list::-webkit-scrollbar-thumb {
+    background: #2a3248;
+    border-radius: 4px
+}
+
+.all-reviews-list::-webkit-scrollbar-thumb:hover {
+    background: #ff4d94
+}
+
+#all-reviews-modal .reviewed-card:hover {
+    background-color: #1a1f2e;
+    border-color: #ff4d94;
+    transform: translateY(-2px);
+    transition: all 0.2s ease
 }
 
 .all-reviews-list .reviewed-card img {
