@@ -53,11 +53,22 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
             <?php endif; ?>
             <?php $form = ActiveForm::begin([
                 'id' => 'profile-form',
-                'options' => ['class' => 'profile-form'],
+                'options' => [
+                    'class' => 'profile-form',
+                    'enctype' => 'multipart/form-data',
+                ],
             ]); ?>
-                <div class="profile-identity"><span class="avatar"><?= $initial ?></span>
-                    <div><b><?= Html::encode($user->username) ?></b><button type="button" class="change-avatar">Изменить фото</button><small>JPG или
-                            PNG, до 5 МБ</small></div>
+                <div class="profile-identity">
+                    <?php if (!empty($user->avatar)): ?>
+                        <img src="<?= Html::encode($user->avatar) ?>" alt="Avatar" class="avatar profile-avatar-image">
+                    <?php else: ?>
+                        <span class="avatar"><?= $initial ?></span>
+                    <?php endif; ?>
+                    <div>
+                        <b><?= Html::encode($user->username) ?></b>
+                        <?= $form->field($user, 'imageFile')->fileInput(['class' => 'custom-file-input'])->label('Изменить фото', ['class' => 'change-avatar']) ?>
+                        <small>JPG или PNG, до 2 МБ</small>
+                    </div>
                 </div>
                 <div class="form-fields">
                     <?= $form->field($user, 'username')->textInput(['class' => 'form-control'])->label('Имя <span style="color: #ff4d94;">*</span>', ['encode' => false]) ?>

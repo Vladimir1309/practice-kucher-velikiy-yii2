@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "user".
@@ -20,10 +21,13 @@ use yii\web\IdentityInterface;
  * @property bool $notify_news
  * @property bool $notify_reminders
  * @property int $role_id
+ * @property string|null $avatar
  * @property string $created_at
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -48,6 +52,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['phone'], 'string', 'max' => 20],
             [['role_id'], 'integer'],
             [['role_id'], 'safe'],
+            [['avatar'], 'string', 'max' => 500],
+            [['imageFile'], 'image', 'maxSize' => 1024 * 1024 * 2, 'extensions' => 'png, jpg, jpeg'],
             [['email'], 'email'],
             [['email'], 'unique', 'filter' => function ($query) {
                 $query->andWhere(['!=', 'id', $this->id]);
@@ -82,10 +88,33 @@ class User extends ActiveRecord implements IdentityInterface
             'password_hash' => 'Хеш пароля',
             'phone' => 'Телефон',
             'role_id' => 'Роль',
+            'avatar' => 'Аватар',
+            'imageFile' => 'Изменить фото',
             'created_at' => 'Дата регистрации',
             'notify_news' => 'Новости CineNight',
             'notify_reminders' => 'Напоминания',
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->imageFile === null || !$this->imageFile instanceof UploadedFile) {
+            return false;
+        }
+
+        $directory = Yii::getAlias('@webroot/uploads/avatars/');
+        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+            return false;
+        }
+
+        $filename = Yii::$app->security->generateRandomString() . '.' . $this->imageFile->extension;
+        $path = $directory . $filename;
+        if (!$this->imageFile->saveAs($path)) {
+            return false;
+        }
+
+        $this->avatar = '/uploads/avatars/' . $filename;
+        return true;
     }
 
     /**

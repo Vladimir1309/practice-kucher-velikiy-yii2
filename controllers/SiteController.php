@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\web\ForbiddenHttpException;
 use app\models\LoginForm;
 use app\models\ContactForm;
@@ -140,7 +141,16 @@ class SiteController extends Controller
         $user = Yii::$app->user->identity;
         if (Yii::$app->request->isPost) {
             if ($user->load(Yii::$app->request->post())) {
-                if ($user->save()) {
+                $user->imageFile = UploadedFile::getInstance($user, 'imageFile');
+                $uploadValid = $user->imageFile === null || $user->validate(['imageFile']);
+                $uploadSaved = $user->imageFile === null;
+                if ($uploadValid && $user->imageFile !== null) {
+                    $uploadSaved = $user->upload();
+                    if (!$uploadSaved && !$user->hasErrors('imageFile')) {
+                        $user->addError('imageFile', 'Не удалось сохранить файл аватара.');
+                    }
+                }
+                if ($uploadValid && $uploadSaved && $user->save()) {
                     Yii::$app->session->setFlash('success', 'Профиль успешно обновлен.');
                     return $this->refresh();
                 }

@@ -2623,12 +2623,21 @@ select[name="MovieSearch[sort]"] {
 
 .change-avatar {
     align-self: start;
+    display: inline-block;
     background: rgba(255, 45, 132, .13);
     border: 1px solid rgba(255, 45, 132, .3);
     border-radius: 999px;
     color: #ff3b88;
     font-size: 8px;
     padding: 5px 9px
+}
+
+.profile-identity .field-user-imagefile {
+    margin: 0;
+}
+
+.profile-identity .custom-file-input {
+    display: none;
 }
 
 .form-fields {
