@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.reviewed-card').forEach((card) => {
     const showReview = () => {
-      if (card.id === 'trigger-all-reviews') return;
+      if (card.id === 'show-all-reviews') return;
       if (card.closest('#all-reviews-modal')) return;
       openReviewCard(card);
     };
@@ -214,8 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const openAllReviews = () => openModal(document.querySelector('#all-reviews-modal'));
-  document.querySelector('#trigger-all-reviews')?.addEventListener('click', openAllReviews);
-  document.querySelector('#trigger-all-reviews')?.addEventListener('keydown', (event) => {
+  document.querySelector('#show-all-reviews')?.addEventListener('click', openAllReviews);
+  document.querySelector('#show-all-reviews')?.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       openAllReviews();

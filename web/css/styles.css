@@ -14,6 +14,45 @@
     --container: 1180px
 }
 
+/* Global minimum font sizes */
+body {
+    font-size: 16px;
+}
+
+p,
+ul,
+ol,
+li {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+small,
+.small,
+.text-muted {
+    font-size: 13px !important;
+}
+
+label {
+    font-size: 15px !important;
+    font-weight: 500;
+}
+
+input,
+textarea,
+select {
+    font-size: 15px !important;
+}
+
+.breadcrumb,
+.breadcrumbs {
+    font-size: 14px !important;
+}
+
+.footer-subscribe-btn {
+    font-size: 15px !important;
+}
+
 .switch,
 .slider,
 .setting-switch,
@@ -1019,7 +1058,7 @@ button {
 
 .catalog-layout {
     display: grid;
-    grid-template-columns: 130px 1fr;
+    grid-template-columns: 300px 1fr;
     gap: 15px
 }
 
@@ -1032,7 +1071,8 @@ button {
 }
 
 .catalog-filters {
-    padding: 24px !important;
+    width: 300px;
+    padding: 25px !important;
 }
 
 .catalog-filters .filters-title,
@@ -1046,6 +1086,11 @@ button {
 .catalog-filters label {
     font-size: 16px !important;
     line-height: 1.5;
+}
+
+.catalog-filters fieldset,
+.catalog-filters .select-label {
+    margin-bottom: 24px;
 }
 
 .catalog-filters select,
@@ -1111,11 +1156,17 @@ legend,
 
 input[type=checkbox] {
     appearance: none;
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
     border: 1px solid #374151;
     border-radius: 3px;
     background: #0b0f14
+}
+
+.catalog-filters input[type=checkbox],
+.catalog-filters input[type=radio] {
+    cursor: pointer;
+    flex: 0 0 20px;
 }
 
 input[type=checkbox]:checked {
@@ -2017,84 +2068,24 @@ input[type=checkbox]:checked {
     font-size: 15px
 }
 
-.review-stack-trigger {
-    position: relative;
-    min-height: 100px;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 20px;
-    overflow: hidden;
-    background: linear-gradient(to bottom, rgba(26, 31, 46, 0.35), #121725 72%);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
-    color: var(--text);
+.show-all-reviews-wrapper {
     text-align: center;
+    margin: 30px 0;
 }
 
-.review-stack-container {
-    position: relative;
-    cursor: pointer;
-    margin-top: 20px;
-    height: 120px;
+.show-all-reviews-wrapper button {
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 16px;
+    border: 1px solid #ff4d94;
+    color: #ff4d94;
+    background: transparent;
+    transition: all 0.3s;
 }
 
-.review-stack-ghost-1,
-.review-stack-ghost-2 {
-    position: absolute;
-    inset: 0;
-    background: #1a1f2e;
-    border: 1px solid #2a3248;
-    border-radius: 12px;
-}
-
-.review-stack-ghost-1 {
-    transform: scale(0.95) translateY(10px);
-    z-index: 0;
-}
-
-.review-stack-ghost-2 {
-    transform: scale(0.9) translateY(20px);
-    z-index: -1;
-    opacity: 0.5;
-}
-
-.review-stack-main {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    background: linear-gradient(to bottom, #1a1f2e 0%, rgba(26, 31, 46, 0.8) 100%);
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
-}
-
-.review-stack-trigger::before,
-.review-stack-trigger::after {
-    content: "";
-    position: absolute;
-    inset: 8px 8px auto;
-    height: 100%;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    pointer-events: none;
-}
-
-.review-stack-trigger::before {
-    transform: translateY(-8px) scale(.96);
-    opacity: .45;
-}
-
-.review-stack-trigger::after {
-    transform: translateY(-15px) scale(.92);
-    opacity: .25;
-}
-
-.review-stack-trigger span {
-    position: relative;
-    z-index: 1;
-    font-weight: 700;
-    font-size: 15px;
-}
-
-.review-stack-trigger::before {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
+.show-all-reviews-wrapper button:hover {
+    background: rgba(255, 77, 148, 0.1) !important;
+    transform: translateY(-2px);
 }
 
 .reviewed-card {
@@ -2360,7 +2351,7 @@ input[type=checkbox]:checked {
 
 .profile-layout {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: minmax(260px, 280px) 1fr;
     gap: 25px
 }
 
@@ -2579,7 +2570,7 @@ input[type=checkbox]:checked {
 
 @media(max-width:1199px) {
     .profile-layout {
-        grid-template-columns: 190px 1fr
+        grid-template-columns: minmax(260px, 280px) 1fr
     }
 }
 
