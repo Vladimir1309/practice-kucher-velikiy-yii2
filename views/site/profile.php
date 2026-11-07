@@ -1,22 +1,39 @@
 <?php
 
-use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use app\models\UserMovie;
+
+/* @var $user app\models\User */
+$reviewCount = UserMovie::find()
+    ->where(['user_id' => $user->id])
+    ->andWhere(['is not', 'rating', null])
+    ->count();
+$initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
 ?>
 
 <main class="profile-page container">
     <div class="breadcrumbs">Главная <span>/</span> Личный кабинет</div>
     <div class="profile-layout">
         <aside class="account-sidebar" aria-label="Навигация профиля">
-            <div class="account-user"><span class="avatar small-avatar">АС</span><span><b>Анна Смирнова</b><small>Зашли
-                        недавно</small></span></div>
+            <?= $this->render('_account_user') ?>
             <nav class="account-nav">
-                <a class="active" href="profile"><i class="fa-regular fa-user" aria-hidden="true"></i>
-                    <span>Профиль</span></a>
-                <a href="votes"><i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои
-                        голоса</span><small>2</small></a>
-                <a href="favorites"><i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span></a>
-                <a href="watched"><i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span></a>
-                <a href="settings"><i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span></a>
+                <?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], [
+                    'class' => 'active',
+                    'encode' => false,
+                ]) ?>
+                <?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>' . $reviewCount . '</small>', ['site/votes'], [
+                    'encode' => false,
+                ]) ?>
+                <?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], [
+                    'encode' => false,
+                ]) ?>
+                <?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], [
+                    'encode' => false,
+                ]) ?>
+                <?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], [
+                    'encode' => false,
+                ]) ?>
                 <button type="button" class="logout-button"><i class="fa-solid fa-arrow-right-from-bracket"
                         aria-hidden="true"></i> <span>Выйти</span></button>
             </nav>
@@ -25,27 +42,47 @@ use yii\helpers\Url;
             <span class="eyebrow">ВАШ ВЕЧЕР НАЧИНАЕТСЯ ЗДЕСЬ</span>
             <h1 id="profile-title">Профиль</h1>
             <p class="profile-intro">Ваши личные данные — всё в одном месте.</p>
-            <form class="profile-form">
-                <div class="profile-identity"><span class="avatar">АС</span>
-                    <div><b>Анна Смирнова</b><button type="button" class="change-avatar">Изменить фото</button><small>JPG или
-                            PNG, до 5 МБ</small></div>
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
+            <?php endif; ?>
+            <?php if ($user->hasErrors()): ?>
+                <div class="alert alert-error" style="border: 1px solid #ff4d94; color: #ff4d94; background: rgba(255, 77, 148, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <b>Внимание!</b> Изменения не были сохранены в базу данных. Пожалуйста, проверьте правильность заполнения обязательных полей (отмечены звездочкой <span style="color: #ff4d94;">*</span>).
+                </div>
+            <?php endif; ?>
+            <?php $form = ActiveForm::begin([
+                'id' => 'profile-form',
+                'options' => [
+                    'class' => 'profile-form',
+                    'enctype' => 'multipart/form-data',
+                ],
+            ]); ?>
+                <div class="profile-identity">
+                    <?php if (!empty($user->avatar)): ?>
+                        <img id="avatar-preview" src="<?= Yii::getAlias('@web') . Html::encode($user->avatar) ?>" alt="Avatar" class="avatar profile-avatar-image">
+                    <?php else: ?>
+                        <span id="avatar-preview" class="avatar avatar-initials"><?= $initial ?></span>
+                    <?php endif; ?>
+                    <div>
+                        <b><?= Html::encode($user->username) ?></b>
+                        <?= $form->field($user, 'imageFile')->fileInput([
+                            'id' => 'avatar-input',
+                            'class' => 'custom-file-input',
+                        ])->label('Изменить фото', ['class' => 'change-avatar']) ?>
+                        <small>JPG или PNG, до 2 МБ</small>
+                    </div>
                 </div>
                 <div class="form-fields">
-                    <label class="form-group">Имя<span class="form-hint"></span><input type="text" value="Анна"></label>
-                    <label class="form-group">Фамилия<span class="form-hint"></span><input type="text"
-                            value="Смирнова"></label>
-                    <label class="form-group">Никнейм<span class="form-hint">Отображается в ваших отзывах</span><input
-                            type="text" value="anna_smirnova"></label>
-                    <label class="form-group">Дата рождения<span class="form-hint"></span><input type="text"
-                            placeholder="ДД.ММ.ГГГГ"></label>
-                    <label class="form-group">Email<span class="form-hint"></span><input type="email"
-                            value="anna.smirnova@gmail.com"></label>
-                    <label class="form-group">Телефон<span class="form-hint"></span><input type="tel"
-                            value="+7 (999) 123-45-67"></label>
+                    <?= $form->field($user, 'username')->textInput(['class' => 'form-control'])->label('Имя <span style="color: #ff4d94;">*</span>', ['encode' => false]) ?>
+                    <?= $form->field($user, 'last_name')->textInput(['class' => 'form-control'])->label('Фамилия') ?>
+                    <?= $form->field($user, 'nickname')->textInput(['class' => 'form-control'])->label('Никнейм') ?>
+                    <?= $form->field($user, 'birthdate')->input('date', ['class' => 'form-control'])->label('Дата рождения') ?>
+                    <?= $form->field($user, 'email')->input('email', ['class' => 'form-control'])->label('Email <span style="color: #ff4d94;">*</span>', ['encode' => false]) ?>
+                    <?= $form->field($user, 'phone')->input('tel', ['class' => 'form-control'])->label('Телефон') ?>
                 </div>
                 <div class="form-actions"><button class="button button-primary" type="submit">Сохранить изменения
                         <span>→</span></button><small>Изменения будут сохранены в вашем профиле.</small></div>
-            </form>
+            <?php ActiveForm::end(); ?>
         </section>
     </div>
 </main>
@@ -56,6 +93,9 @@ use yii\helpers\Url;
         <h2 id="logout-title">Выйти из аккаунта?</h2>
         <p>Вы сможете вернуться в любое время.</p>
         <div class="logout-actions"><button class="button button-secondary modal-close-action"
-                type="button">Остаться</button><a class="button button-primary" href="login">Выйти</a></div>
+                type="button">Остаться</button><?= Html::a('Выйти', ['site/logout'], [
+                    'class' => 'button button-primary',
+                    'data-method' => 'post',
+                ]) ?></div>
     </div>
 </div>

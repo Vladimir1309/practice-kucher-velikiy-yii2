@@ -1,78 +1,127 @@
 <?php
 
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+
+/* @var $movieId int|null */
+/* @var $moviesList app\models\Movie[] */
+/* @var $myReviews app\models\UserMovie[] */
+/* @var $reviewedMovieIds int[] */
+
+$movieItems = ArrayHelper::map($moviesList, 'id', 'title');
+$movieOptions = [];
+foreach ($moviesList as $movie) {
+    $isReviewed = in_array((int) $movie->id, array_map('intval', $reviewedMovieIds), true);
+    if ($isReviewed) {
+        $movieItems[$movie->id] .= ' (Уже оценен)';
+        $movieOptions[$movie->id] = ['disabled' => true];
+    }
+}
+$reviewCount = count($myReviews);
+$visibleReviews = array_slice($myReviews, 0, 3);
 ?>
 
 <main class="votes-page container">
     <div class="breadcrumbs">Главная <span>/</span> Личный кабинет</div>
     <div class="profile-layout">
         <aside class="account-sidebar" aria-label="Навигация профиля">
-            <div class="account-user"><span class="avatar small-avatar">АС</span><span><b>Анна Смирнова</b><small>Ваш
-                        личный кинопрофиль</small></span></div>
+            <?= $this->render('_account_user') ?>
             <nav class="account-nav">
-                <a href="profile"><i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span></a>
-                <a class="active" href="votes"><i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои
-                        голоса</span><small>2</small></a>
-                <a href="favorites"><i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span></a>
-                <a href="watched"><i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span></a>
-                <a href="settings"><i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span></a>
+                <?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], ['encode' => false]) ?>
+                <?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>' . $reviewCount . '</small>', ['site/votes'], ['class' => 'active', 'encode' => false]) ?>
+                <?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], ['encode' => false]) ?>
+                <?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], ['encode' => false]) ?>
+                <?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], ['encode' => false]) ?>
                 <button type="button" class="logout-button"><i class="fa-solid fa-arrow-right-from-bracket"
                         aria-hidden="true"></i> <span>Выйти</span></button>
             </nav>
         </aside>
         <section class="votes-content" aria-labelledby="votes-title">
             <span class="eyebrow">ВАШ ВЕЧЕР НАЧИНАЕТСЯ ЗДЕСЬ</span>
-            <h1 id="votes-title">Мои голоса <sup>2</sup></h1>
+            <h1 id="votes-title">Мои голоса <sup><?= $reviewCount ?></sup></h1>
             <p class="profile-intro">Ваши любимые истории — и планы на следующий киновечер.</p>
             <div class="reviewed-movies">
-                <article class="reviewed-card" data-movie="Французский вестник" tabindex="0">
-                    <img src="<?= Url::to("@web/images/catalog-francuzskij.jpeg") ?>" alt="Французский вестник">
-                    <div><span class="movie-genre">КОМЕДИЯ</span>
-                        <h2>Французский вестник</h2>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star"
-                                aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i
-                                class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
-                            <span>4.9</span> <small>(128)</small>
-                        </div><b class="voted-label">◉ Голос учтён</b>
-                    </div>
-                </article>
-                <article class="reviewed-card" data-movie="Свет далёких улиц" tabindex="0">
-                    <img src="<?= Url::to("@web/images/catalog-daren.jpeg") ?>" alt="Свет далёких улиц">
-                    <div><span class="movie-genre">ДРАМА</span>
-                        <h2>Свет далёких улиц</h2>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star"
-                                aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i
-                                class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
-                            <span>4.8</span> <small>(74)</small>
-                        </div><b class="voted-label">◉ Голос учтён</b>
-                    </div>
-                </article>
+                <?php if (!$myReviews): ?>
+                    <p class="empty-state">Вы пока не оставили ни одного голоса.</p>
+                <?php else: ?>
+                    <?php foreach ($visibleReviews as $review): ?>
+                        <?php
+                        $reviewTitle = $review->movie ? $review->movie->title : 'Фильм удален';
+                        $reviewPoster = $review->movie && Yii::getAlias('@web') . $review->movie->poster_url
+                            ? Yii::getAlias('@web') . $review->movie->poster_url
+                            : Url::to('@web/images/movie-5.jpeg');
+                        $reviewGenre = $review->movie && $review->movie->genre
+                            ? $review->movie->genre->name
+                            : 'Без жанра';
+                        ?>
+                        <article class="reviewed-card"
+                            data-review-id="<?= (int) $review->id ?>"
+                            data-movie-id="<?= (int) $review->movie_id ?>"
+                            data-movie="<?= Html::encode($reviewTitle) ?>"
+                            data-rating="<?= (int) $review->rating ?>"
+                            data-comment="<?= Html::encode($review->comment ?: '') ?>"
+                            data-poster="<?= Html::encode($reviewPoster) ?>"
+                            tabindex="0">
+                            <img src="<?= Html::encode($reviewPoster) ?>" alt="<?= Html::encode($reviewTitle) ?>">
+                            <div>
+                                <span class="movie-genre"><?= Html::encode($reviewGenre) ?></span>
+                                <h2><?= Html::encode($reviewTitle) ?></h2>
+                                <div class="rating">
+                                    <?php for ($star = 1; $star <= 5; $star++): ?>
+                                        <i class="<?= $star <= (int) $review->rating ? 'fa-solid' : 'fa-regular' ?> fa-star" aria-hidden="true"></i>
+                                    <?php endfor; ?>
+                                </div>
+                                <b class="voted-label">◉ Голос учтён</b>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                    <?php if ($reviewCount > 3): ?>
+                        <div class="show-all-reviews-wrapper">
+                            <button id="show-all-reviews" class="btn btn-secondary" type="button">
+                                Показать все отзывы (<?= count($myReviews) ?>)
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
-            <form class="vote-form">
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
+            <?php endif; ?>
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <p class="alert alert-danger"><?= Html::encode(Yii::$app->session->getFlash('error')) ?></p>
+            <?php endif; ?>
+            <form class="vote-form" method="post" action="<?= Url::to(['site/votes']) ?>">
+                <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()) ?>
+                <?= Html::hiddenInput('review_id', '', ['id' => 'review-id']) ?>
                 <div class="vote-form-heading"><span class="form-icon"><i class="fa-solid fa-star"
                             aria-hidden="true"></i></span>
                     <div>
                         <h2>Оценить фильм</h2>
-                        <p>Выберите фильм, оцените его и добавьте комментарий. Мы сохраним ваш голос.</p>
+                        <p class="vote-form-subtitle">Выберите фильм, оцените его и добавьте комментарий. Мы сохраним ваш голос.</p>
                     </div>
                 </div>
                 <div class="vote-fields">
-                    <label>Фильм <em>*</em><select>
-                            <option>Город после полуночи</option>
-                            <option>Последний сеанс</option>
-                            <option>Между нами ночь</option>
-                        </select></label>
+                    <div class="vote-primary-fields">
+                    <label>Фильм <em>*</em><?= Html::dropDownList('movie_id', $movieId, $movieItems, [
+                        'prompt' => 'Выберите фильм',
+                        'required' => true,
+                        'options' => $movieOptions,
+                    ]) ?></label>
                     <fieldset>
-                        <legend>Ваша оценка <em>*</em></legend>
+                        <legend class="vote-rating-label">Ваша оценка <em>*</em></legend>
                         <div class="vote-stars" role="group" aria-label="Выберите рейтинг"><button type="button"
                                 data-rating="1"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"
                                 data-rating="2"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"
                                 data-rating="3"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"
                                 data-rating="4"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"
                                 data-rating="5"><i class="fa-solid fa-star" aria-hidden="true"></i></button></div>
+                        <?= Html::hiddenInput('rating', '', ['id' => 'rating-value']) ?>
+                        <small id="rating-error" class="rating-error" hidden>Выберите оценку от 1 до 5.</small>
                     </fieldset>
-                    <label class="comment-label">Комментарий <span>Необязательно</span><textarea rows="4"
-                            placeholder="Хочется атмосферного кино для пятничного вечера. Соберёмся вместе?"></textarea></label>
+                    </div>
+                    <label class="comment-label">Комментарий <span class="optional-hint">Необязательно</span><textarea rows="4"
+                            name="comment" placeholder="Хочется атмосферного кино для пятничного вечера. Соберёмся вместе?"></textarea></label>
                 </div>
                 <small class="required-note"><em>*</em> Обязательные поля</small>
                 <div class="form-actions"><button class="button button-primary" type="submit">Сохранить голос
@@ -87,20 +136,65 @@ use yii\helpers\Url;
             class="eyebrow">ВАША ОЦЕНКА</span>
         <h2 id="review-title">Оценить фильм</h2>
         <p id="review-movie"></p>
+        <img id="review-poster" class="review-modal-poster" src="" alt="">
         <div class="stars" role="group" aria-label="Выберите рейтинг"><button><i class="fa-solid fa-star"
                     aria-hidden="true"></i></button><button><i class="fa-solid fa-star"
                     aria-hidden="true"></i></button><button><i class="fa-solid fa-star"
                     aria-hidden="true"></i></button><button><i class="fa-solid fa-star"
                     aria-hidden="true"></i></button><button><i class="fa-solid fa-star" aria-hidden="true"></i></button></div>
-        <button class="button button-primary modal-submit">Сохранить оценку</button>
+        <p id="review-comment"></p>
+        <div class="review-modal-actions">
+            <button type="button" class="button button-secondary review-edit-button">Редактировать</button>
+            <?= Html::a('Удалить отзыв', ['site/delete-review'], [
+                'id' => 'delete-review-button',
+                'class' => 'button button-danger',
+                'onclick' => "return confirm('Вы уверены, что хотите удалить отзыв?');",
+            ]) ?>
+        </div>
     </div>
 </div>
+<?php if ($reviewCount > 3): ?>
+    <div class="modal all-reviews-modal" id="all-reviews-modal" role="dialog" aria-modal="true" aria-labelledby="all-reviews-title">
+        <div class="modal-card all-reviews-modal-card">
+            <button class="modal-close" type="button" aria-label="Закрыть">×</button>
+            <span class="eyebrow">ВАШИ ОТЗЫВЫ</span>
+            <h2 id="all-reviews-title">Все отзывы (<?= $reviewCount ?>)</h2>
+            <div class="all-reviews-list">
+                <?php foreach ($myReviews as $review): ?>
+                    <?php
+                    $reviewTitle = $review->movie ? $review->movie->title : 'Фильм удален';
+                    $reviewPoster = $review->movie && Yii::getAlias('@web') . $review->movie->poster_url
+                        ? Yii::getAlias('@web') . $review->movie->poster_url
+                        : Url::to('@web/images/movie-5.jpeg');
+                    ?>
+                    <article class="reviewed-card all-review-card"
+                        data-review-id="<?= (int) $review->id ?>"
+                        data-movie-id="<?= (int) $review->movie_id ?>"
+                        data-movie="<?= Html::encode($reviewTitle) ?>"
+                        data-rating="<?= (int) $review->rating ?>"
+                        data-comment="<?= Html::encode($review->comment ?: '') ?>"
+                        data-poster="<?= Html::encode($reviewPoster) ?>">
+                        <img src="<?= Html::encode($reviewPoster) ?>" alt="<?= Html::encode($reviewTitle) ?>">
+                        <div>
+                            <h3><?= Html::encode($reviewTitle) ?></h3>
+                            <div class="rating">
+                                <?php for ($star = 1; $star <= 5; $star++): ?>
+                                    <i class="<?= $star <= (int) $review->rating ? 'fa-solid' : 'fa-regular' ?> fa-star" aria-hidden="true"></i>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 <div class="modal" id="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-title">
     <div class="modal-card"><button class="modal-close" type="button" aria-label="Закрыть">×</button><span
             class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</span>
         <h2 id="logout-title">Выйти из аккаунта?</h2>
         <p>Вы сможете вернуться в любое время.</p>
         <div class="logout-actions"><button class="button button-secondary modal-close-action"
-                type="button">Остаться</button><a class="button button-primary" href="login">Выйти</a></div>
+                type="button">Остаться</button><a class="button button-primary" href="<?= Url::to(['site/logout']) ?>">Выйти</a></div>
     </div>
 </div>

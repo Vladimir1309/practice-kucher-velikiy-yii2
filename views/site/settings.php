@@ -1,38 +1,51 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
+use app\models\UserMovie;
+
+/* @var $user app\models\User */
+$reviewCount = UserMovie::find()
+    ->where(['user_id' => $user->id])
+    ->andWhere(['is not', 'rating', null])
+    ->count();
 ?>
 
 <main class="user-page container">
     <div class="breadcrumbs">Главная <span>/</span> Личный кабинет</div>
     <div class="profile-layout">
         <aside class="account-sidebar">
-            <div class="account-user"><span class="avatar small-avatar">АС</span><span><b>Анна Смирнова</b><small>Ваш
-                        личный кинопрофиль</small></span></div>
-            <nav class="account-nav"><a href="profile"><i class="fa-regular fa-user" aria-hidden="true"></i>
-                    <span>Профиль</span></a><a href="votes"><i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои
-                        голоса</span><small>2</small></a><a href="favorites"><i class="fa-regular fa-heart"
-                        aria-hidden="true"></i> <span>Избранное</span></a><a href="watched"><i class="fa-solid fa-check"
-                        aria-hidden="true"></i> <span>Просмотренные</span></a><a class="active" href="settings"><i
-                        class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span></a><button type="button"
+            <?= $this->render('_account_user') ?>
+            <nav class="account-nav"><?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-star" aria-hidden="true"></i> <span>Мои голоса</span><small>' . $reviewCount . '</small>', ['site/votes'], ['encode' => false]) ?><?= Html::a('<i class="fa-regular fa-heart" aria-hidden="true"></i> <span>Избранное</span>', ['site/favorites'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-check" aria-hidden="true"></i> <span>Просмотренные</span>', ['site/watched'], ['encode' => false]) ?><?= Html::a('<i class="fa-solid fa-gear" aria-hidden="true"></i> <span>Настройки</span>', ['site/settings'], ['class' => 'active', 'encode' => false]) ?><button type="button"
                     class="logout-button"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
                     <span>Выйти</span></button></nav>
         </aside>
         <section class="settings-content"><span class="eyebrow">ВАШ ВЕЧЕР НАЧИНАЕТСЯ ЗДЕСЬ</span>
             <h1>Настройки</h1>
             <p class="profile-intro">Управляйте уведомлениями и безопасностью аккаунта.</p>
-            <section class="settings-card">
+            <?php if (Yii::$app->session->hasFlash('success')): ?>
+                <p class="alert alert-success"><?= Html::encode(Yii::$app->session->getFlash('success')) ?></p>
+            <?php endif; ?>
+            <?php if (Yii::$app->session->hasFlash('error')): ?>
+                <p class="alert alert-danger"><?= Html::encode(Yii::$app->session->getFlash('error')) ?></p>
+            <?php endif; ?>
+            <form class="settings-card" method="post" action="<?= Url::to(['site/settings']) ?>">
+                <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()) ?>
+                <?= Html::hiddenInput('settings_form', 'notifications') ?>
                 <h2>Уведомления</h2><label class="setting-row"><span><b>Новости CineNight</b><small>Рассказывать о новых
-                            фильмах и подборках</small></span><input type="checkbox" checked><i
+                            фильмах и подборках</small></span><input type="hidden" name="notify_news" value="0"><input type="checkbox" name="notify_news" value="1" <?= (int) $user->notify_news === 1 ? 'checked' : '' ?>><i
                         class="setting-switch"></i></label><label class="setting-row"><span><b>Напоминания</b><small>Напоминать
-                            о фильмах, которые вы выбрали</small></span><input type="checkbox" checked><i
+                            о фильмах, которые вы выбрали</small></span><input type="hidden" name="notify_reminders" value="0"><input type="checkbox" name="notify_reminders" value="1" <?= (int) $user->notify_reminders === 1 ? 'checked' : '' ?>><i
                         class="setting-switch"></i></label>
-            </section>
-            <form class="settings-card password-form">
+                <div class="form-actions"><button class="button button-primary" type="submit">Сохранить уведомления</button></div>
+            </form>
+            <form class="settings-card password-form" method="post" action="<?= Url::to(['site/settings']) ?>">
+                <?= Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->getCsrfToken()) ?>
+                <?= Html::hiddenInput('settings_form', 'password') ?>
                 <h2>Изменить пароль</h2><label>Текущий пароль<input type="password"
-                        placeholder="Введите текущий пароль"></label><label>Новый пароль<input type="password"
-                        placeholder="Придумайте новый пароль"></label><label>Повторите пароль<input type="password"
-                        placeholder="Повторите новый пароль"></label>
+                        name="current_password" placeholder="Введите текущий пароль" required></label><label>Новый пароль<input type="password"
+                        name="new_password" placeholder="Придумайте новый пароль" minlength="6" required></label><label>Повторите пароль<input type="password"
+                        name="confirm_password" placeholder="Повторите новый пароль" minlength="6" required></label>
                 <div class="form-actions"><button class="button button-primary" type="submit">Сохранить изменения
                         <span>→</span></button></div>
             </form>
@@ -45,6 +58,6 @@ use yii\helpers\Url;
         <h2 id="logout-title">Выйти из аккаунта?</h2>
         <p>Вы сможете вернуться в любое время.</p>
         <div class="logout-actions"><button class="button button-secondary modal-close-action">Остаться</button><a
-                class="button button-primary" href="login">Выйти</a></div>
+                class="button button-primary" href="<?= Url::to(['site/logout']) ?>">Выйти</a></div>
     </div>
 </div>

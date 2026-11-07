@@ -1,6 +1,14 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
+
+/* @var $movies app\models\Movie[] */
+/* @var $genres app\models\Genre[] */
+/* @var $movieStates array */
+
+$icons = ['✦', '✦', '☾', '✺'];
+$iconClasses = ['comedy', 'drama', 'horror', 'fantasy'];
 ?>
 
 <main>
@@ -11,7 +19,7 @@ use yii\helpers\Url;
             <p>Тёплые истории, яркое приключение и немного магии — мы уже собрали идеальный вечер для вас.</p>
             <div class="hero-actions">
                 <button class="button button-primary" type="button" id="hero-lucky-button">Мне повезёт <span>→</span></button>
-                <a class="button button-secondary" href="catalog">Тайное кино</a>
+                <?= Html::a('Тайное кино', ['site/catalog'], ['class' => 'button button-secondary']) ?>
             </div>
             <div class="stats" aria-label="Статистика сервиса">
                 <div><strong>24</strong><span>фильма</span></div>
@@ -31,13 +39,18 @@ use yii\helpers\Url;
                 <h2 id="categories-title">Категории</h2>
                 <p>От лёгких комедий до фантастических миров.</p>
             </div>
-            <a href="catalog" class="text-link">Все категории <span>→</span></a>
+            <?= Html::a('В каталог', ['site/catalog'], ['class' => 'button button-light']) ?>
         </div>
         <div class="genre-grid">
-            <a class="genre-chip" href="catalog"><span class="genre-icon comedy">✦</span><span><b>Комедии</b><small>48 фильмов</small></span><span>›</span></a>
-            <a class="genre-chip" href="catalog"><span class="genre-icon drama">✦</span><span><b>Драмы</b><small>32 фильма</small></span><span>›</span></a>
-            <a class="genre-chip" href="catalog"><span class="genre-icon horror">☾</span><span><b>Ужасы</b><small>27 фильмов</small></span><span>›</span></a>
-            <a class="genre-chip" href="catalog"><span class="genre-icon fantasy">✺</span><span><b>Фантастика</b><small>54 фильма</small></span><span>›</span></a>
+            <?php foreach (array_slice($genres, 0, 4) as $index => $genre): ?>
+                <?= Html::a(
+                    '<span class="genre-icon ' . $iconClasses[$index % 4] . '">' . $icons[$index % 4] . '</span>'
+                    . '<span><b>' . Html::encode($genre->name) . '</b><small>' . (int) $genre->movieCount . ' фильмов</small></span>'
+                    . '<span>›</span>',
+                    ['site/catalog', 'MovieSearch' => ['genre_id' => $genre->id]],
+                    ['class' => 'genre-chip', 'encode' => false]
+                ) ?>
+            <?php endforeach; ?>
         </div>
     </section>
 
@@ -47,37 +60,41 @@ use yii\helpers\Url;
                 <h2 id="hits-title">Хиты вечера</h2>
                 <p>Самые любимые фильмы нашего сообщества.</p>
             </div>
-            <a class="button button-light" href="favorites">В каталог</a>
+            <?= Html::a('В каталог', ['site/catalog'], ['class' => 'button button-light']) ?>
         </div>
         <div class="movie-grid">
-            <article class="movie-card" data-genre="Драмы">
-                <div class="movie-image"><img src="<?= Url::to("@web/images/movie-francuzskij-dispetcher.jpeg") ?>" alt="Французский диспетчер"><span class="hit-label">ХИТ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                <div class="movie-info"><span class="movie-genre">ДРАМА</span>
-                    <h3>Французский диспетчер</h3>
-                    <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.8</span> <small>(128)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Французский диспетчер">Оценить</button>
-                </div>
-            </article>
-            <article class="movie-card" data-genre="Драмы">
-                <div class="movie-image"><img src="<?= Url::to("@web/images/movie-daren-darok.jpeg") ?>" alt="Дарен дарок улицы"><span class="hit-label teal">НОВИНКА</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                <div class="movie-info"><span class="movie-genre">ДРАМА</span>
-                    <h3>Дарен дарок улицы</h3>
-                    <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.7</span> <small>(84)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Дарен дарок улицы">Оценить</button>
-                </div>
-            </article>
-            <article class="movie-card" data-genre="Фантастика">
-                <div class="movie-image"><img src="<?= Url::to("@web/images/movie-gorod-posle-polunochi.jpeg") ?>" alt="Город после полуночи"><span class="hit-label purple">ВЫБОР РЕДАКЦИИ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                <div class="movie-info"><span class="movie-genre">ФАНТАСТИКА</span>
-                    <h3>Город после полуночи</h3>
-                    <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.7</span> <small>(96)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Город после полуночи">Оценить</button>
-                </div>
-            </article>
-            <article class="movie-card" data-genre="Триллер">
-                <div class="movie-image"><img src="<?= Url::to("@web/images/movie-poslednij-seans.jpeg") ?>" alt="Последний сеанс"><span class="hit-label">ХИТ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                <div class="movie-info"><span class="movie-genre">ТРИЛЛЕР</span>
-                    <h3>Последний сеанс</h3>
-                    <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.6</span> <small>(41)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Последний сеанс">Оценить</button>
-                </div>
-            </article>
+            <?php $i = 0; ?>
+            <?php foreach ($movies as $movie): ?>
+                <?php
+                $title = Html::encode($movie->title);
+                $poster = $movie->poster_url
+                    ? Yii::getAlias('@web') . Html::encode($movie->poster_url)
+                    : Url::to('@web/images/movie-5.jpeg');
+                ?>
+                <article class="movie-card" data-id="<?= Html::encode($movie->id) ?>">
+                    <div class="movie-image">
+                        <?= Html::a('<img src="' . $poster . '" alt="' . $title . '">' . ($i < 2 ? '<span class="hit-label">ХИТ</span>' : ''), ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
+                        <?php $isFavorite = $movieStates[$movie->id]['is_favorite'] ?? false; ?>
+                        <button class="save-button<?= $isFavorite ? ' active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>"><i class="<?= $isFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i></button>
+                        <?php $isWatched = $movieStates[$movie->id]['is_watched'] ?? false; ?>
+                        <button class="watched-button watched-icon<?= $isWatched ? ' watched-active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isWatched ? 'Отметить как непросмотренное' : 'Отметить как просмотренное' ?>"><i class="<?= $isWatched ? 'fa-solid' : 'fa-regular' ?> fa-eye" aria-hidden="true"></i></button>
+                    </div>
+                    <div class="movie-info"><span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>
+                        <h3><?= Html::a($title, ['site/movie', 'id' => $movie->id]) ?></h3>
+                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>—</span> <small><?= Html::encode($movie->year ?: 'Год не указан') ?></small></div><?= Html::a(
+                            Yii::$app->user->isGuest ? 'Войти, чтобы оценить' : 'Оценить',
+                            Yii::$app->user->isGuest ? ['site/login'] : ['site/votes', 'movie_id' => $movie->id],
+                            [
+                                'class' => 'button button-primary review-button',
+                                'data-id' => Yii::$app->user->isGuest ? null : $movie->id,
+                                'data-movie' => $title,
+                                'data-auth-required' => Yii::$app->user->isGuest ? 'true' : 'false',
+                            ]
+                        ) ?>
+                    </div>
+                </article>
+                <?php $i++; ?>
+            <?php endforeach; ?>
         </div>
     </section>
 

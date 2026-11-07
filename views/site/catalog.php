@@ -1,6 +1,16 @@
 <?php
 
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
+
+/* @var $movies app\models\Movie[] */
+/* @var $movieStates array */
+/* @var $searchModel app\models\MovieSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $genres app\models\Genre[] */
+/* @var $activeGenre app\models\Genre|null */
 ?>
 
 <main class="catalog-page container">
@@ -9,76 +19,87 @@ use yii\helpers\Url;
         <div><span class="eyebrow">ВЫБЕРИТЕ НАСТРОЕНИЕ</span>
             <h1>Каталог фильмов</h1>
             <p>Найдите историю под своё настроение — и голосуйте за любимую.</p>
-        </div><span class="catalog-note">256 фильмов для ваших вечеров</span>
+        </div><span class="catalog-note"><?= $activeGenre
+            ? 'Жанр: ' . Html::encode($activeGenre->name)
+            : 'Все фильмы для ваших вечеров' ?></span>
     </div>
     <button class="filter-toggle" type="button" aria-expanded="false" aria-controls="catalog-filters">Фильтры <span>☷</span></button>
     <div class="catalog-layout">
+        <?= Html::beginForm(['site/catalog'], 'get', ['class' => 'filters-form']) ?>
         <aside class="catalog-filters" id="catalog-filters" aria-label="Фильтры каталога">
             <div class="filters-title"><b>Фильтры</b><button class="filter-close" type="button" aria-label="Закрыть фильтры">×</button><span>☷</span></div>
             <fieldset>
-                <legend>Жанры</legend><label><input type="checkbox" checked> Комедии <small>48</small></label><label><input type="checkbox"> Драмы <small>32</small></label><label><input type="checkbox"> Фантастика <small>54</small></label><label><input type="checkbox"> Триллеры <small>26</small></label><label><input type="checkbox"> Ужасы <small>27</small></label><label><input type="checkbox"> Приключения <small>38</small></label><label><input type="checkbox"> Мелодрамы <small>21</small></label>
+                <legend>Жанры</legend>
+                <?= Html::radioList(
+                    'MovieSearch[genre_id]',
+                    $searchModel->genre_id,
+                    ArrayHelper::map($genres, 'id', 'name'),
+                    ['unselect' => null, 'class' => 'custom-radio-list']
+                ) ?>
             </fieldset>
-            <label class="select-label">Год<select>
-                    <option>Все годы</option>
-                    <option>2020–2025</option>
-                    <option>До 2020</option>
-                </select></label>
+            <label class="select-label">Сортировка
+                <div style="width: 100%;">
+                    <?= Html::dropDownList('MovieSearch[sort]', $searchModel->sort, [
+                        'newest' => 'По новинкам',
+                        'title' => 'По алфавиту',
+                    ], [
+                        'class' => 'custom-select',
+                        'prompt' => 'По популярности',
+                        'style' => 'width: 100%; max-width: 100%; padding: 6px 26px 6px 8px; box-sizing: border-box;',
+                    ]) ?>
+                </div>
+            </label>
             <fieldset>
-                <legend>Рейтинг <em>от 4.0</em></legend><input class="range" type="range" min="0" max="5" value="4">
-                <div class="range-labels"><span>0</span><span>5</span></div>
+                <legend>Просмотренные</legend><?= Html::activeCheckbox($searchModel, 'is_watched', ['label' => 'Только просмотренные']) ?>
             </fieldset>
-            <label class="switch-label">Уже смотрел <input type="checkbox"><span class="switch"></span></label>
-            <button class="button button-primary apply-filters" type="button">Применить</button><button class="reset-filters" type="button">Сбросить фильтры</button>
+            <?= Html::submitButton('Применить', ['class' => 'button button-primary apply-filters']) ?>
+            <?= Html::a('Сбросить', ['site/catalog'], ['class' => 'button button-secondary reset-filters']) ?>
         </aside>
+        <?= Html::endForm() ?>
         <section class="catalog-results" aria-labelledby="catalog-results-title">
-            <form class="search-bar" role="search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" placeholder="Название фильма, режиссёр или актёр" aria-label="Поиск фильма"></form>
-            <div class="results-toolbar"><b id="catalog-results-title">54 фильма</b><button type="button">По популярности⌄</button></div>
-            <div class="active-filter">Рейтинг от 4.0 <button type="button" aria-label="Удалить фильтр">×</button></div>
-            <div class="catalog-movie-grid">
-                <article class="movie-card">
-                    <div class="movie-image"><img src="<?= Url::to("@web/images/catalog-francuzskij.jpeg")?>" alt="Французский диспетчер"><span class="hit-label">ХИТ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                    <div class="movie-info"><span class="movie-genre">КОМЕДИЯ</span>
-                        <h3>Французский диспетчер</h3>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.8</span> <small>(128)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Французский диспетчер">Оценить</button>
-                    </div>
-                </article>
-                <article class="movie-card">
-                    <div class="movie-image"><img src="<?= Url::to("@web/images/catalog-daren.jpeg")?>" alt="Свет далёких улиц"><span class="hit-label teal">НОВИНКА</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                    <div class="movie-info"><span class="movie-genre">ДРАМА</span>
-                        <h3>Свет далёких улиц</h3>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.8</span> <small>(74)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Свет далёких улиц">Оценить</button>
-                    </div>
-                </article>
-                <article class="movie-card">
-                    <div class="movie-image"><img src="<?= Url::to("@web/images/catalog-gorod.jpeg")?>" alt="Город после полуночи"><span class="hit-label purple">ВЫБОР РЕДАКЦИИ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                    <div class="movie-info"><span class="movie-genre">ФАНТАСТИКА</span>
-                        <h3>Город после полуночи</h3>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.7</span> <small>(96)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Город после полуночи">Оценить</button>
-                    </div>
-                </article>
-                <article class="movie-card">
-                    <div class="movie-image"><img src="<?= Url::to("@web/images/catalog-seans.jpeg")?>" alt="Последний сеанс"><span class="hit-label">ХИТ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                    <div class="movie-info"><span class="movie-genre">ТРИЛЛЕР</span>
-                        <h3>Последний сеанс</h3>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.6</span> <small>(41)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Последний сеанс">Оценить</button>
-                    </div>
-                </article>
-                <article class="movie-card">
-                    <div class="movie-image"><img src="<?= Url::to("@web/images/catalog-mezhdu.jpeg")?>" alt="Между нами ночь"><span class="hit-label teal">НОВИНКА</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                    <div class="movie-info"><span class="movie-genre">ДРАМА</span>
-                        <h3>Между нами ночь</h3>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.5</span> <small>(53)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="Между нами ночь">Оценить</button>
-                    </div>
-                </article>
-                <article class="movie-card">
-                    <div class="movie-image"><img src="<?= Url::to("@web/images/catalog-predely.jpeg")?>" alt="За пределами сна"><span class="hit-label purple">ВЫБОР РЕДАКЦИИ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
-                    <div class="movie-info"><span class="movie-genre">ФАНТАСТИКА</span>
-                        <h3>За пределами сна</h3>
-                        <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>4.7</span> <small>(82)</small></div><button class="button button-primary review-button" onclick="window.location.href='votes'" data-movie="За пределами сна">Оценить</button>
-                    </div>
-                </article>
+            <?= Html::beginForm(['site/catalog'], 'get', ['class' => 'search-form']) ?>
+            <div class="search-bar-actions" role="search">
+                <label class="search-bar"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><?= Html::textInput('MovieSearch[search]', $searchModel->search, ['class' => 'form-control', 'placeholder' => 'Название фильма...', 'aria-label' => 'Поиск фильма']) ?></label>
+                <button type="submit" class="button button-primary search-submit"><i class="fas fa-search" aria-hidden="true"></i> Поиск</button>
             </div>
-            <nav class="pagination" aria-label="Страницы каталога"><button>‹</button><button class="current">1</button><button>2</button><button>3</button><button>4</button><button>…</button><button>9</button><button>›</button><small>Показано 6 из 54 фильмов</small></nav>
+            <?= Html::endForm() ?>
+            <div class="results-toolbar"><b id="catalog-results-title"><?= $dataProvider->getTotalCount() ?> фильмов</b></div>
+            <?php if ($searchModel->min_rating): ?><div class="active-filter">Рейтинг от <?= Html::encode($searchModel->min_rating) ?></div><?php endif; ?>
+            <div class="catalog-movie-grid">
+                <?php $i = 0; ?>
+                <?php foreach ($movies as $movie): ?>
+                    <?php
+                    $title = Html::encode($movie->title);
+                    $poster = $movie->poster_url
+                        ? Yii::getAlias('@web') . Html::encode($movie->poster_url)
+                        : Url::to('@web/images/movie-5.jpeg');
+                    ?>
+                    <article class="movie-card" data-id="<?= Html::encode($movie->id) ?>">
+                        <div class="movie-image">
+                            <?= Html::a('<img src="' . $poster . '" alt="' . $title . '">' . ($i < 2 ? '<span class="hit-label">ХИТ</span>' : ''), ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
+                            <?php $isFavorite = $movieStates[$movie->id]['is_favorite'] ?? false; ?>
+                            <button class="save-button<?= $isFavorite ? ' active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>"><i class="<?= $isFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i></button>
+                            <?php $isWatched = $movieStates[$movie->id]['is_watched'] ?? false; ?>
+                            <button class="watched-button watched-icon<?= $isWatched ? ' watched-active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isWatched ? 'Отметить как непросмотренное' : 'Отметить как просмотренное' ?>"><i class="<?= $isWatched ? 'fa-solid' : 'fa-regular' ?> fa-eye" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="movie-info"><span class="movie-genre"><?= Html::encode($movie->genre->name ?? 'Без жанра') ?></span>
+                            <h3><?= Html::a($title, ['site/movie', 'id' => $movie->id]) ?></h3>
+                            <div class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <span>—</span> <small><?= Html::encode($movie->year ?: 'Год не указан') ?></small></div><?= Html::a(
+                                Yii::$app->user->isGuest ? 'Войти, чтобы оценить' : 'Оценить',
+                                Yii::$app->user->isGuest ? ['site/login'] : ['site/votes', 'movie_id' => $movie->id],
+                                [
+                                    'class' => 'button button-primary review-button',
+                                    'data-id' => Yii::$app->user->isGuest ? null : $movie->id,
+                                    'data-auth-required' => Yii::$app->user->isGuest ? 'true' : 'false',
+                                ]
+                            ) ?>
+                        </div>
+                    </article>
+                    <?php $i++; ?>
+                <?php endforeach; ?>
+            </div>
+            <?= \yii\widgets\LinkPager::widget(['pagination' => $dataProvider->pagination]) ?>
         </section>
     </div>
+    
 </main>

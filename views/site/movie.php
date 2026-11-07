@@ -1,19 +1,29 @@
 <?php
 
+use yii\helpers\Html;
 use yii\helpers\Url;
+
+/* @var $movie app\models\Movie */
+/* @var $movieStates array */
+$isFavorite = $movieStates[$movie->id]['is_favorite'] ?? false;
+$isWatched = $movieStates[$movie->id]['is_watched'] ?? false;
+$title = Html::encode($movie->title);
+$poster = $movie->poster_url
+    ? Yii::getAlias('@web') . Html::encode($movie->poster_url)
+    : Url::to('@web/images/movie-5.jpeg');
+$description = Html::encode($movie->description ?: 'Описание фильма пока не добавлено.');
 ?>
 
 <main class="movie-page container">
-    <div class="breadcrumbs">Главная <span>/</span> Каталог <span>/</span> Французский вестник</div>
+    <div class="breadcrumbs">Главная <span>/</span> Каталог <span>/</span> <?= $title ?></div>
     <div class="movie-detail-grid">
         <div class="detail-left">
-            <div class="detail-poster"><img src="<?= Url::to("@web/images/movie-francuzskij-detail.jpeg") ?>" alt="Французский вестник"><span class="hit-label">ХИТ</span><button class="save-button" aria-label="Добавить в избранное"><i class="fa-regular fa-heart" aria-hidden="true"></i></button></div>
+            <div class="detail-poster"><img src="<?= $poster ?>" alt="<?= $title ?>"><span class="hit-label">ХИТ</span><button class="save-button<?= $isFavorite ? ' active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>"><i class="<?= $isFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i></button></div>
             <section class="detail-tabs">
                 <div class="tab-list" role="tablist"><button class="tab is-active" role="tab" aria-selected="true" aria-controls="description-panel" data-tab="description-panel">Описание</button><button class="tab" role="tab" aria-selected="false" aria-controls="reviews-panel" data-tab="reviews-panel">Отзывы</button></div>
                 <div class="tab-panel is-active" id="description-panel" role="tabpanel">
                     <h2>О фильме</h2>
-                    <p>В небольшом французском городе журналисты готовят последний выпуск любимого журнала. На его страницах оживают истории о художниках, заключённых, студентках и небесном похищении.</p>
-                    <p>Ироничное и визуально безупречное кино Уэса Андерсона — для вечера, когда хочется рассматривать каждый кадр и обсуждать детали после титров.</p>
+                    <p><?= $description ?></p>
                     <dl>
                         <div>
                             <dt>Режиссёр</dt>
@@ -42,13 +52,13 @@ use yii\helpers\Url;
         </div>
         <aside class="movie-summary">
             <span class="eyebrow">ВАШ ВЕЧЕР НАЧИНАЕТСЯ ЗДЕСЬ</span>
-            <h1>Французский<br class="desktop-only"> вестник</h1>
-            <p class="movie-meta">2021&nbsp; В· &nbsp;1 ч 48 мин&nbsp; В· &nbsp;18+</p>
+            <h1><?= $title ?></h1>
+            <p class="movie-meta"><?= Html::encode($movie->year ?: 'Год не указан') ?></p>
             <div class="movie-tags"><span>Комедия</span><span>Драма</span></div>
             <div class="detail-rating"><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i> <strong>4.9</strong> <small>В· 125 оценок</small></div>
-            <p class="summary-copy">Три истории из жизни редакции американского журнала в вымышленном французском городе. Признание в любви журналистике, искусству и людям с причудами.</p>
-            <button class="button button-primary vote-button" onclick="window.location.href='votes'" data-movie="Французский вестник">Оценить</button>
-            <button class="button button-secondary watched-button">Отметить как просмотренное</button>
+            <p class="summary-copy"><?= $description ?></p>
+            <button class="button button-primary vote-button" data-id="<?= Html::encode($movie->id) ?>" data-movie="<?= $title ?>">Оценить</button>
+            <button class="button button-secondary watched-button<?= $isWatched ? ' watched-active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>"><?= $isWatched ? 'Просмотрено ✓' : 'Отметить как просмотренное' ?></button>
             <div class="community-votes"><b>Голосов сообщества: 45</b><span class="vote-bar"><i></i></span><small>Выбираем вместе, что смотреть сегодня.</small></div>
         </aside>
     </div>
