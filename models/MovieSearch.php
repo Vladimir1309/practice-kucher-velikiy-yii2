@@ -11,6 +11,8 @@ use app\models\Movie;
  */
 class MovieSearch extends Movie
 {
+    public $sort;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class MovieSearch extends Movie
     {
         return [
             [['id', 'year', 'duration', 'genre_id'], 'integer'],
-            [['title', 'description', 'poster_url'], 'safe'],
+            [['title', 'description', 'poster_url', 'sort'], 'safe'],
         ];
     }
 
@@ -42,13 +44,27 @@ class MovieSearch extends Movie
     {
         $query = Movie::find();
 
-        // add conditions that should always apply here
+        $this->load($params);
+
+        if ($this->sort === 'newest') {
+            $defaultOrder = ['year' => SORT_DESC, 'id' => SORT_DESC];
+        } elseif ($this->sort === 'title') {
+            $defaultOrder = ['title' => SORT_ASC, 'id' => SORT_DESC];
+        } else {
+            $defaultOrder = ['id' => SORT_DESC];
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => $defaultOrder,
+                'attributes' => [
+                    'id',
+                    'title',
+                    'year',
+                ],
+            ],
         ]);
-
-        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
