@@ -116,6 +116,9 @@ php yii migrate
   
   <h3>4. Админ-панель</h3>
   <img src="screenshots/admin.png" alt="Админ-панель" width="800">
+
+  <h3>5. ER-диаграмма</h3>
+  <img src="screenshots/ER-диаграмма.png" alt="ER-диаграмма" width="800">
 </div>
 
 ---
