@@ -34,3 +34,5 @@ tests/_support/_generated
 
 /web/uploads/avatars/*
 !/web/uploads/avatars/.gitkeep
+
+/web/uploads/posters/*
