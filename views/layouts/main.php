@@ -82,7 +82,12 @@ $accountRoute = $isGuest ? ['site/login'] : ['site/profile'];
                 <div><b>КАТАЛОГ</b><?= Html::a('Новинки', ['site/catalog']) ?><?= Html::a('Популярное', ['site/catalog']) ?><?= Html::a('Подборки', ['site/favorites']) ?></div>
                 <div><b>ПОМОЩЬ</b><?= Html::a($isGuest ? 'Войти' : 'Профиль', $accountRoute) ?><?= Html::a('Контакты', ['site/contact']) ?><?= Html::a('Поддержка', ['site/contact']) ?></div>
                 <div><b>КИНОПИСЬМО</b>
-                    <p>Следите за новостями кино.</p><button type="button" class="btn-subscribe">Подписаться</button>
+                    <p>Следите за новостями кино.</p>
+                    <?php if ($isGuest): ?>
+                        <?= Html::a('Подписаться', ['site/login'], ['class' => 'btn-subscribe']) ?>
+                    <?php else: ?>
+                        <?= Html::a('Подписаться', ['site/settings'], ['class' => 'btn-subscribe']) ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </footer>
