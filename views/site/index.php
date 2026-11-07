@@ -35,7 +35,7 @@ use yii\helpers\Url;
                 <h2 id="categories-title">Категории</h2>
                 <p>От лёгких комедий до фантастических миров.</p>
             </div>
-            <?= Html::a('Все категории <span>→</span>', ['site/catalog'], ['class' => 'text-link', 'encode' => false]) ?>
+            <?= Html::a('В каталог', ['site/catalog'], ['class' => 'button button-light']) ?>
         </div>
         <div class="genre-grid">
             <?= Html::a('<span class="genre-icon comedy">✦</span><span><b>Комедии</b><small>48 фильмов</small></span><span>›</span>', ['site/catalog', 'MovieSearch[genre_id]' => 1], ['class' => 'genre-chip', 'encode' => false]) ?>

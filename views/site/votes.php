@@ -109,7 +109,7 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                         'options' => $movieOptions,
                     ]) ?></label>
                     <fieldset>
-                        <legend>Ваша оценка <em>*</em></legend>
+                        <legend class="vote-rating-label">Ваша оценка <em>*</em></legend>
                         <div class="vote-stars" role="group" aria-label="Выберите рейтинг"><button type="button"
                                 data-rating="1"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"
                                 data-rating="2"><i class="fa-solid fa-star" aria-hidden="true"></i></button><button type="button"

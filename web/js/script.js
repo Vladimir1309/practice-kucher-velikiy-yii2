@@ -213,13 +213,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const openAllReviews = () => openModal(document.querySelector('#all-reviews-modal'));
-  document.querySelector('#show-all-reviews')?.addEventListener('click', openAllReviews);
-  document.querySelector('#show-all-reviews')?.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      openAllReviews();
-    }
+  const openAllReviews = (event) => {
+    event?.preventDefault();
+    const modal = document.querySelector('#all-reviews-modal');
+    if (modal) openModal(modal);
+  };
+  document.querySelectorAll('#show-all-reviews, .show-all-reviews').forEach((button) => {
+    button.addEventListener('click', openAllReviews);
+    button.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') openAllReviews(event);
+    });
   });
   document.querySelectorAll('#all-reviews-modal .reviewed-card').forEach((card) => {
     card.addEventListener('click', () => {
