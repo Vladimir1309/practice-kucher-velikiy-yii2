@@ -50,7 +50,10 @@ use yii\widgets\ActiveForm;
         <?= Html::endForm() ?>
         <section class="catalog-results" aria-labelledby="catalog-results-title">
             <?= Html::beginForm(['site/catalog'], 'get', ['class' => 'search-form']) ?>
-            <label class="search-bar" role="search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><?= Html::textInput('MovieSearch[search]', $searchModel->search, ['class' => 'form-control', 'placeholder' => 'Название фильма...', 'aria-label' => 'Поиск фильма']) ?></label>
+            <div class="search-bar-actions" role="search">
+                <label class="search-bar"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><?= Html::textInput('MovieSearch[search]', $searchModel->search, ['class' => 'form-control', 'placeholder' => 'Название фильма...', 'aria-label' => 'Поиск фильма']) ?></label>
+                <button type="submit" class="button button-primary search-submit"><i class="fas fa-search" aria-hidden="true"></i> Поиск</button>
+            </div>
             <?= Html::endForm() ?>
             <div class="results-toolbar"><b id="catalog-results-title"><?= $dataProvider->getTotalCount() ?> фильмов</b></div>
             <?php if ($searchModel->min_rating): ?><div class="active-filter">Рейтинг от <?= Html::encode($searchModel->min_rating) ?></div><?php endif; ?>

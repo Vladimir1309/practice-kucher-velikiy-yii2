@@ -103,6 +103,7 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                     </div>
                 </div>
                 <div class="vote-fields">
+                    <div class="vote-primary-fields">
                     <label>Фильм <em>*</em><?= Html::dropDownList('movie_id', $movieId, $movieItems, [
                         'prompt' => 'Выберите фильм',
                         'required' => true,
@@ -119,6 +120,7 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                         <?= Html::hiddenInput('rating', '', ['id' => 'rating-value']) ?>
                         <small id="rating-error" class="rating-error" hidden>Выберите оценку от 1 до 5.</small>
                     </fieldset>
+                    </div>
                     <label class="comment-label">Комментарий <span>Необязательно</span><textarea rows="4"
                             name="comment" placeholder="Хочется атмосферного кино для пятничного вечера. Соберёмся вместе?"></textarea></label>
                 </div>
