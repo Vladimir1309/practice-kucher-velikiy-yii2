@@ -67,20 +67,21 @@ body {
 }
 
 .admin-back-button {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ff4d94;
-    color: #ff4d94;
-    background: transparent;
-    transition: all 0.3s;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid #ff4d94 !important;
+    color: #ff4d94 !important;
+    background: transparent !important;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .admin-back-button:hover {
-    background: #ff4d94;
-    color: #ffffff;
+    background: #ff4d94 !important;
+    color: white !important;
 }
 
 textarea.form-control,

@@ -11,6 +11,9 @@ $this->title = 'Жанры';
 ?>
 <div class="admin-container genre-index">
 
+    <div style="margin-bottom: 20px;">
+        <?= Html::a('<i class="fas fa-arrow-left"></i> Назад в админ-панель', ['admin/index'], ['class' => 'btn admin-back-button', 'style' => 'width: auto !important; display: inline-block !important; padding: 8px 20px !important;']) ?>
+    </div>
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>

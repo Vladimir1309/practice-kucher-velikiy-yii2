@@ -28,9 +28,9 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Назад', Yii::$app->request->referrer ?: ['index'], [
-            'class' => 'btn btn-secondary admin-back-button',
-        ]) ?>
+    </div>
+    <div class="form-group" style="margin-top: 10px;">
+        <?= Html::a('Назад', Yii::$app->request->referrer ?: ['index'], ['class' => 'btn admin-back-button']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
