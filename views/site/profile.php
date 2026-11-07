@@ -16,8 +16,7 @@ $initial = Html::encode(mb_strtoupper(mb_substr($user->username, 0, 1)));
     <div class="breadcrumbs">Главная <span>/</span> Личный кабинет</div>
     <div class="profile-layout">
         <aside class="account-sidebar" aria-label="Навигация профиля">
-            <div class="account-user"><span class="avatar small-avatar"><?= $initial ?></span><span><b><?= Html::encode($user->username) ?></b><small>Зашли
-                        недавно</small></span></div>
+            <?= $this->render('_account_user') ?>
             <nav class="account-nav">
                 <?= Html::a('<i class="fa-regular fa-user" aria-hidden="true"></i> <span>Профиль</span>', ['site/profile'], [
                     'class' => 'active',
