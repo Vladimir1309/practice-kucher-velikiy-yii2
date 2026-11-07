@@ -2929,3 +2929,20 @@ input[type=checkbox]:checked {
         font-size: 8px
     }
 }
+
+.button,
+.btn,
+.movie-card,
+.primary-nav a {
+    transition: all 0.3s ease-in-out !important;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-primary:hover,
+.button-pink:hover {
+    box-shadow: 0 0 15px rgba(255, 77, 148, 0.4);
+}

@@ -402,3 +402,70 @@ textarea.form-control,
     color: #ff4d94;
     font-size: 28px;
 }
+
+/* Final admin overrides */
+.admin-container h1,
+.genre-create h1,
+.genre-update h1,
+.movie-create h1,
+.movie-update h1,
+.user-create h1,
+.user-update h1 {
+    font-size: 32px;
+    line-height: 1.25;
+}
+
+.admin-container h2,
+.admin-card-form h2 {
+    font-size: 22px;
+    line-height: 1.35;
+}
+
+.admin-card-form label,
+.admin-card-form .control-label {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.admin-card-form .form-control,
+.admin-card-form select,
+.admin-card-form textarea,
+.admin-card-form input {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.admin-card-form .button,
+.admin-card-form .btn {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.button,
+.btn,
+.movie-card,
+.primary-nav a {
+    transition: all 0.3s ease-in-out !important;
+}
+
+.button-primary:hover,
+.button-pink:hover,
+.admin-card-form .btn-primary:hover {
+    box-shadow: 0 0 15px rgba(255, 77, 148, 0.4);
+}
+
+.btn-back-outline {
+    display: inline-block !important;
+    padding: 8px 20px !important;
+    border-radius: 8px !important;
+    border: 1px solid #ff4d94 !important;
+    color: #ff4d94 !important;
+    background: transparent !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    margin-bottom: 20px !important;
+}
+
+.btn-back-outline:hover {
+    background: rgba(255, 77, 148, 0.1) !important;
+}
