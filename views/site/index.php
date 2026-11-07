@@ -4,7 +4,11 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $movies app\models\Movie[] */
+/* @var $genres app\models\Genre[] */
 /* @var $movieStates array */
+
+$icons = ['✦', '✦', '☾', '✺'];
+$iconClasses = ['comedy', 'drama', 'horror', 'fantasy'];
 ?>
 
 <main>
@@ -38,10 +42,15 @@ use yii\helpers\Url;
             <?= Html::a('В каталог', ['site/catalog'], ['class' => 'button button-light']) ?>
         </div>
         <div class="genre-grid">
-            <?= Html::a('<span class="genre-icon comedy">✦</span><span><b>Комедии</b><small>48 фильмов</small></span><span>›</span>', ['site/catalog', 'MovieSearch[genre_id]' => 1], ['class' => 'genre-chip', 'encode' => false]) ?>
-            <?= Html::a('<span class="genre-icon drama">✦</span><span><b>Драмы</b><small>32 фильма</small></span><span>›</span>', ['site/catalog', 'MovieSearch[genre_id]' => 2], ['class' => 'genre-chip', 'encode' => false]) ?>
-            <?= Html::a('<span class="genre-icon horror">☾</span><span><b>Ужасы</b><small>27 фильмов</small></span><span>›</span>', ['site/catalog', 'MovieSearch[genre_id]' => 3], ['class' => 'genre-chip', 'encode' => false]) ?>
-            <?= Html::a('<span class="genre-icon fantasy">✺</span><span><b>Фантастика</b><small>54 фильма</small></span><span>›</span>', ['site/catalog', 'MovieSearch[genre_id]' => 4], ['class' => 'genre-chip', 'encode' => false]) ?>
+            <?php foreach (array_slice($genres, 0, 4) as $index => $genre): ?>
+                <?= Html::a(
+                    '<span class="genre-icon ' . $iconClasses[$index % 4] . '">' . $icons[$index % 4] . '</span>'
+                    . '<span><b>' . Html::encode($genre->name) . '</b><small>' . (int) $genre->movieCount . ' фильмов</small></span>'
+                    . '<span>›</span>',
+                    ['site/catalog', 'MovieSearch' => ['genre_id' => $genre->id]],
+                    ['class' => 'genre-chip', 'encode' => false]
+                ) ?>
+            <?php endforeach; ?>
         </div>
     </section>
 
