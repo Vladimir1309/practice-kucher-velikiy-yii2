@@ -10,7 +10,18 @@ use yii\widgets\ActiveForm;
 
 <div class="admin-card-form user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+
+    <!-- Блок работы с аватаркой -->
+    <div style="margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #2a3248;">
+        <?php if (!empty($model->avatar)): ?>
+            <div style="margin-bottom: 15px;">
+                <img src="<?= Yii::getAlias('@web') . Html::encode($model->avatar) ?>" width="100" style="border-radius: 50%; object-fit: cover;">
+            </div>
+        <?php endif; ?>
+        <?= $form->field($model, 'imageFile')->fileInput() ?>
+    </div>
+    <!-- Конец блока аватарки -->
 
     <div class="admin-form-grid">
         <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>

@@ -20,14 +20,41 @@ $this->title = 'Пользователи';
         <?= Html::a('Создать пользователя', ['create'], ['class' => 'button button-primary']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => null,
         'columns' => [
             'id',
-            'name',
+            [
+                'attribute' => 'avatar',
+                'label' => 'Аватар',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if (!empty($model->avatar)) {
+                        return Html::img(Yii::getAlias('@web') . Html::encode($model->avatar), [
+                            'width' => '40px', 
+                            'height' => '40px', 
+                            'style' => 'border-radius: 50%; object-fit: cover;'
+                        ]);
+                    }
+                    return '<span style="color: #666;">Нет</span>';
+                },
+            ],
+            [
+                'attribute' => 'username',
+                'label' => 'Имя пользователя',
+            ],
+            [
+                'attribute' => 'email',
+                'label' => 'Email',
+            ],
+            [
+                'attribute' => 'role_id',
+                'label' => 'Роль',
+                'value' => function ($model) {
+                    return $model->role ? $model->role->name : 'Не задана';
+                },
+            ],
 
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -40,13 +67,15 @@ $this->title = 'Пользователи';
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        // Используем HTML-форму с методом POST вместо ссылки. 
-                        // Это полностью обходит необходимость в yii.js для удаления.
+                        // Защита от удаления самого себя (админа)
+                        if ($model->id === Yii::$app->user->id) {
+                            return '';
+                        }
                         return Html::beginForm($url, 'post', ['style' => 'display:inline;'])
                             . Html::submitButton('<i class="fas fa-trash"></i>', [
                                 'class' => 'btn btn-danger btn-sm action-btn',
                                 'title' => 'Удалить',
-                                'onclick' => 'return confirm("Вы уверены, что хотите удалить этот элемент?");',
+                                'onclick' => 'return confirm("Вы уверены, что хотите удалить этого пользователя?");',
                             ])
                             . Html::endForm();
                     },
@@ -54,6 +83,5 @@ $this->title = 'Пользователи';
             ],
         ],
     ]); ?>
-
 
 </div>

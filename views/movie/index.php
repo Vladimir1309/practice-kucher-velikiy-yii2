@@ -27,8 +27,29 @@ $this->title = 'Фильмы';
         'filterModel' => null,
         'columns' => [
             'id',
-            'name',
-
+            [
+                'attribute' => 'title',
+                'label' => 'Название',
+            ],
+            [
+                'attribute' => 'year',
+                'label' => 'Год',
+            ],
+            [
+                'attribute' => 'genre_id',
+                'label' => 'Жанр',
+                'value' => function ($model) {
+                    return $model->genre ? $model->genre->name : 'Не указан';
+                },
+            ],
+            [
+                'attribute' => 'poster_url',
+                'label' => 'Постер',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return $model->poster_url ? Html::img(Yii::getAlias('@web') . $model->poster_url, ['width' => '50px', 'style' => 'border-radius: 4px;']) : 'Нет';
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',
@@ -40,8 +61,6 @@ $this->title = 'Фильмы';
                         ]);
                     },
                     'delete' => function ($url, $model) {
-                        // Используем HTML-форму с методом POST вместо ссылки. 
-                        // Это полностью обходит необходимость в yii.js для удаления.
                         return Html::beginForm($url, 'post', ['style' => 'display:inline;'])
                             . Html::submitButton('<i class="fas fa-trash"></i>', [
                                 'class' => 'btn btn-danger btn-sm action-btn',
