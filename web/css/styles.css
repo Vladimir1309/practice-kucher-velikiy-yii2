@@ -1918,7 +1918,7 @@ input[type=checkbox]:checked {
     gap: 12px;
     max-height: 60vh;
     overflow-y: auto;
-    padding-right: 4px
+    padding: 10px 10px 20px 10px
 }
 
 .all-reviews-list .reviewed-card {
@@ -1946,7 +1946,7 @@ input[type=checkbox]:checked {
 #all-reviews-modal .reviewed-card:hover {
     background-color: #1a1f2e;
     border-color: #ff4d94;
-    transform: translateY(-2px);
+    transform: scale(1.01);
     transition: all 0.2s ease
 }
 
