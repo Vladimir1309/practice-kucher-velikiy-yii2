@@ -71,7 +71,6 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                                     <?php for ($star = 1; $star <= 5; $star++): ?>
                                         <i class="<?= $star <= (int) $review->rating ? 'fa-solid' : 'fa-regular' ?> fa-star" aria-hidden="true"></i>
                                     <?php endfor; ?>
-                                    <span><?= (int) $review->rating ?></span>
                                 </div>
                                 <b class="voted-label">◉ Голос учтён</b>
                             </div>
@@ -99,7 +98,7 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                             aria-hidden="true"></i></span>
                     <div>
                         <h2>Оценить фильм</h2>
-                        <p>Выберите фильм, оцените его и добавьте комментарий. Мы сохраним ваш голос.</p>
+                        <p class="vote-form-subtitle">Выберите фильм, оцените его и добавьте комментарий. Мы сохраним ваш голос.</p>
                     </div>
                 </div>
                 <div class="vote-fields">
@@ -121,7 +120,7 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                         <small id="rating-error" class="rating-error" hidden>Выберите оценку от 1 до 5.</small>
                     </fieldset>
                     </div>
-                    <label class="comment-label">Комментарий <span>Необязательно</span><textarea rows="4"
+                    <label class="comment-label">Комментарий <span class="optional-hint">Необязательно</span><textarea rows="4"
                             name="comment" placeholder="Хочется атмосферного кино для пятничного вечера. Соберёмся вместе?"></textarea></label>
                 </div>
                 <small class="required-note"><em>*</em> Обязательные поля</small>
@@ -182,7 +181,6 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                                 <?php for ($star = 1; $star <= 5; $star++): ?>
                                     <i class="<?= $star <= (int) $review->rating ? 'fa-solid' : 'fa-regular' ?> fa-star" aria-hidden="true"></i>
                                 <?php endfor; ?>
-                                <span><?= (int) $review->rating ?></span>
                             </div>
                         </div>
                     </article>

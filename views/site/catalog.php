@@ -37,10 +37,18 @@ use yii\widgets\ActiveForm;
                     ['unselect' => null, 'class' => 'custom-radio-list']
                 ) ?>
             </fieldset>
-            <label class="select-label">Сортировка<?= Html::dropDownList('MovieSearch[sort]', $searchModel->sort, [
-                'newest' => 'По новинкам',
-                'title' => 'По алфавиту',
-            ], ['class' => 'custom-select', 'prompt' => 'По популярности']) ?></label>
+            <label class="select-label">Сортировка
+                <div style="width: 100%;">
+                    <?= Html::dropDownList('MovieSearch[sort]', $searchModel->sort, [
+                        'newest' => 'По новинкам',
+                        'title' => 'По алфавиту',
+                    ], [
+                        'class' => 'custom-select',
+                        'prompt' => 'По популярности',
+                        'style' => 'width: 100%; min-width: 180px; padding: 10px;',
+                    ]) ?>
+                </div>
+            </label>
             <fieldset>
                 <legend>Просмотренные</legend><?= Html::activeCheckbox($searchModel, 'is_watched', ['label' => 'Только просмотренные']) ?>
             </fieldset>

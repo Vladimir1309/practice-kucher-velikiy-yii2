@@ -22,8 +22,8 @@ use yii\helpers\Html;
         <section class="collection-content">
             <span class="eyebrow">ВАШ ВЕЧЕР НАЧИНАЕТСЯ ЗДЕСЬ</span>
             <h1>Просмотренные</h1>
-            <p class="profile-intro">Истории, которые уже стали частью ваших киновечеров.</p>
-            <div class="collection-toolbar"><b><?= count($movies) ?> фильмов</b><?= Html::a('В каталог →', ['site/catalog']) ?></div>
+            <p class="profile-intro collection-subtitle">Истории, которые уже стали частью ваших киновечеров.</p>
+            <div class="collection-toolbar"><b><?= count($movies) ?> фильмов</b><?= Html::a('В каталог', ['site/catalog'], ['class' => 'button button-light']) ?></div>
             <div class="collection-grid"><?= $this->render('_movie_collection', ['movies' => $movies, 'type' => 'watched', 'movieStates' => $movieStates]) ?></div>
         </section>
     </div>

@@ -1360,6 +1360,15 @@ input[type=checkbox]:checked {
     font-size: 16px !important;
 }
 
+.vote-form-subtitle {
+    font-size: 16px !important;
+    line-height: 1.5;
+}
+
+.optional-hint {
+    font-size: 14px !important;
+}
+
 .reviewed-card .rating .fa-star {
     font-size: 16px;
 }
@@ -1377,6 +1386,16 @@ select[name="MovieSearch[sort]"] {
     background-position: right 10px center !important;
     background-size: 1em !important;
     text-overflow: ellipsis;
+}
+
+.collection-subtitle {
+    font-size: 16px !important;
+    line-height: 1.5;
+}
+
+.collection-toolbar .button-light {
+    color: #111827 !important;
+    font-size: 14px;
 }
 
 .active-filter {
