@@ -12,17 +12,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <div class="admin-form-grid">
+    <div class="admin-form-row">
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-        <?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
+        <?= $form->field($model, 'poster_url')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="admin-form-row">
         <?= $form->field($model, 'year')->textInput() ?>
         <?= $form->field($model, 'duration')->textInput() ?>
-        <?= $form->field($model, 'poster_url')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'genre_id')->textInput() ?>
     </div>
+    <div class="admin-form-row-full">
+        <?= $form->field($model, 'description')->textarea(['rows' => 3, 'style' => 'width: 100%;']) ?>
+    </div>
 
-    <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
+    <div class="form-group" style="margin-top: 30px; margin-bottom: 0;">
+        <?= Html::submitButton('Сохранить', ['class' => 'button button-primary', 'style' => 'width: 100%;']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

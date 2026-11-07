@@ -16,8 +16,8 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     </div>
 
-    <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
+    <div class="form-group" style="margin-top: 30px; margin-bottom: 0;">
+        <?= Html::submitButton('Сохранить', ['class' => 'button button-primary', 'style' => 'width: 100%;']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

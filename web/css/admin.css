@@ -18,7 +18,7 @@ body {
 
 .admin-card-form {
     background: #131722;
-    padding: 30px 30px 30px 30px !important;
+    padding: 30px !important;
     border-radius: 12px;
     max-width: 800px;
     margin: 0 auto;
@@ -29,27 +29,22 @@ body {
     margin-bottom: 20px;
 }
 
-.admin-card-form .form-group:last-child {
-    margin-bottom: 0 !important;
-    margin-top: 30px;
-}
-
 .btn-back-outline {
-    display: inline-block;
-    padding: 8px 20px;
-    border-radius: 8px;
-    border: 1px solid #ff4d94;
-    color: #ff4d94;
-    background: transparent;
-    text-decoration: none;
-    font-weight: 500;
+    display: inline-block !important;
+    padding: 8px 20px !important;
+    border-radius: 8px !important;
+    border: 1px solid #ff4d94 !important;
+    color: #ff4d94 !important;
+    background: transparent !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
     margin-bottom: 20px;
-    transition: all 0.2s;
+    transition: all 0.2s !important;
 }
 
 .btn-back-outline:hover {
-    background: rgba(255, 77, 148, 0.1);
-    color: #ff4d94;
+    background: rgba(255, 77, 148, 0.1) !important;
+    color: #ff4d94 !important;
 }
 
 .admin-page-back {
@@ -84,9 +79,23 @@ body {
     gap: 0 20px;
 }
 
-.admin-form-grid .field-description,
-.admin-form-grid .field-poster_url {
-    grid-column: 1 / -1;
+.admin-form-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.admin-form-row > .form-group {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-form-row-full {
+    width: 100%;
+}
+
+.admin-form-row-full textarea {
+    width: 100%;
 }
 
 .admin-back-button {
