@@ -2542,6 +2542,14 @@ select[name="MovieSearch[sort]"] {
     font-size: 10px
 }
 
+.sidebar-avatar-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
 .account-nav {
     display: flex;
     flex-direction: column;

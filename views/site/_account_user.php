@@ -9,7 +9,7 @@ $initial = mb_strtoupper(mb_substr($username, 0, 1));
 
 <div class="account-user">
     <?php if ($identity && !empty($identity->avatar)): ?>
-        <img src="<?= Yii::getAlias('@web') . Html::encode($identity->avatar) ?>" alt="Avatar" class="avatar small-avatar">
+        <img src="<?= Yii::getAlias('@web') . Html::encode($identity->avatar) ?>" alt="Avatar" class="avatar small-avatar sidebar-avatar-img">
     <?php else: ?>
         <span class="avatar small-avatar avatar-initials"><?= Html::encode($initial) ?></span>
     <?php endif; ?>
