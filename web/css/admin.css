@@ -445,7 +445,7 @@ textarea.form-control,
 .btn,
 .movie-card,
 .primary-nav a {
-    transition: all 0.3s ease-in-out !important;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
 }
 
 .button-primary:hover,

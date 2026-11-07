@@ -14,8 +14,26 @@
     --container: 1180px
 }
 
+.switch,
+.slider,
+.setting-switch,
+.setting-row {
+    cursor: pointer;
+}
+
 * {
     box-sizing: border-box
+}
+
+.catalog-filters,
+.catalog-filters label,
+.account-nav a,
+.account-nav .logout-button,
+.breadcrumbs,
+footer,
+footer a {
+    font-size: 15px;
+    line-height: 1.5;
 }
 
 html {
@@ -1947,7 +1965,7 @@ input[type=checkbox]:checked {
     background-color: #1a1f2e;
     border-color: #ff4d94;
     transform: translateY(-3px);
-    transition: all 0.2s ease;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     box-shadow: 0 4px 12px rgba(255, 77, 148, 0.1)
 }
 
@@ -1968,7 +1986,8 @@ input[type=checkbox]:checked {
     justify-content: center;
     padding: 20px;
     overflow: hidden;
-    background: linear-gradient(to bottom, transparent, #1a1f2e);
+    background: linear-gradient(to bottom, rgba(26, 31, 46, 0.35), #121725 72%);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
     color: var(--text);
     text-align: center;
 }
@@ -1998,6 +2017,11 @@ input[type=checkbox]:checked {
     position: relative;
     z-index: 1;
     font-weight: 700;
+    font-size: 15px;
+}
+
+.review-stack-trigger::before {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.35);
 }
 
 .reviewed-card {
@@ -2934,7 +2958,7 @@ input[type=checkbox]:checked {
 .btn,
 .movie-card,
 .primary-nav a {
-    transition: all 0.3s ease-in-out !important;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
 }
 
 .movie-card:hover {
@@ -2957,7 +2981,29 @@ button,
 .reviewed-card,
 .primary-nav a,
 footer a {
-    transition: all 0.3s ease-in-out !important;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.back-btn-hover:hover {
+    background: rgba(255, 77, 148, 0.1) !important;
+    transform: translateX(-3px);
+}
+
+.footer-sub-btn {
+    min-height: 32px;
+    padding: 8px 18px !important;
+    font-size: 14px !important;
+}
+
+.account-nav a,
+.account-nav .logout-button {
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.account-nav a:hover,
+.account-nav .logout-button:hover {
+    color: #ff4d94;
+    transform: translateX(5px);
 }
 
 .primary-nav a:hover,

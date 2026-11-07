@@ -84,9 +84,9 @@ $accountRoute = $isGuest ? ['site/login'] : ['site/profile'];
                 <div><b>КИНОПИСЬМО</b>
                     <p>Следите за новостями кино.</p>
                     <?php if ($isGuest): ?>
-                        <?= Html::a('Подписаться', ['site/login'], ['class' => 'btn-subscribe']) ?>
+                        <?= Html::a('Подписаться', ['site/login'], ['class' => 'button button-primary footer-sub-btn']) ?>
                     <?php else: ?>
-                        <?= Html::a('Подписаться', ['site/settings'], ['class' => 'btn-subscribe']) ?>
+                        <?= Html::a('Подписаться', ['site/settings'], ['class' => 'button button-primary footer-sub-btn']) ?>
                     <?php endif; ?>
                 </div>
             </div>
