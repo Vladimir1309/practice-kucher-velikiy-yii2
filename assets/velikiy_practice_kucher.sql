@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 06 2026 г., 13:50
+-- Время создания: Ноя 07 2026 г., 11:47
 -- Версия сервера: 8.0.19
 -- Версия PHP: 8.0.1
 
@@ -65,7 +65,8 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m261105_081526_create_genre_table', 1793866708),
 ('m261105_081601_create_user_movie_table', 1793866708),
 ('m261106_063243_add_genre_id_to_movie', 1793948713),
-('m261106_091500_add_notifications_to_user', 1793956571);
+('m261106_091500_add_notifications_to_user', 1793956571),
+('m261107_000000_add_avatar_to_user', 1794039889);
 
 -- --------------------------------------------------------
 
@@ -146,16 +147,17 @@ CREATE TABLE `user` (
   `created_at` datetime NOT NULL,
   `notify_news` tinyint(1) NOT NULL DEFAULT '0',
   `notify_reminders` tinyint(1) NOT NULL DEFAULT '0',
-  `role_id` int NOT NULL DEFAULT '1'
+  `role_id` int NOT NULL DEFAULT '1',
+  `avatar` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Дамп данных таблицы `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `nickname`, `last_name`, `birthdate`, `email`, `password_hash`, `phone`, `created_at`, `notify_news`, `notify_reminders`, `role_id`) VALUES
-(1, 'Давид', '', '', NULL, 'david@gmail.com', '$2y$13$jFcvpyU9.ky8Kt7YHJkUfePzJLCe78Hv4N8iGpnW4XMa3hG3/EPtu', '', '2026-11-05 11:37:22', 1, 1, 1),
-(6, 'admin', NULL, NULL, NULL, 'admin@gmail.com', '$2y$13$9CwQauzE4CLWP1f8ov3cye3DHwgQ5ibw0Lukbmh08.MFkAyF6v4ba', NULL, '2026-11-06 13:07:59', 0, 0, 2);
+INSERT INTO `user` (`id`, `username`, `nickname`, `last_name`, `birthdate`, `email`, `password_hash`, `phone`, `created_at`, `notify_news`, `notify_reminders`, `role_id`, `avatar`) VALUES
+(1, 'Давид', '', 'Рябов', NULL, 'david@gmail.com', '$2y$13$jFcvpyU9.ky8Kt7YHJkUfePzJLCe78Hv4N8iGpnW4XMa3hG3/EPtu', '', '2026-11-05 11:37:22', 1, 1, 1, '/uploads/avatars/YMcdJJ7RK15wmx5xsrcGMBGyo8ZV_2QE.jpg'),
+(6, 'admin', NULL, NULL, NULL, 'admin@gmail.com', '$2y$13$9CwQauzE4CLWP1f8ov3cye3DHwgQ5ibw0Lukbmh08.MFkAyF6v4ba', NULL, '2026-11-06 13:07:59', 0, 0, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -179,9 +181,9 @@ CREATE TABLE `user_movie` (
 --
 
 INSERT INTO `user_movie` (`id`, `user_id`, `movie_id`, `rating`, `comment`, `is_favorite`, `is_watched`, `created_at`) VALUES
-(3, 1, 4, 5, '', 0, 1, '2026-11-06 11:23:29'),
+(3, 1, 4, 5, '', 1, 1, '2026-11-06 11:23:29'),
 (5, 1, 1, 5, '', 0, 0, '2026-11-06 11:51:06'),
-(6, 1, 3, NULL, NULL, 1, 1, '2026-11-06 11:51:11'),
+(6, 1, 3, NULL, NULL, 1, 0, '2026-11-06 11:51:11'),
 (8, 1, 15, 5, '', 0, 0, '2026-11-06 12:23:21'),
 (9, 1, 16, 4, '', 0, 0, '2026-11-06 12:23:28'),
 (10, 1, 14, 4, '', 0, 0, '2026-11-06 12:23:32'),
@@ -189,7 +191,10 @@ INSERT INTO `user_movie` (`id`, `user_id`, `movie_id`, `rating`, `comment`, `is_
 (12, 1, 18, 4, '', 0, 0, '2026-11-06 12:29:01'),
 (13, 1, 10, 3, '', 0, 0, '2026-11-06 12:58:07'),
 (14, 1, 7, 5, '', 0, 0, '2026-11-06 12:58:11'),
-(15, 1, 17, 5, '', 0, 0, '2026-11-06 12:58:14');
+(15, 1, 17, 5, '', 0, 0, '2026-11-06 12:58:14'),
+(16, 1, 13, NULL, NULL, 1, 1, '2026-11-07 09:13:28'),
+(17, 6, 1, NULL, NULL, 0, 0, '2026-11-07 10:13:50'),
+(18, 1, 20, NULL, NULL, 0, 0, '2026-11-07 11:15:12');
 
 --
 -- Индексы сохранённых таблиц
@@ -267,7 +272,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `user_movie`
 --
 ALTER TABLE `user_movie`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
