@@ -1,233 +1,122 @@
-<p align="center">
-    <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
-    </a>
-    <h1 align="center">Yii 2 Basic Project Template</h1>
-    <br>
-</p>
+# 🎬 CineNight — Каталог фильмов для киновечеров
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-rapidly creating small projects.
+**CineNight** — это полноценное веб-приложение на фреймворке Yii2, созданное для организации идеальных киновечеров. Проект выполнен в стильной темной кинематографичной теме. Пользователи могут искать фильмы, вести списки избранного и просмотренного, загружать аватарки, а также делиться своим мнением, оставляя оценки и отзывы.
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+## 🛠 Технологический стек
+* **Backend:** PHP 8.x, Yii2 Framework (Basic Template)
+* **База данных:** MySQL (через миграции Yii2)
+* **Frontend:** HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript (Fetch API, модальные окна)
+* **Иконки:** FontAwesome
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-basic.svg)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![build](https://github.com/yiisoft/yii2-app-basic/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-app-basic/actions?query=workflow%3Abuild)
+---
 
-DIRECTORY STRUCTURE
--------------------
+## 🚀 Развертывание проекта
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+Для запуска проекта на локальном сервере (например, OpenServer) выполните следующие шаги:
 
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://github.com/ваш_логин/ваш_репозиторий.git
+   cd ваш_репозиторий
+Установите зависимости через Composer:
 
+bash
+composer install
+Настройте подключение к базе данных. Откройте файл config/db.php и укажите ваши данные:
 
-REQUIREMENTS
-------------
-
-The minimum requirement by this project template that your Web server supports PHP 5.6.0.
-
-
-INSTALLATION
-------------
-
-### Install via Composer
-
-If you do not have [Composer](http://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install this project template using the following command:
-
-~~~
-composer create-project --prefer-dist yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-Set cookie validation key in `config/web.php` file to some random secret string:
-
-```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install with Docker
-
-Update your vendor packages
-
-    docker-compose run --rm php composer update --prefer-dist
-    
-Run the installation triggers (creating cookie validation code)
-
-    docker-compose run --rm php composer install    
-    
-Start the container
-
-    docker-compose up -d
-    
-You can then access the application through the following URL:
-
-    http://127.0.0.1:8000
-
-**NOTES:** 
-- Minimum required Docker engine version `17.04` for development (see [Performance tuning for volume mounts](https://docs.docker.com/docker-for-mac/osxfs-caching/))
-- The default configuration uses a host-volume in your home directory `.docker-composer` for composer caches
-
-
-CONFIGURATION
--------------
-
-### Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
+php
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
+    'dsn' => 'mysql:host=localhost;dbname=имя_вашей_бд',
     'username' => 'root',
-    'password' => '1234',
+    'password' => '',
     'charset' => 'utf8',
 ];
-```
+Примените миграции для создания структуры таблиц:
 
-**NOTES:**
-- Yii won't create the database for you, this has to be done manually before you can access it.
-- Check and edit the other files in the `config/` directory to customize your application as required.
-- Refer to the README in the `tests` directory for information specific to basic application tests.
+bash
+php yii migrate
+Создайте папку для загрузки аватарок (если её нет) и дайте ей права на запись:
 
+Путь: web/uploads/avatars/
 
-TESTING
--------
+Настройте веб-сервер так, чтобы корневая директория (Document Root) указывала на папку web.
 
-Tests are located in `tests` directory. They are developed with [Codeception PHP Testing Framework](http://codeception.com/).
-By default, there are 3 test suites:
+🗄️ Структура базы данных
+Проект использует 5 связанных таблиц (связи реализованы через внешние ключи FOREIGN KEY и ActiveRecord связи hasOne / hasMany):
 
-- `unit`
-- `functional`
-- `acceptance`
+user — пользователи (логин, email, хеш пароля, аватарка, настройки уведомлений).
 
-Tests can be executed by running
+role — справочник ролей (гость, пользователь, администратор).
 
-```
-vendor/bin/codecept run
-```
+movie — каталог фильмов (название, описание, постер, год, длительность, жанр).
 
-The command above will execute unit and functional tests. Unit tests are testing the system components, while functional
-tests are for testing user interaction. Acceptance tests are disabled by default as they require additional setup since
-they perform testing in real browser. 
+genre — справочник жанров.
 
+user_movie — связующая таблица (оценки, отзывы, статусы "В избранном" и "Просмотрено").
 
-### Running  acceptance tests
+⚙️ Основной функционал
+🔐 Аутентификация и роли
+Регистрация, вход, выход из системы.
 
-To execute acceptance tests do the following:  
+Безопасное хранение паролей (Bcrypt).
 
-1. Rename `tests/acceptance.suite.yml.example` to `tests/acceptance.suite.yml` to enable suite configuration
+Роли: Гость (просмотр), Пользователь (оценки, списки, профиль), Администратор (полный доступ).
 
-2. Replace `codeception/base` package in `composer.json` with `codeception/codeception` to install full-featured
-   version of Codeception
+Разграничение прав доступа через AccessControl.
 
-3. Update dependencies with Composer 
+🎥 Каталог и Поиск
+Вывод фильмов с постраничной пагинацией.
 
-    ```
-    composer update  
-    ```
+Поиск по названию, фильтрация по жанрам.
 
-4. Download [Selenium Server](http://www.seleniumhq.org/download/) and launch it:
+Сортировка (по новинкам, по алфавиту, по рейтингу).
 
-    ```
-    java -jar ~/selenium-server-standalone-x.xx.x.jar
-    ```
+Интерактивная кнопка «Мне повезет» (выбирает случайный фильм).
 
-    In case of using Selenium Server 3.0 with Firefox browser since v48 or Google Chrome since v53 you must download [GeckoDriver](https://github.com/mozilla/geckodriver/releases) or [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and launch Selenium with it:
+👤 Личный кабинет (Модули)
+Профиль: Редактирование личных данных, загрузка и обрезка аватарки (UploadedFile).
 
-    ```
-    # for Firefox
-    java -jar -Dwebdriver.gecko.driver=~/geckodriver ~/selenium-server-standalone-3.xx.x.jar
-    
-    # for Google Chrome
-    java -jar -Dwebdriver.chrome.driver=~/chromedriver ~/selenium-server-standalone-3.xx.x.jar
-    ``` 
-    
-    As an alternative way you can use already configured Docker container with older versions of Selenium and Firefox:
-    
-    ```
-    docker run --net=host selenium/standalone-firefox:2.53.0
-    ```
+Мои голоса: Выставление оценок (от 1 до 5 звезд), написание, редактирование и удаление отзывов. Модальное окно для просмотра всех отзывов.
 
-5. (Optional) Create `yii2basic_test` database and update it by applying migrations if you have them.
+Избранное и Просмотренные: Мгновенное добавление фильмов в списки в один клик (AJAX без перезагрузки страницы).
 
-   ```
-   tests/bin/yii migrate
-   ```
+Настройки: Смена пароля с валидацией и управление Email-уведомлениями (тумблеры).
 
-   The database configuration can be found at `config/test_db.php`.
+🛡 Админ-панель
+Защищена от обычных пользователей (выдает 403 Forbidden).
 
+Управление контентом: CRUD (создание, чтение, обновление, удаление) для Жанров, Фильмов и Пользователей (сгенерировано через Gii).
 
-6. Start web server:
+Глобальный список всех отзывов пользователей.
 
-    ```
-    tests/bin/yii serve
-    ```
+🔒 Безопасность
+Валидация всех входящих данных на стороне сервера (Yii2 Validators).
 
-7. Now you can run all available tests
+Защита от XSS-атак (экранирование вывода через Html::encode()).
 
-   ```
-   # run all available tests
-   vendor/bin/codecept run
+Защита от CSRF-атак (встроенные токены ActiveForm).
 
-   # run acceptance tests
-   vendor/bin/codecept run acceptance
+Безопасная обработка загружаемых файлов (проверка расширений и размеров).
 
-   # run only unit and functional tests
-   vendor/bin/codecept run unit,functional
-   ```
+📸 Скриншоты проекта
+(Сюда нужно вставить скриншоты. Создай папку screenshots в корне проекта, закинь туда картинки и вставь их сюда)
 
-### Code coverage support
+1. Главная страница (Темная тема)
+https://screenshots/home.png
 
-By default, code coverage is disabled in `codeception.yml` configuration file, you should uncomment needed rows to be able
-to collect code coverage. You can run your tests and collect coverage with the following command:
+2. Каталог фильмов с фильтрами
+https://screenshots/catalog.png
 
-```
-#collect coverage for all tests
-vendor/bin/codecept run --coverage --coverage-html --coverage-xml
+3. Личный кабинет (Мои голоса)
+https://screenshots/profile.png
 
-#collect coverage only for unit tests
-vendor/bin/codecept run unit --coverage --coverage-html --coverage-xml
+4. Админ-панель
+https://screenshots/admin.png
 
-#collect coverage for unit and functional tests
-vendor/bin/codecept run functional,unit --coverage --coverage-html --coverage-xml
-```
+👨‍💻 Автор
+Студент: Владимир Великий
 
-You can see code coverage output under the `tests/_output` directory.
+Группа: 53-03
+
+Учебное заведение: СПбГБПОУ "Петровский колледж"
