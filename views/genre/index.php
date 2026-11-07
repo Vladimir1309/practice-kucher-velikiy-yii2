@@ -21,7 +21,7 @@ $this->title = 'Жанры';
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        'filterModel' => null,
         'columns' => [
             'id',
             'name',

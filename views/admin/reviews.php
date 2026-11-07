@@ -6,7 +6,6 @@ use yii\helpers\Html;
 ?>
 
 <main class="admin-container admin-reviews">
-    <span class="eyebrow">CINENIGHT</span>
     <h1>Отзывы пользователей</h1>
 
     <div class="table-responsive">

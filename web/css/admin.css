@@ -67,10 +67,20 @@ body {
 }
 
 .admin-back-button {
-    margin-left: 10px;
-    background: transparent !important;
-    border: 1px solid #ff4d94 !important;
-    color: #ff4d94 !important;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ff4d94;
+    color: #ff4d94;
+    background: transparent;
+    transition: all 0.3s;
+}
+
+.admin-back-button:hover {
+    background: #ff4d94;
+    color: #ffffff;
 }
 
 textarea.form-control,

@@ -21,7 +21,7 @@ $this->title = 'Фильмы';
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        'filterModel' => null,
         'columns' => [
             'id',
             'title',

@@ -21,7 +21,7 @@ $this->title = 'Пользователи';
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        'filterModel' => null,
         'columns' => [
             'id',
             'username',
