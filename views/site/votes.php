@@ -80,7 +80,7 @@ $visibleReviews = array_slice($myReviews, 0, 3);
                     <?php if ($reviewCount > 3): ?>
                         <div class="show-all-reviews-wrapper">
                             <button id="show-all-reviews" class="btn btn-secondary" type="button">
-                                Показать все отзывы (<?= count($myReviews) ?>) <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                                Показать все отзывы (<?= count($myReviews) ?>)
                             </button>
                         </div>
                     <?php endif; ?>

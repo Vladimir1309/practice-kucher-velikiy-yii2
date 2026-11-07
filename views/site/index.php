@@ -54,6 +54,7 @@ use yii\helpers\Url;
             <?= Html::a('В каталог', ['site/catalog'], ['class' => 'button button-light']) ?>
         </div>
         <div class="movie-grid">
+            <?php $i = 0; ?>
             <?php foreach ($movies as $movie): ?>
                 <?php
                 $title = Html::encode($movie->title);
@@ -63,7 +64,7 @@ use yii\helpers\Url;
                 ?>
                 <article class="movie-card" data-id="<?= Html::encode($movie->id) ?>">
                     <div class="movie-image">
-                        <?= Html::a('<img src="' . $poster . '" alt="' . $title . '"><span class="hit-label">ХИТ</span>', ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
+                        <?= Html::a('<img src="' . $poster . '" alt="' . $title . '">' . ($i < 2 ? '<span class="hit-label">ХИТ</span>' : ''), ['site/movie', 'id' => $movie->id], ['encode' => false]) ?>
                         <?php $isFavorite = $movieStates[$movie->id]['is_favorite'] ?? false; ?>
                         <button class="save-button<?= $isFavorite ? ' active' : '' ?>" data-id="<?= Html::encode($movie->id) ?>" aria-label="<?= $isFavorite ? 'Удалить из избранного' : 'Добавить в избранное' ?>"><i class="<?= $isFavorite ? 'fa-solid' : 'fa-regular' ?> fa-heart" aria-hidden="true"></i></button>
                         <?php $isWatched = $movieStates[$movie->id]['is_watched'] ?? false; ?>
@@ -83,6 +84,7 @@ use yii\helpers\Url;
                         ) ?>
                     </div>
                 </article>
+                <?php $i++; ?>
             <?php endforeach; ?>
         </div>
     </section>
