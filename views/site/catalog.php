@@ -42,7 +42,7 @@ use yii\widgets\ActiveForm;
                 'title' => 'По алфавиту',
             ], ['class' => 'custom-select', 'prompt' => 'По популярности']) ?></label>
             <fieldset>
-                <legend>Просмотренные</legend><?= Html::checkbox('MovieSearch[is_watched]', (bool) $searchModel->is_watched, ['value' => 1, 'label' => 'Только просмотренные']) ?>
+                <legend>Просмотренные</legend><?= Html::activeCheckbox($searchModel, 'is_watched', ['label' => 'Только просмотренные']) ?>
             </fieldset>
             <?= Html::submitButton('Применить', ['class' => 'button button-primary apply-filters']) ?>
             <?= Html::a('Сбросить', ['site/catalog'], ['class' => 'button button-secondary reset-filters']) ?>

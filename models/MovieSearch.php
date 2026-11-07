@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Movie;
@@ -12,6 +13,7 @@ use app\models\Movie;
 class MovieSearch extends Movie
 {
     public $sort;
+    public $is_watched;
 
     /**
      * {@inheritdoc}
@@ -20,7 +22,7 @@ class MovieSearch extends Movie
     {
         return [
             [['id', 'year', 'duration', 'genre_id'], 'integer'],
-            [['title', 'description', 'poster_url', 'sort'], 'safe'],
+            [['title', 'description', 'poster_url', 'sort', 'is_watched'], 'safe'],
         ];
     }
 
@@ -42,9 +44,19 @@ class MovieSearch extends Movie
      */
     public function search($params)
     {
-        $query = Movie::find();
+        $query = Movie::find()->alias('movie');
 
         $this->load($params);
+
+        if (!Yii::$app->user->isGuest) {
+            $query->leftJoin(
+                'user_movie um',
+                'um.movie_id = movie.id AND um.user_id = :userId',
+                [':userId' => Yii::$app->user->id]
+            );
+        } else {
+            $query->leftJoin('user_movie um', 'um.movie_id = movie.id');
+        }
 
         if ($this->sort === 'newest') {
             $defaultOrder = ['year' => SORT_DESC, 'id' => SORT_DESC];
@@ -59,9 +71,9 @@ class MovieSearch extends Movie
             'sort' => [
                 'defaultOrder' => $defaultOrder,
                 'attributes' => [
-                    'id',
-                    'title',
-                    'year',
+                    'id' => ['asc' => ['movie.id' => SORT_ASC], 'desc' => ['movie.id' => SORT_DESC]],
+                    'title' => ['asc' => ['movie.title' => SORT_ASC], 'desc' => ['movie.title' => SORT_DESC]],
+                    'year' => ['asc' => ['movie.year' => SORT_ASC], 'desc' => ['movie.year' => SORT_DESC]],
                 ],
             ],
         ]);
@@ -74,15 +86,19 @@ class MovieSearch extends Movie
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'year' => $this->year,
-            'duration' => $this->duration,
-            'genre_id' => $this->genre_id,
+            'movie.id' => $this->id,
+            'movie.year' => $this->year,
+            'movie.duration' => $this->duration,
+            'movie.genre_id' => $this->genre_id,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'poster_url', $this->poster_url]);
+        $query->andFilterWhere(['like', 'movie.title', $this->title])
+            ->andFilterWhere(['like', 'movie.description', $this->description])
+            ->andFilterWhere(['like', 'movie.poster_url', $this->poster_url]);
+
+        if ($this->is_watched) {
+            $query->andWhere(['um.is_watched' => 1]);
+        }
 
         return $dataProvider;
     }
